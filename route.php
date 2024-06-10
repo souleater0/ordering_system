@@ -1,7 +1,7 @@
 <?php
 // Assuming $is_admin is a boolean variable indicating whether the user is an admin or not
 $route = $_GET['route'] ?? 'dashboard';
-$is_admin = true;
+$is_admin = false;
 if ($is_admin) {
     switch ($route) {
         case "dashboard":
@@ -40,11 +40,11 @@ if ($is_admin) {
     }
 } else {
     switch ($route) {
-        case "dashboard":
-            require 'user/view/dashboard/dashboard.php';
+        case "privacy-policy":
+            require 'user/view/privacy-policy/privacy_policy.php';
             break;
-        case "profile":
-            require 'user/view/profile.php';
+        case "eskina-order":
+            require 'user/view/eskina-order/food_menu.php';
             break;
         default:
             require 'user/view/dashboard/dashboard.php';

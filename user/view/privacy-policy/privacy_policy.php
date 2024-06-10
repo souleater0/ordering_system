@@ -29,7 +29,7 @@
                             <div class="form-group my-3">
                                 <div class="form-check">
                                     <input class="form-check-input" type="checkbox" id="agree-checkbox">
-                                    <label class="form-check-label" for="agree-checkbox">
+                                    <label class="form-check-label user-select-none" for="agree-checkbox">
                                         I have read and agree to the Privacy Policy
                                     </label>
                                 </div>

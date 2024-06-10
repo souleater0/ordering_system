@@ -1,7 +1,11 @@
 <?php
-$is_admin = true;
+$is_admin = false;
 if ($is_admin) {
-    include("admin/index.php");
+    // include("admin/index.php");
+    header('Location: admin/index.php?route=dashboard');
+    exit;
 } else {
-    include("index.php");
+    // include("user/index.php");
+    header('Location: user/index.php?route=home');
+    exit;
 }

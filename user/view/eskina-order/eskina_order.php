@@ -17,7 +17,7 @@ $categorys = getCategory($pdo);
                             <?php endforeach; ?>
                         </ul>
                     </div>
-                    <div class="col-10 bg-danger overflow-auto" style="max-height: 530px;" data-simplebar="">
+                    <div class="col-10 bg-light overflow-auto" style="max-height: 530px;" data-simplebar="">
                         <div class="row gy-4 p-5" id="menuItems">
                             <!-- <div class="col-lg-3">
                                 <div class="card" style="width: 13rem;">
@@ -55,7 +55,7 @@ $categorys = getCategory($pdo);
                 <!-- Cart totals will be dynamically added here -->
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" id="orderNow" class="btn btn-danger">Order Now</button>
             </div>
         </div>
     </div>
@@ -63,6 +63,9 @@ $categorys = getCategory($pdo);
 
 <script>
     $(document).ready(function() {
+        $('#orderNow').click(function () {  
+            console.log(cartItems);
+        });
         function updateViewListButton() {
             var itemCount = cartItems.length;
             $('#viewListButton').text(`View List | ${itemCount}`);
@@ -124,7 +127,6 @@ $categorys = getCategory($pdo);
                 item.quantity = 1; // Add a quantity field to the item
                 cartItems.push(item);
             }
-            console.log(cartItems);
             // Update the modal to reflect the changes
             //openCartModal();
             // Update the text of the "View List" button
@@ -133,22 +135,32 @@ $categorys = getCategory($pdo);
 
         // Event handler for "Add to List" buttons
         $('#menuItems').on('click', '.addtoList', function() {
-            var menuItemID = $(this).attr('menu-id');
-            var menuItemName = $(this).attr('menu-name');
-            var menuItemPrice = $(this).attr('menu-price');
-            var menuItem = {
-                id: menuItemID,
-                name: menuItemName,
-                price: menuItemPrice
-            };
-
-            // Add the item to the cart
-            addToCart(menuItem);
+            var menuID = $(this).attr('menu-id');
+            $.ajax({
+                url: "process/user_action.php",
+                method: "POST",
+                data: {
+                    action: "getMenubyMenuID",
+                    menu_id: menuID
+                },
+                dataType: "json",
+                success: function(response) {
+                    if (response.success == true) {
+                        response.menubyID.forEach(function(item) {
+                            var menuItem = {
+                            id: item.id,
+                            name: item.menu_name,
+                            price: item.menu_price,
+                            }
+                            addToCart(menuItem);
+                        });
+                    }
+                }
+            });
         });
         loadMenuItems(null);
 
         function loadMenuItems(categoryID) {
-            console.log('Loading menu items for category ID:', categoryID);
             $.ajax({
                 url: "process/user_action.php",
                 method: "POST",
@@ -159,27 +171,29 @@ $categorys = getCategory($pdo);
                 dataType: "json",
                 success: function(response) {
                     if (response.success == true) {
-                        //console.log(response);
+                        
                         $('#menuItems').empty();
                         response.menuList.forEach(function(item) {
-                            var menuItemHtml = `
-                            <div class="col-lg-3">
-                                <div class="card" style="width: 13rem;">
-                                    <div class="card-body text-center">
-                                        <img src="https://via.placeholder.com/100" class="img-fluid" alt="Bootstrap Image" style="width: 120px;">
-                                        <h5 class="text-center fs-8">${item.menu_name}</h5>
-                                        <button class="btn btn-sm rounded-4 btn-primary text-uppercase addtoList" menu-id="${item.id}" menu-name="${item.menu_name}" menu-price="${item.menu_price}">Add to List</button>
+                                var menuItemHtml = `
+                                <div class="col-lg-3">
+                                    <div class="card" style="width: 13rem; background: radial-gradient(60% 60% at 50.25% 40%, #FF7979 0%, #F20000 100%);">
+                                        <div class="card-body text-center">
+                                            <img src="https://via.placeholder.com/100" class="img-fluid" alt="Bootstrap Image" style="width: 120px;">
+                                            <h5 class="text-center fs-8 text-white mt-2 mb-2">${item.menu_name}</h5>
+                                            <button class="btn btn-sm rounded-4 btn-light text-uppercase addtoList" menu-id="${item.id}">Add to List</button>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                        `;
-                            $('#menuItems').append(menuItemHtml);
-                        });
+                            `;
+                                $('#menuItems').append(menuItemHtml);
+                            });
                         // LoadTable();
                         // $('#categoryModal').modal('hide');
                         // toastr.success(response.message);
-                    } else {
-                        // toastr.error(response.message);
+                    }else{
+                        $('#menuItems').empty();
+                        
+                        $('#menuItems').html('<p>No menu items available.</p>')
                     }
                 }
             });
@@ -202,22 +216,19 @@ $categorys = getCategory($pdo);
         });
         $('#cartItemsList').on('click', '.increment-item', function() {
             var itemId = $(this).data('id');
-            var itemIndex = cartItems.findIndex(item => item.id === itemId.toString());
+            var itemIndex = cartItems.findIndex(item => item.id === itemId);
 
             if (itemIndex !== -1) {
                 cartItems[itemIndex].quantity++;
                 // updateModalContent(); // Update the modal content after incrementing
-
             }
-            console.log(itemIndex);
-            console.log(itemId);
             openCartModal();
         });
 
         // // Event handler for decrementing item quantity
         $('#cartItemsList').on('click', '.decrement-item', function() {
             var itemId = $(this).data('id');
-            var itemIndex = cartItems.findIndex(item => item.id === itemId.toString());
+            var itemIndex = cartItems.findIndex(item => item.id === itemId);
             if (itemIndex !== -1 && cartItems[itemIndex].quantity > 1) {
                 cartItems[itemIndex].quantity--;
                 // updateModalContent(); // Update the modal content after decrementing

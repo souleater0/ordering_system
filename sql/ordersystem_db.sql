@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jun 05, 2024 at 04:08 AM
+-- Generation Time: Jun 10, 2024 at 03:24 PM
 -- Server version: 10.4.32-MariaDB
--- PHP Version: 8.1.25
+-- PHP Version: 8.2.12
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -44,7 +44,15 @@ INSERT INTO `category` (`category_id`, `category_name`) VALUES
 (5, 'Palayok Bundle'),
 (6, 'Putok Batok Bundle'),
 (7, 'Beverages'),
-(8, 'Alcohol Beverages');
+(8, 'Alcohol Beverages'),
+(9, 'A'),
+(10, 'B'),
+(11, 'C'),
+(12, 'D'),
+(13, 'E'),
+(14, 'F'),
+(15, 'G'),
+(16, 'H');
 
 -- --------------------------------------------------------
 
@@ -116,12 +124,31 @@ INSERT INTO `menu` (`id`, `menu_name`, `menu_price`, `category_id`, `isArchive`,
 (2, 'Food A', 60.00, 1, 0, '2024-06-04 15:46:47', '2024-06-04 15:51:27'),
 (3, 'Food B', 50.00, 1, 0, '2024-06-04 15:47:02', '2024-06-04 15:51:27'),
 (4, 'Food C', 55.00, 1, 0, '2024-06-04 15:47:25', '2024-06-04 15:51:27'),
-(6, 'Food D', 20.00, 1, 0, '2024-06-04 15:47:53', '2024-06-04 15:51:27'),
-(7, 'Food E', 80.00, 1, 0, '2024-06-04 15:48:05', '2024-06-04 15:51:27'),
-(8, 'Food F', 50.00, 1, 0, '2024-06-04 15:48:16', '2024-06-04 15:51:27'),
-(9, 'Food G', 60.00, 1, 0, '2024-06-04 15:49:03', '2024-06-04 15:51:27'),
-(10, 'Food H', 90.00, 1, 0, '2024-06-04 15:49:12', '2024-06-04 15:51:27'),
-(11, 'Food I', 120.00, 1, 0, '2024-06-04 15:49:20', '2024-06-04 15:51:27');
+(6, 'Food D', 20.00, 2, 0, '2024-06-04 15:47:53', '2024-06-06 08:43:01'),
+(7, 'Food E', 80.00, 2, 0, '2024-06-04 15:48:05', '2024-06-06 08:43:01'),
+(8, 'Food F', 50.00, 2, 0, '2024-06-04 15:48:16', '2024-06-06 08:43:01'),
+(9, 'Food G', 60.00, 2, 0, '2024-06-04 15:49:03', '2024-06-06 08:43:01'),
+(10, 'Food H', 90.00, 3, 0, '2024-06-04 15:49:12', '2024-06-06 08:43:03'),
+(11, 'Food I', 120.00, 3, 0, '2024-06-04 15:49:20', '2024-06-06 08:43:03');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `roles`
+--
+
+CREATE TABLE `roles` (
+  `id` int(11) NOT NULL,
+  `role_name` varchar(50) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `roles`
+--
+
+INSERT INTO `roles` (`id`, `role_name`) VALUES
+(1, 'Admin'),
+(2, 'Cashier');
 
 -- --------------------------------------------------------
 
@@ -132,8 +159,49 @@ INSERT INTO `menu` (`id`, `menu_name`, `menu_price`, `category_id`, `isArchive`,
 CREATE TABLE `table` (
   `id` int(11) NOT NULL,
   `table_no` int(11) DEFAULT NULL,
-  `is_occupied` varchar(255) DEFAULT NULL
+  `is_occupied` tinyint(1) DEFAULT 0,
+  `updated_at` timestamp NULL DEFAULT NULL ON UPDATE current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `table`
+--
+
+INSERT INTO `table` (`id`, `table_no`, `is_occupied`, `updated_at`) VALUES
+(1, 1, 1, '2024-06-06 04:37:21'),
+(2, 2, 0, NULL),
+(3, 3, 0, NULL),
+(4, 4, 0, NULL),
+(5, 5, 0, NULL),
+(6, 6, 0, NULL),
+(7, 7, 0, NULL),
+(8, 8, 0, NULL);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `users`
+--
+
+CREATE TABLE `users` (
+  `id` int(11) NOT NULL,
+  `username` varchar(255) DEFAULT NULL,
+  `password` varchar(255) DEFAULT NULL,
+  `display_name` varchar(255) DEFAULT NULL,
+  `role_id` int(11) DEFAULT NULL,
+  `isEnabled` tinyint(1) DEFAULT 0,
+  `created_at` timestamp NULL DEFAULT current_timestamp(),
+  `updated_at` timestamp NULL DEFAULT NULL ON UPDATE current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `users`
+--
+
+INSERT INTO `users` (`id`, `username`, `password`, `display_name`, `role_id`, `isEnabled`, `created_at`, `updated_at`) VALUES
+(1, 'admin', '$2y$10$Yvn5wPKG1D1ovcMe5wM2lemqHaX40cKBJ7ybknP0rtYFkVSYt0MmK', 'Jerome De Lara', 1, 1, '2024-05-08 12:30:37', '2024-05-24 03:49:31'),
+(3, 'jhondell', '$2y$10$JRSUatHPUFuxnBTk2t1PzeHke3itwMQXgGiKJrvWT.55bKynetknq', 'Jhondell', 2, 1, '2024-05-22 07:11:58', '2024-05-24 03:50:30'),
+(4, 'test', '$2y$10$F9iTNImdi7zYnh7Isqzy8uPGaj2akWWtxOErWQxKrC4VpHCxGQeBW', 'test', 1, 1, '2024-06-10 12:52:00', '2024-06-10 12:52:59');
 
 --
 -- Indexes for dumped tables
@@ -165,10 +233,23 @@ ALTER TABLE `menu`
   ADD KEY `fr_category` (`category_id`);
 
 --
+-- Indexes for table `roles`
+--
+ALTER TABLE `roles`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indexes for table `table`
 --
 ALTER TABLE `table`
   ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `users`
+--
+ALTER TABLE `users`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `fr_role` (`role_id`);
 
 --
 -- AUTO_INCREMENT for dumped tables
@@ -178,7 +259,7 @@ ALTER TABLE `table`
 -- AUTO_INCREMENT for table `category`
 --
 ALTER TABLE `category`
-  MODIFY `category_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `category_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
 
 --
 -- AUTO_INCREMENT for table `customer_detail`
@@ -199,6 +280,24 @@ ALTER TABLE `menu`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 
 --
+-- AUTO_INCREMENT for table `roles`
+--
+ALTER TABLE `roles`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+
+--
+-- AUTO_INCREMENT for table `table`
+--
+ALTER TABLE `table`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+
+--
+-- AUTO_INCREMENT for table `users`
+--
+ALTER TABLE `users`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+
+--
 -- Constraints for dumped tables
 --
 
@@ -207,6 +306,12 @@ ALTER TABLE `menu`
 --
 ALTER TABLE `menu`
   ADD CONSTRAINT `fr_category` FOREIGN KEY (`category_id`) REFERENCES `category` (`category_id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Constraints for table `users`
+--
+ALTER TABLE `users`
+  ADD CONSTRAINT `users_ibfk_1` FOREIGN KEY (`role_id`) REFERENCES `roles` (`id`);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

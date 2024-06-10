@@ -56,3 +56,22 @@ function getFoodMenubyID($pdo)
         return array(); // Return an empty array if an error occurs
     }
 }
+function getFoodMenubyMenuID($pdo){
+    try {
+        $menu_id = isset($_POST['menu_id']) ? $_POST['menu_id'] : null;
+
+        if ($menu_id) {
+            $query = "SELECT * FROM menu
+            where menu.id = :menu_id AND menu.isArchive = 0";
+            $stmt = $pdo->prepare($query);
+            $stmt->bindParam(':menu_id', $menu_id, PDO::PARAM_INT);
+        }
+        $stmt->execute();
+        $menubyid = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        return $menubyid;
+    } catch (PDOException $e) {
+        // Handle database connection error
+        echo "Error: " . $e->getMessage();
+        return array(); // Return an empty array if an error occurs
+    }
+}

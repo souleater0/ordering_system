@@ -35,8 +35,8 @@ $route = $_GET['route'] ?? 'home';
     <script src="../assets/libs/datatablejs/js/datatables.min.js"></script>
     <!-- bootstrap select -->
     <!-- Latest BS-Select compiled and minified CSS/JS -->
-    <!-- <link rel="stylesheet" href="../assets/libs/bootstrap-select/dist/css/bootstrap-select.min.css">
-    <script src="../assets/libs/bootstrap-select/dist/js/bootstrap-select.min.js"></script> -->
+    <link rel="stylesheet" href="../assets/libs/bootstrap-select/dist/css/bootstrap-select.min.css">
+    <script src="../assets/libs/bootstrap-select/dist/js/bootstrap-select.min.js"></script>
 
     <!-- TOASTR -->
     <link rel="stylesheet" href="../assets/libs/toastr/css/toastr.min.css">
@@ -149,17 +149,11 @@ $route = $_GET['route'] ?? 'home';
                             <iconify-icon icon="solar:menu-dots-linear" class="nav-small-cap-icon fs-4"></iconify-icon>
                             <span class="hide-menu text-uppercase">user management</span>
                         </li>
-                        <div class="collapse <?php echo ($route == 'user-management' || $route == 'role-management') ? 'show' : ''; ?>" id="collapseUser">
+                        <div class="collapse <?php echo ($route == 'user-management') ? 'show' : ''; ?>" id="collapseUser">
                             <li class="sidebar-item">
                                 <a class="sidebar-link <?php echo ($route == 'user-management') ? 'active' : ''; ?>" href="index.php?route=user-management" aria-expanded="false">
                                     <iconify-icon icon="mdi:cart"></iconify-icon>
                                     <span class="hide-menu">User</span>
-                                </a>
-                            </li>
-                            <li class="sidebar-item">
-                                <a class="sidebar-link" href="index.php?route=role-management" aria-expanded="false">
-                                    <iconify-icon icon="material-symbols:category"></iconify-icon>
-                                    <span class="hide-menu">Role</span>
                                 </a>
                             </li>
                         </div>
@@ -204,7 +198,7 @@ $route = $_GET['route'] ?? 'home';
                                             <i class="ti ti-mail fs-6"></i>
                                             <p class="mb-0 fs-3">Settings</p>
                                         </a>
-                                        <a href="admin/process/logout.php" class="btn btn-outline-primary mx-3 mt-2 d-block">Logout</a>
+                                        <a href="process/logout.php" class="btn btn-outline-primary mx-3 mt-2 d-block">Logout</a>
                                     </div>
                                 </div>
                             </li>

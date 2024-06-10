@@ -24,6 +24,22 @@ if (isset($_GET['table_type'])) {
             $sql = 'SELECT * FROM customer_feedback
                     ORDER BY created_at DESC';
             break;
+        case 'users':
+            $sql = 'SELECT
+            a.id,
+            a.display_name,
+            a.username,
+            a.role_id,
+            b.role_name,
+            a.isEnabled,
+            CASE 
+                WHEN a.isEnabled = 1 THEN "Enabled"
+                ELSE "Disabled"
+            END as status
+            FROM users a
+            INNER JOIN roles b ON b.id = a.role_id
+            ORDER BY display_name ASC';
+            break;
         default:
             // If an invalid or unsupported table type is provided, return an error
             echo json_encode(['error' => 'Unsupported table type']);

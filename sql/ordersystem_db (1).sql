@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jun 10, 2024 at 03:24 PM
+-- Generation Time: Jun 11, 2024 at 12:17 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -57,6 +57,27 @@ INSERT INTO `category` (`category_id`, `category_name`) VALUES
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `customer_canceled`
+--
+
+CREATE TABLE `customer_canceled` (
+  `order_no` int(11) NOT NULL,
+  `table_no` int(11) DEFAULT NULL,
+  `customer_name` varchar(255) DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `customer_canceled`
+--
+
+INSERT INTO `customer_canceled` (`order_no`, `table_no`, `customer_name`, `created_at`) VALUES
+(1, 2, 'jerome', '2024-06-11 09:39:48'),
+(2, 3, 'jhondell', '2024-06-11 09:39:48');
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `customer_detail`
 --
 
@@ -102,6 +123,48 @@ INSERT INTO `customer_feedback` (`id`, `customer_name`, `customer_rate`, `custom
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `customer_order`
+--
+
+CREATE TABLE `customer_order` (
+  `order_no` int(11) NOT NULL,
+  `table_no` int(11) DEFAULT NULL,
+  `customer_name` varchar(255) DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `customer_order`
+--
+
+INSERT INTO `customer_order` (`order_no`, `table_no`, `customer_name`, `created_at`) VALUES
+(1, 2, 'jerome', '2024-06-11 09:39:48'),
+(2, 3, 'jhondell', '2024-06-11 09:39:48');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `customer_process`
+--
+
+CREATE TABLE `customer_process` (
+  `order_no` int(11) NOT NULL,
+  `table_no` int(11) DEFAULT NULL,
+  `customer_name` varchar(255) DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `customer_process`
+--
+
+INSERT INTO `customer_process` (`order_no`, `table_no`, `customer_name`, `created_at`) VALUES
+(1, 2, 'jerome', '2024-06-11 09:39:48'),
+(2, 3, 'jhondell', '2024-06-11 09:39:48');
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `menu`
 --
 
@@ -130,6 +193,39 @@ INSERT INTO `menu` (`id`, `menu_name`, `menu_price`, `category_id`, `isArchive`,
 (9, 'Food G', 60.00, 2, 0, '2024-06-04 15:49:03', '2024-06-06 08:43:01'),
 (10, 'Food H', 90.00, 3, 0, '2024-06-04 15:49:12', '2024-06-06 08:43:03'),
 (11, 'Food I', 120.00, 3, 0, '2024-06-04 15:49:20', '2024-06-06 08:43:03');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `ordered_menu`
+--
+
+CREATE TABLE `ordered_menu` (
+  `id` int(11) NOT NULL,
+  `order_no` int(11) DEFAULT NULL,
+  `menu_name` varchar(255) NOT NULL,
+  `menu_price` decimal(10,2) NOT NULL,
+  `category_id` int(11) NOT NULL,
+  `isArchive` tinyint(1) DEFAULT 0,
+  `created_at` timestamp NULL DEFAULT current_timestamp(),
+  `updated_at` timestamp NULL DEFAULT NULL ON UPDATE current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `ordered_menu`
+--
+
+INSERT INTO `ordered_menu` (`id`, `order_no`, `menu_name`, `menu_price`, `category_id`, `isArchive`, `created_at`, `updated_at`) VALUES
+(1, 1, 'Chicken Inasal', 70.00, 1, 0, '2024-06-04 15:41:44', '2024-06-11 10:13:17'),
+(2, 1, 'Food A', 60.00, 1, 0, '2024-06-04 15:46:47', '2024-06-11 10:13:17'),
+(3, 1, 'Food B', 50.00, 1, 0, '2024-06-04 15:47:02', '2024-06-11 10:13:17'),
+(4, 1, 'Food C', 55.00, 1, 0, '2024-06-04 15:47:25', '2024-06-11 10:13:17'),
+(6, 1, 'Food D', 20.00, 2, 0, '2024-06-04 15:47:53', '2024-06-11 10:13:17'),
+(7, 2, 'Food E', 80.00, 2, 0, '2024-06-04 15:48:05', '2024-06-11 10:13:24'),
+(8, 2, 'Food F', 50.00, 2, 0, '2024-06-04 15:48:16', '2024-06-11 10:13:21'),
+(9, 2, 'Food G', 60.00, 2, 0, '2024-06-04 15:49:03', '2024-06-11 10:13:21'),
+(10, 2, 'Food H', 90.00, 3, 0, '2024-06-04 15:49:12', '2024-06-11 10:13:21'),
+(11, 2, 'Food I', 120.00, 3, 0, '2024-06-04 15:49:20', '2024-06-11 10:13:21');
 
 -- --------------------------------------------------------
 
@@ -214,6 +310,12 @@ ALTER TABLE `category`
   ADD PRIMARY KEY (`category_id`);
 
 --
+-- Indexes for table `customer_canceled`
+--
+ALTER TABLE `customer_canceled`
+  ADD PRIMARY KEY (`order_no`) USING BTREE;
+
+--
 -- Indexes for table `customer_detail`
 --
 ALTER TABLE `customer_detail`
@@ -226,9 +328,28 @@ ALTER TABLE `customer_feedback`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indexes for table `customer_order`
+--
+ALTER TABLE `customer_order`
+  ADD PRIMARY KEY (`order_no`) USING BTREE;
+
+--
+-- Indexes for table `customer_process`
+--
+ALTER TABLE `customer_process`
+  ADD PRIMARY KEY (`order_no`) USING BTREE;
+
+--
 -- Indexes for table `menu`
 --
 ALTER TABLE `menu`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `fr_category` (`category_id`);
+
+--
+-- Indexes for table `ordered_menu`
+--
+ALTER TABLE `ordered_menu`
   ADD PRIMARY KEY (`id`),
   ADD KEY `fr_category` (`category_id`);
 
@@ -262,6 +383,12 @@ ALTER TABLE `category`
   MODIFY `category_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
 
 --
+-- AUTO_INCREMENT for table `customer_canceled`
+--
+ALTER TABLE `customer_canceled`
+  MODIFY `order_no` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+
+--
 -- AUTO_INCREMENT for table `customer_detail`
 --
 ALTER TABLE `customer_detail`
@@ -274,9 +401,27 @@ ALTER TABLE `customer_feedback`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
+-- AUTO_INCREMENT for table `customer_order`
+--
+ALTER TABLE `customer_order`
+  MODIFY `order_no` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+
+--
+-- AUTO_INCREMENT for table `customer_process`
+--
+ALTER TABLE `customer_process`
+  MODIFY `order_no` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+
+--
 -- AUTO_INCREMENT for table `menu`
 --
 ALTER TABLE `menu`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+
+--
+-- AUTO_INCREMENT for table `ordered_menu`
+--
+ALTER TABLE `ordered_menu`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 
 --
@@ -306,6 +451,12 @@ ALTER TABLE `users`
 --
 ALTER TABLE `menu`
   ADD CONSTRAINT `fr_category` FOREIGN KEY (`category_id`) REFERENCES `category` (`category_id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Constraints for table `ordered_menu`
+--
+ALTER TABLE `ordered_menu`
+  ADD CONSTRAINT `ordered_menu_ibfk_1` FOREIGN KEY (`category_id`) REFERENCES `category` (`category_id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `users`

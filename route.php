@@ -1,6 +1,5 @@
 <?php
 // Assuming $is_admin is a boolean variable indicating whether the user is an admin or not
-session_start();
 $route = $_GET['route'] ?? 'dashboard';
 if (isset($_SESSION['logged_in']) && $_SESSION['logged_in'] === true) {
     if (isset($_SESSION['user_role']) && $_SESSION['user_role'] === 1) {

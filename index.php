@@ -7,7 +7,7 @@ if (isset($_SESSION['logged_in']) && $_SESSION['logged_in'] === true) {
         header('Location: admin/index.php?route=dashboard');
         exit;
     }
-    if (isset($_SESSION['user_role']) && $_SESSION['user_role'] === 2) {
+    else if (isset($_SESSION['user_role']) && $_SESSION['user_role'] === 2) {
         //cashier route
         header('Location: admin/index.php?route=dashboard');
         exit;

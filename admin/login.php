@@ -1,5 +1,6 @@
 <?php
   //require 'session_checker.php';
+  require_once '../admin_session_checker.php';
 ?>
 <!doctype html>
 <html lang="en">
@@ -61,7 +62,8 @@
                   if(response.success==true){
                       toastr.success(response.message);
                       setTimeout(function() {
-                          window.location.href = response.redirectUrl;
+                          // window.location.href = response.redirectUrl;
+                          location.reload();
                       }, 2000);
                       
                   }else{

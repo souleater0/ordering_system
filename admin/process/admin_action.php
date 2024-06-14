@@ -109,4 +109,232 @@ if(!empty($_POST['action']) && $_POST['action'] == 'updateUserPassword') {
     echo json_encode($response);
     exit();
 }
+if(!empty($_POST['action']) && $_POST['action'] == 'addFood') {
+    if(empty($_POST['food_name'])){
+        $response = array(
+            'success' => false,
+            'message' => 'Please enter a food name!'
+        );
+    }
+    else{
+        if(addFood($pdo)){
+            $response = array(
+                'success' => true,
+                'message' => 'Food has been Added.'
+            );
+        }else{
+            $response = array(
+                'success' => false,
+                'message' => 'Failed to add Food!.'
+            );
+        }
+    }
+    // Send response
+    header('Content-Type: application/json');
+    echo json_encode($response);
+    exit();
+}
+if(!empty($_POST['action']) && $_POST['action'] == 'updateFood') {
+    if(empty($_POST['food_name'])){
+        $response = array(
+            'success' => false,
+            'message' => 'Please enter a food name!'
+        );
+    }
+    else if(empty($_POST['food_price'])){
+        $response = array(
+            'success' => false,
+            'message' => 'Please enter a food price!'
+        );
+    }
+    else{
+        if(updateFood($pdo)){
+            $response = array(
+                'success' => true,
+                'message' => 'Food has been updated.'
+            );
+        }else{
+            $response = array(
+                'success' => false,
+                'message' => 'Failed to update Food!.'
+            );
+        }
+    }
+    // Send response
+    header('Content-Type: application/json');
+    echo json_encode($response);
+    exit();
+}
+if(!empty($_POST['action']) && $_POST['action'] == 'deleteFood') {
+    if(empty($_POST['delete_id'])){
+        $response = array(
+            'success' => false,
+            'message' => 'No food id found!'
+        );
+    }else{
+        if(deleteFood($pdo)){
+            $response = array(
+                'success' => true,
+                'message' => 'Food has been deleted.'
+            );
+        }else{
+            $response = array(
+                'success' => false,
+                'message' => 'Failed to delete Food!.'
+            );
+        }
+    }
+    // Send response
+    header('Content-Type: application/json');
+    echo json_encode($response);
+    exit();
+}
+if(!empty($_POST['action']) && $_POST['action'] == 'addVariation') {
+    if(empty($_POST['variation_name'])){
+        $response = array(
+            'success' => false,
+            'message' => 'Please enter a variation name!'
+        );
+    }
+    else{
+        if(addVariation($pdo)){
+            $response = array(
+                'success' => true,
+                'message' => 'variation has been Added.'
+            );
+        }else{
+            $response = array(
+                'success' => false,
+                'message' => 'Failed to add variation!.'
+            );
+        }
+    }
+    // Send response
+    header('Content-Type: application/json');
+    echo json_encode($response);
+    exit();
+}
+if(!empty($_POST['action']) && $_POST['action'] == 'updateVariation') {
+    if(empty($_POST['variation_name'])){
+        $response = array(
+            'success' => false,
+            'message' => 'Please enter a variation name!'
+        );
+    }
+    else{
+        if(updateVariation($pdo)){
+            $response = array(
+                'success' => true,
+                'message' => 'variation has been Updated.'
+            );
+        }else{
+            $response = array(
+                'success' => false,
+                'message' => 'Failed to update variation!.'
+            );
+        }
+    }
+    // Send response
+    header('Content-Type: application/json');
+    echo json_encode($response);
+    exit();
+}
+if(!empty($_POST['action']) && $_POST['action'] == 'deleteVariation') {
+    if(empty($_POST['delete_id'])){
+        $response = array(
+            'success' => false,
+            'message' => 'No variation id found!'
+        );
+    }else{
+        if(deleteVariation($pdo)){
+            $response = array(
+                'success' => true,
+                'message' => 'Variation has been deleted.'
+            );
+        }else{
+            $response = array(
+                'success' => false,
+                'message' => 'Failed to delete Variation!.'
+            );
+        }
+    }
+    // Send response
+    header('Content-Type: application/json');
+    echo json_encode($response);
+    exit();
+}
+if(!empty($_POST['action']) && $_POST['action'] == 'addCategory') {
+    if(empty($_POST['category_name'])){
+        $response = array(
+            'success' => false,
+            'message' => 'Please enter a category name!'
+        );
+    }
+    else{
+        if(addCategory($pdo)){
+            $response = array(
+                'success' => true,
+                'message' => 'category has been Added.'
+            );
+        }else{
+            $response = array(
+                'success' => false,
+                'message' => 'Failed to add category!.'
+            );
+        }
+    }
+    // Send response
+    header('Content-Type: application/json');
+    echo json_encode($response);
+    exit();
+}
+if(!empty($_POST['action']) && $_POST['action'] == 'updateCategory') {
+    if(empty($_POST['category_name'])){
+        $response = array(
+            'success' => false,
+            'message' => 'Please enter a category name!'
+        );
+    }
+    else{
+        if(updateCategory($pdo)){
+            $response = array(
+                'success' => true,
+                'message' => 'category has been Updated.'
+            );
+        }else{
+            $response = array(
+                'success' => false,
+                'message' => 'Failed to update category!.'
+            );
+        }
+    }
+    // Send response
+    header('Content-Type: application/json');
+    echo json_encode($response);
+    exit();
+}
+if(!empty($_POST['action']) && $_POST['action'] == 'deleteCategory') {
+    if(empty($_POST['delete_id'])){
+        $response = array(
+            'success' => false,
+            'message' => 'No food id found!'
+        );
+    }else{
+        if(deleteCategory($pdo)){
+            $response = array(
+                'success' => true,
+                'message' => 'Category has been deleted.'
+            );
+        }else{
+            $response = array(
+                'success' => false,
+                'message' => 'Failed to delete Category!.'
+            );
+        }
+    }
+    // Send response
+    header('Content-Type: application/json');
+    echo json_encode($response);
+    exit();
+}
 ?>

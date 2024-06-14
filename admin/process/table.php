@@ -7,14 +7,29 @@ if (isset($_GET['table_type'])) {
 
     // Define SQL query based on the table type
     switch ($tableType) {
+        // case 'food-menu':
+        //     $sql = 'SELECT * FROM menu a
+        //             INNER JOIN category b ON b.category_id = a.category_id
+        //             ORDER BY category_name ASC';
+        //     break;
         case 'food-menu':
-            $sql = 'SELECT * FROM menu a
-                    INNER JOIN category b ON b.category_id = a.category_id
-                    ORDER BY category_name ASC';
+            $sql = 'SELECT a.id, a.menu_name,
+            GROUP_CONCAT(b.price ORDER BY b.price SEPARATOR ", ") AS all_prices,
+            a.category_id,
+            c.category_name,
+            a.created_at
+            FROM menu a
+            LEFT JOIN menu_variations b ON a.id = b.menu_id
+            LEFT JOIN category c ON a.category_id = c.category_id
+            GROUP BY a.id, a.menu_name, a.category_id, c.category_name, a.created_at, a.updated_at';
             break;
         case 'category':
             $sql = 'SELECT * FROM category
                     ORDER BY category_name ASC';
+            break;
+        case 'variation':
+            $sql = 'SELECT * FROM variations
+                    ORDER BY variation_name ASC';
             break;
         case 'customer-detail':
             $sql = 'SELECT * FROM customer_detail
@@ -39,6 +54,10 @@ if (isset($_GET['table_type'])) {
             FROM users a
             INNER JOIN roles b ON b.id = a.role_id
             ORDER BY display_name ASC';
+            break;
+        case 'customer-order':
+            $sql = 'SELECT * FROM customer_order
+                    ORDER BY created_at DESC';
             break;
         default:
             // If an invalid or unsupported table type is provided, return an error

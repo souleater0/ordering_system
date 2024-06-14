@@ -21,6 +21,9 @@ if (isset($_SESSION['logged_in']) && $_SESSION['logged_in'] === true) {
             case "food-menu":
                 require 'admin/view/menu-management/food-menu.php';
                 break;
+            case "manage-variation":
+                require 'admin/view/menu-management/variation.php';
+                break;
             case "category-management":
                 require 'admin/view/menu-management/category.php';
                 break;

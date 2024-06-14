@@ -10,6 +10,10 @@
     <!-- BOOTSTRAP CDN -->
     <link href="../assets/libs/bootstrap533/css/bootstrap.min.css" rel="stylesheet">
     <script src="../assets/libs/bootstrap533/js/bootstrap.bundle.min.js"></script>
+    <!-- fontawesome-->
+    <link rel="stylesheet" href="../assets/css/fontawesome.min.css">
+    <link rel="stylesheet" href="../assets/css/all.min.css">
+    <script src="../assets/js/all.min.js"></script>
     <!-- DATATABLE -->
     <link href="../assets/libs/datatablejs/css/datatables.min.css" rel="stylesheet">
     <script src="../assets/libs/datatablejs/js/datatables.min.js"></script>

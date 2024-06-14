@@ -107,11 +107,17 @@ $route = $_GET['route'] ?? 'home';
                             <iconify-icon icon="solar:menu-dots-linear" class="nav-small-cap-icon fs-4"></iconify-icon>
                             <span class="hide-menu text-uppercase">menu management</span>
                         </li>
-                        <div class="collapse <?php echo ($route == 'food-menu' || $route == 'category-management') ? 'show' : ''; ?>" id="collapseStock">
+                        <div class="collapse <?php echo ($route == 'food-menu' || $route == 'manage-variation' || $route == 'category-management') ? 'show' : ''; ?>" id="collapseStock">
                             <li class="sidebar-item">
                                 <a class="sidebar-link" href="index.php?route=food-menu" aria-expanded="false">
                                     <iconify-icon icon="ph:stack-plus"></iconify-icon>
                                     <span class="hide-menu">Food Menu</span>
+                                </a>
+                            </li>
+                            <li class="sidebar-item">
+                                <a class="sidebar-link" href="index.php?route=manage-variation" aria-expanded="false">
+                                    <iconify-icon icon="ph:stack-plus"></iconify-icon>
+                                    <span class="hide-menu">Variation</span>
                                 </a>
                             </li>
                             <li class="sidebar-item">

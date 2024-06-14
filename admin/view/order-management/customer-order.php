@@ -4,7 +4,7 @@
             <div class="card-header bg-transparent border-bottom">
                 <div class="row">
                     <div class="col">
-                        <h5 class="mt-1 mb-0">Manage Customer</h5>
+                        <h5 class="mt-1 mb-0">Customer Orders</h5>
                     </div>
                 </div>
             </div>
@@ -50,35 +50,31 @@
             select: true,
             autoWidth: false,
             ajax: {
-                url: 'process/table.php?table_type=customer-detail',
+                url: 'process/table.php?table_type=customer-order',
                 dataSrc: 'data'
             },
-            columns: [{
-                    data: 'customer_id',
-                    visible: false
+            columns: [
+                {
+                    data: 'order_no',
+                    title: 'ORDER #',
+                    className: 'text-dark text-start'
+                },
+                {
+                    data: 'table_no',
+                    title: 'Table #',
+                    className: 'text-dark text-start'
                 },
                 {
                     data: 'customer_name',
                     title: 'Customer Name',
                     className: 'text-dark text-start'
                 },
-                {
-                    data: 'customer_contact',
-                    title: 'Customer Contact',
-                    className: 'text-dark text-start'
-                },
-                {
-                    data: 'customer_email',
-                    title: 'Customer Email',
-                    className: 'text-dark text-start'
-                },
-                {
-                    "data": null,
-                    "title": "Action",
-                    "className": "text-dark text-center",
+                { 
+                    "data": null, 
+                    "title": "Action", 
                     "render": function(data, type, row) {
-                        return '<a class="btn btn-info btn-sm" href="index.php?route=view-product&product=' + row.product_id + '"><i class="fa-solid fa-eye"></i></a>';
-                    }
+                        return '<button class="btn btn-info btn-sm btn-show">View</button>&nbsp;<button class="btn btn-primary btn-sm btn-edit">Edit</button>&nbsp;<button class="btn btn-warning btn-sm text-white">Process</button>&nbsp;<button class="btn btn-danger btn-sm">Cancel</button>';
+                    } 
                 }
             ]
         });

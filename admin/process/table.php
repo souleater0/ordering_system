@@ -7,16 +7,17 @@ if (isset($_GET['table_type'])) {
 
     // Define SQL query based on the table type
     switch ($tableType) {
-        // case 'food-menu':
-        //     $sql = 'SELECT * FROM menu a
-        //             INNER JOIN category b ON b.category_id = a.category_id
-        //             ORDER BY category_name ASC';
-        //     break;
+            // case 'food-menu':
+            //     $sql = 'SELECT * FROM menu a
+            //             INNER JOIN category b ON b.category_id = a.category_id
+            //             ORDER BY category_name ASC';
+            //     break;
         case 'food-menu':
             $sql = 'SELECT a.id, a.menu_name,
             GROUP_CONCAT(b.price ORDER BY b.price SEPARATOR ", ") AS all_prices,
             a.category_id,
             c.category_name,
+            a.isEnabled,
             a.created_at
             FROM menu a
             LEFT JOIN menu_variations b ON a.id = b.menu_id

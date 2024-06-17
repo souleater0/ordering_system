@@ -2,14 +2,14 @@
 session_start();
 require_once '../../config.php';
 require_once 'function.php';
-if(!empty($_POST['action']) && $_POST['action'] == 'loginProcess') {
-    if(loginProcess($pdo)){
+if (!empty($_POST['action']) && $_POST['action'] == 'loginProcess') {
+    if (loginProcess($pdo)) {
         $response = array(
             'success' => true,
             'message' => 'Login successful.',
             'redirectUrl' => '../index.php?route=dashboard'
         );
-    }else{
+    } else {
         $response = array(
             'success' => false,
             'message' => 'Invalid Credentials!'
@@ -19,26 +19,24 @@ if(!empty($_POST['action']) && $_POST['action'] == 'loginProcess') {
     echo json_encode($response);
     exit();
 }
-if(!empty($_POST['action']) && $_POST['action'] == 'addUser') {
-    if(empty($_POST['user_display'])){
+if (!empty($_POST['action']) && $_POST['action'] == 'addUser') {
+    if (empty($_POST['user_display'])) {
         $response = array(
             'success' => false,
             'message' => 'Please enter a display name!'
         );
-    }
-    else if(empty($_POST['username'])){
+    } else if (empty($_POST['username'])) {
         $response = array(
             'success' => false,
             'message' => 'Please enter a display name!'
         );
-    }
-    else{
-        if(addUser($pdo)){
+    } else {
+        if (addUser($pdo)) {
             $response = array(
                 'success' => true,
                 'message' => 'User has been created.'
             );
-        }else{
+        } else {
             $response = array(
                 'success' => false,
                 'message' => 'Failed to create new user!'
@@ -50,26 +48,24 @@ if(!empty($_POST['action']) && $_POST['action'] == 'addUser') {
     echo json_encode($response);
     exit();
 }
-if(!empty($_POST['action']) && $_POST['action'] == 'updateUser') {
-    if(empty($_POST['user_display'])){
+if (!empty($_POST['action']) && $_POST['action'] == 'updateUser') {
+    if (empty($_POST['user_display'])) {
         $response = array(
             'success' => false,
             'message' => 'Please enter a display name!'
         );
-    }
-    else if(empty($_POST['username'])){
+    } else if (empty($_POST['username'])) {
         $response = array(
             'success' => false,
             'message' => 'Please enter a display name!'
         );
-    }
-    else{
-        if(updateUser($pdo)){
+    } else {
+        if (updateUser($pdo)) {
             $response = array(
                 'success' => true,
                 'message' => 'User has been updated.'
             );
-        }else{
+        } else {
             $response = array(
                 'success' => false,
                 'message' => 'Failed to update user!'
@@ -81,24 +77,24 @@ if(!empty($_POST['action']) && $_POST['action'] == 'updateUser') {
     echo json_encode($response);
     exit();
 }
-if(!empty($_POST['action']) && $_POST['action'] == 'updateUserPassword') {
-    if(empty($_POST['password'])){
+if (!empty($_POST['action']) && $_POST['action'] == 'updateUserPassword') {
+    if (empty($_POST['password'])) {
         $response = array(
             'success' => false,
             'message' => 'Please enter a password!'
         );
-    }else if (empty($_POST['c_password'])){
+    } else if (empty($_POST['c_password'])) {
         $response = array(
             'success' => false,
             'message' => 'Please enter a confirm password!'
         );
-    }else{
-        if(updateUserPassword($pdo)){
+    } else {
+        if (updateUserPassword($pdo)) {
             $response = array(
                 'success' => true,
                 'message' => 'User password has been updated.'
             );
-        }else{
+        } else {
             $response = array(
                 'success' => false,
                 'message' => 'Failed to update password!'
@@ -109,20 +105,19 @@ if(!empty($_POST['action']) && $_POST['action'] == 'updateUserPassword') {
     echo json_encode($response);
     exit();
 }
-if(!empty($_POST['action']) && $_POST['action'] == 'addFood') {
-    if(empty($_POST['food_name'])){
+if (!empty($_POST['action']) && $_POST['action'] == 'addFood') {
+    if (empty($_POST['food_name'])) {
         $response = array(
             'success' => false,
             'message' => 'Please enter a food name!'
         );
-    }
-    else{
-        if(addFood($pdo)){
+    } else {
+        if (addFood($pdo)) {
             $response = array(
                 'success' => true,
                 'message' => 'Food has been Added.'
             );
-        }else{
+        } else {
             $response = array(
                 'success' => false,
                 'message' => 'Failed to add Food!.'
@@ -134,26 +129,24 @@ if(!empty($_POST['action']) && $_POST['action'] == 'addFood') {
     echo json_encode($response);
     exit();
 }
-if(!empty($_POST['action']) && $_POST['action'] == 'updateFood') {
-    if(empty($_POST['food_name'])){
+if (!empty($_POST['action']) && $_POST['action'] == 'updateFood') {
+    if (empty($_POST['food_name'])) {
         $response = array(
             'success' => false,
             'message' => 'Please enter a food name!'
         );
-    }
-    else if(empty($_POST['food_price'])){
+    } else if (empty($_POST['food_price'])) {
         $response = array(
             'success' => false,
             'message' => 'Please enter a food price!'
         );
-    }
-    else{
-        if(updateFood($pdo)){
+    } else {
+        if (updateFood($pdo)) {
             $response = array(
                 'success' => true,
                 'message' => 'Food has been updated.'
             );
-        }else{
+        } else {
             $response = array(
                 'success' => false,
                 'message' => 'Failed to update Food!.'
@@ -165,19 +158,19 @@ if(!empty($_POST['action']) && $_POST['action'] == 'updateFood') {
     echo json_encode($response);
     exit();
 }
-if(!empty($_POST['action']) && $_POST['action'] == 'deleteFood') {
-    if(empty($_POST['delete_id'])){
+if (!empty($_POST['action']) && $_POST['action'] == 'deleteFood') {
+    if (empty($_POST['delete_id'])) {
         $response = array(
             'success' => false,
             'message' => 'No food id found!'
         );
-    }else{
-        if(deleteFood($pdo)){
+    } else {
+        if (deleteFood($pdo)) {
             $response = array(
                 'success' => true,
                 'message' => 'Food has been deleted.'
             );
-        }else{
+        } else {
             $response = array(
                 'success' => false,
                 'message' => 'Failed to delete Food!.'
@@ -189,20 +182,19 @@ if(!empty($_POST['action']) && $_POST['action'] == 'deleteFood') {
     echo json_encode($response);
     exit();
 }
-if(!empty($_POST['action']) && $_POST['action'] == 'addVariation') {
-    if(empty($_POST['variation_name'])){
+if (!empty($_POST['action']) && $_POST['action'] == 'addVariation') {
+    if (empty($_POST['variation_name'])) {
         $response = array(
             'success' => false,
             'message' => 'Please enter a variation name!'
         );
-    }
-    else{
-        if(addVariation($pdo)){
+    } else {
+        if (addVariation($pdo)) {
             $response = array(
                 'success' => true,
                 'message' => 'variation has been Added.'
             );
-        }else{
+        } else {
             $response = array(
                 'success' => false,
                 'message' => 'Failed to add variation!.'
@@ -214,20 +206,19 @@ if(!empty($_POST['action']) && $_POST['action'] == 'addVariation') {
     echo json_encode($response);
     exit();
 }
-if(!empty($_POST['action']) && $_POST['action'] == 'updateVariation') {
-    if(empty($_POST['variation_name'])){
+if (!empty($_POST['action']) && $_POST['action'] == 'updateVariation') {
+    if (empty($_POST['variation_name'])) {
         $response = array(
             'success' => false,
             'message' => 'Please enter a variation name!'
         );
-    }
-    else{
-        if(updateVariation($pdo)){
+    } else {
+        if (updateVariation($pdo)) {
             $response = array(
                 'success' => true,
                 'message' => 'variation has been Updated.'
             );
-        }else{
+        } else {
             $response = array(
                 'success' => false,
                 'message' => 'Failed to update variation!.'
@@ -239,19 +230,19 @@ if(!empty($_POST['action']) && $_POST['action'] == 'updateVariation') {
     echo json_encode($response);
     exit();
 }
-if(!empty($_POST['action']) && $_POST['action'] == 'deleteVariation') {
-    if(empty($_POST['delete_id'])){
+if (!empty($_POST['action']) && $_POST['action'] == 'deleteVariation') {
+    if (empty($_POST['delete_id'])) {
         $response = array(
             'success' => false,
             'message' => 'No variation id found!'
         );
-    }else{
-        if(deleteVariation($pdo)){
+    } else {
+        if (deleteVariation($pdo)) {
             $response = array(
                 'success' => true,
                 'message' => 'Variation has been deleted.'
             );
-        }else{
+        } else {
             $response = array(
                 'success' => false,
                 'message' => 'Failed to delete Variation!.'
@@ -263,20 +254,19 @@ if(!empty($_POST['action']) && $_POST['action'] == 'deleteVariation') {
     echo json_encode($response);
     exit();
 }
-if(!empty($_POST['action']) && $_POST['action'] == 'addCategory') {
-    if(empty($_POST['category_name'])){
+if (!empty($_POST['action']) && $_POST['action'] == 'addCategory') {
+    if (empty($_POST['category_name'])) {
         $response = array(
             'success' => false,
             'message' => 'Please enter a category name!'
         );
-    }
-    else{
-        if(addCategory($pdo)){
+    } else {
+        if (addCategory($pdo)) {
             $response = array(
                 'success' => true,
                 'message' => 'category has been Added.'
             );
-        }else{
+        } else {
             $response = array(
                 'success' => false,
                 'message' => 'Failed to add category!.'
@@ -288,20 +278,19 @@ if(!empty($_POST['action']) && $_POST['action'] == 'addCategory') {
     echo json_encode($response);
     exit();
 }
-if(!empty($_POST['action']) && $_POST['action'] == 'updateCategory') {
-    if(empty($_POST['category_name'])){
+if (!empty($_POST['action']) && $_POST['action'] == 'updateCategory') {
+    if (empty($_POST['category_name'])) {
         $response = array(
             'success' => false,
             'message' => 'Please enter a category name!'
         );
-    }
-    else{
-        if(updateCategory($pdo)){
+    } else {
+        if (updateCategory($pdo)) {
             $response = array(
                 'success' => true,
                 'message' => 'category has been Updated.'
             );
-        }else{
+        } else {
             $response = array(
                 'success' => false,
                 'message' => 'Failed to update category!.'
@@ -313,19 +302,19 @@ if(!empty($_POST['action']) && $_POST['action'] == 'updateCategory') {
     echo json_encode($response);
     exit();
 }
-if(!empty($_POST['action']) && $_POST['action'] == 'deleteCategory') {
-    if(empty($_POST['delete_id'])){
+if (!empty($_POST['action']) && $_POST['action'] == 'deleteCategory') {
+    if (empty($_POST['delete_id'])) {
         $response = array(
             'success' => false,
             'message' => 'No food id found!'
         );
-    }else{
-        if(deleteCategory($pdo)){
+    } else {
+        if (deleteCategory($pdo)) {
             $response = array(
                 'success' => true,
                 'message' => 'Category has been deleted.'
             );
-        }else{
+        } else {
             $response = array(
                 'success' => false,
                 'message' => 'Failed to delete Category!.'
@@ -337,4 +326,21 @@ if(!empty($_POST['action']) && $_POST['action'] == 'deleteCategory') {
     echo json_encode($response);
     exit();
 }
-?>
+
+if (!empty($_POST['action']) && $_POST['action'] == 'getMenuVariations') {
+    $menuId = $_POST['menu_id'];
+    // Fetch variations from the database
+    $query = $pdo->prepare("SELECT * 
+    FROM menu_variations a 
+    INNER JOIN variations b ON b.id = a.variation_id 
+    WHERE a.menu_id = :menu_id");
+    $query->execute(['menu_id' => $menuId]);
+    $variations = $query->fetchAll(PDO::FETCH_ASSOC);
+
+    if ($variations) {
+        echo json_encode(['success' => true, 'variations' => $variations]);
+    } else {
+        echo json_encode(['success' => false, 'message' => 'No variations found']);
+    }
+    exit();
+}

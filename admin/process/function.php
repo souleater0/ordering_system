@@ -1,13 +1,14 @@
-<?php 
-function loginProcess($pdo){
+<?php
+function loginProcess($pdo)
+{
     $username = $_POST['username'];
     $password = $_POST['password'];
 
     $stmt = $pdo->prepare("SELECT * FROM users WHERE username= ?");
-    $stmt ->execute([$username]);
-    $user = $stmt ->fetch();
+    $stmt->execute([$username]);
+    $user = $stmt->fetch();
 
-    if($user && password_verify($password, $user["password"])){
+    if ($user && password_verify($password, $user["password"])) {
         //login success
         // session_start();
         $_SESSION["user_id"] = $user["id"];
@@ -15,53 +16,72 @@ function loginProcess($pdo){
         $_SESSION['logged_in'] = true;
         $_SESSION['user_role'] = $user["role_id"];
         return true;
-    }else{
+    } else {
         return false;
     }
 }
-function getRole($pdo){
+function getRole($pdo)
+{
     try {
         $query = "SELECT * FROM roles";
         $stmt = $pdo->prepare($query);
 
-        $stmt ->execute();
-        $roles = $stmt -> fetchAll(PDO::FETCH_ASSOC);
+        $stmt->execute();
+        $roles = $stmt->fetchAll(PDO::FETCH_ASSOC);
         return $roles;
-    }catch(PDOException $e){
-                // Handle database connection error
+    } catch (PDOException $e) {
+        // Handle database connection error
         echo "Error: " . $e->getMessage();
         return array(); // Return an empty array if an error occurs
     }
 }
-function getCategory($pdo){
+function getCategory($pdo)
+{
     try {
         $query = "SELECT * FROM category";
         $stmt = $pdo->prepare($query);
 
-        $stmt ->execute();
-        $category = $stmt -> fetchAll(PDO::FETCH_ASSOC);
+        $stmt->execute();
+        $category = $stmt->fetchAll(PDO::FETCH_ASSOC);
         return $category;
-    }catch(PDOException $e){
-                // Handle database connection error
+    } catch (PDOException $e) {
+        // Handle database connection error
         echo "Error: " . $e->getMessage();
         return array(); // Return an empty array if an error occurs
     }
 }
-function getVariations($pdo){
+function getVariations($pdo)
+{
     try {
         $query = "SELECT * FROM variations";
         $stmt = $pdo->prepare($query);
 
-        $stmt ->execute();
-        $variations = $stmt -> fetchAll(PDO::FETCH_ASSOC);
+        $stmt->execute();
+        $variations = $stmt->fetchAll(PDO::FETCH_ASSOC);
         return $variations;
-    }catch(PDOException $e){
-                // Handle database connection error
+    } catch (PDOException $e) {
+        // Handle database connection error
         echo "Error: " . $e->getMessage();
         return array(); // Return an empty array if an error occurs
     }
 }
-function addUser($pdo){
+function getVariationsbyID($pdo)
+{
+    try {
+        $query = "SELECT * FROM variations";
+        $stmt = $pdo->prepare($query);
+
+        $stmt->execute();
+        $variations = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        return $variations;
+    } catch (PDOException $e) {
+        // Handle database connection error
+        echo "Error: " . $e->getMessage();
+        return array(); // Return an empty array if an error occurs
+    }
+}
+function addUser($pdo)
+{
     try {
         $user_display = $_POST['user_display'];
         $username = $_POST['username'];
@@ -81,26 +101,27 @@ function addUser($pdo){
             return false;
         }
 
-        $stmt = $pdo ->prepare("INSERT INTO users (username, password, display_name, role_id, isEnabled) VALUES (:username, :password, :display_name, :role_id , :isEnabled)");
+        $stmt = $pdo->prepare("INSERT INTO users (username, password, display_name, role_id, isEnabled) VALUES (:username, :password, :display_name, :role_id , :isEnabled)");
         $stmt->bindParam(':username', $username);
         $stmt->bindParam(':password', $password);
         $stmt->bindParam(':display_name', $user_display);
         $stmt->bindParam(':role_id', $user_role, PDO::PARAM_INT);
         $stmt->bindParam(':isEnabled', $loginEnabled, PDO::PARAM_INT);
-        if ($stmt->execute()){
+        if ($stmt->execute()) {
             // Users added successfully
             return true;
         } else {
             // Error occurred
             return false;
         }
-    }catch(PDOException $e){
+    } catch (PDOException $e) {
         // Handle database connection error
         echo "Error: " . $e->getMessage();
         return array(); // Return an empty array if an error occurs
     }
 }
-function updateUser($pdo){
+function updateUser($pdo)
+{
     try {
         $user_display = $_POST['user_display'];
         $username = $_POST['username'];
@@ -128,16 +149,17 @@ function updateUser($pdo){
 
         if ($stmt->execute()) {
             return true;
-        }else{
+        } else {
             return false;
         }
-    }catch(PDOException $e){
+    } catch (PDOException $e) {
         // Handle database connection error
         echo "Error: " . $e->getMessage();
         return array(); // Return an empty array if an error occurs
     }
 }
-function updateUserPassword($pdo){
+function updateUserPassword($pdo)
+{
     try {
         $update_ID = $_POST['update_id'];
         $password = password_hash($_POST['c_password'], PASSWORD_BCRYPT);
@@ -148,19 +170,28 @@ function updateUserPassword($pdo){
 
         if ($stmt->execute()) {
             return true;
-        }else{
+        } else {
             return false;
         }
-    }catch(PDOException $e){
+    } catch (PDOException $e) {
         // Handle database connection error
         echo "Error: " . $e->getMessage();
         return array(); // Return an empty array if an error occurs
     }
 }
-function addFood($pdo) {
+function addFood($pdo)
+{
     try {
         $food_name = $_POST['food_name'];
         $category_id = $_POST['category_id'];
+        $foodOption = $_POST['foodOption'] ? $_POST['foodOption'] : '';
+
+        //check if Food is Enabled
+        if ($foodOption === 'on') {
+            $foodOption = 1;
+        } else {
+            $foodOption = 0;
+        }
 
         // Check if food item already exists
         $stmt_check = $pdo->prepare("SELECT COUNT(*) FROM menu WHERE menu_name = :food_name");
@@ -214,9 +245,10 @@ function addFood($pdo) {
                 // File uploaded successfully
 
                 // Insert food details along with the image file name into the database
-                $stmt = $pdo->prepare("INSERT INTO menu (menu_name, category_id, menu_img) VALUES (:food_name, :category_id, :menu_img)");
+                $stmt = $pdo->prepare("INSERT INTO menu (menu_name, category_id, menu_img, isEnabled) VALUES (:food_name, :category_id, :menu_img, :foodOption)");
                 $stmt->bindParam(':food_name', $food_name);
                 $stmt->bindParam(':category_id', $category_id, PDO::PARAM_INT);
+                $stmt->bindParam(':foodOption', $foodOption, PDO::PARAM_INT);
                 $stmt->bindParam(':menu_img', $file_name);
 
                 if ($stmt->execute()) {
@@ -351,7 +383,8 @@ function addFood($pdo) {
 //         return array(); // Return an empty array if an error occurs
 //     }
 // }
-function updateFood($pdo){
+function updateFood($pdo)
+{
     try {
         $food_name = $_POST['food_name'];
         $food_price = $_POST['food_price'];
@@ -367,7 +400,7 @@ function updateFood($pdo){
             // Food already exists, return false
             return false;
         }
-        $stmt = $pdo ->prepare("UPDATE menu SET menu_name = :food_name, menu_price = :food_price, category_id = :category_id WHERE id = :food_id");
+        $stmt = $pdo->prepare("UPDATE menu SET menu_name = :food_name, menu_price = :food_price, category_id = :category_id WHERE id = :food_id");
         //bind parameters
         $stmt->bindParam(':food_name', $food_name);
         $stmt->bindParam(':food_price', $food_price);
@@ -380,13 +413,14 @@ function updateFood($pdo){
             // Error occurred
             return false;
         }
-    }catch(PDOException $e){
+    } catch (PDOException $e) {
         // Handle database connection error
         echo "Error: " . $e->getMessage();
         return array(); // Return an empty array if an error occurs
     }
 }
-function deleteFood($pdo){
+function deleteFood($pdo)
+{
     try {
         $delete_id = $_POST['delete_id'];
         $stmt = $pdo->prepare("DELETE FROM menu WHERE id = :delete_id");
@@ -398,14 +432,15 @@ function deleteFood($pdo){
             // Error occurred
             return false;
         }
-    }catch(PDOException $e){
+    } catch (PDOException $e) {
         // Handle database connection error
         echo "Error: " . $e->getMessage();
         return array(); // Return an empty array if an error occurs
     }
 }
 //add_variation
-function addVariation($pdo){
+function addVariation($pdo)
+{
     try {
         $variation_name = $_POST['variation_name'];
         // Check if category with the same name already exists
@@ -417,7 +452,7 @@ function addVariation($pdo){
             // variations already exists, return false
             return false;
         }
-        $stmt = $pdo ->prepare("INSERT INTO variations (variation_name) VALUES (:variation_name)");
+        $stmt = $pdo->prepare("INSERT INTO variations (variation_name) VALUES (:variation_name)");
         //bind parameters
         $stmt->bindParam(':variation_name', $variation_name);
         if ($stmt->execute()) {
@@ -427,13 +462,14 @@ function addVariation($pdo){
             // Error occurred
             return false;
         }
-    }catch(PDOException $e){
+    } catch (PDOException $e) {
         // Handle database connection error
         echo "Error: " . $e->getMessage();
         return array(); // Return an empty array if an error occurs
     }
 }
-function updateVariation($pdo){
+function updateVariation($pdo)
+{
     try {
         $variation_name = $_POST['variation_name'];
         $update_ID = $_POST['update_id'];
@@ -458,13 +494,14 @@ function updateVariation($pdo){
             // Error occurred
             return false;
         }
-    }catch(PDOException $e){
+    } catch (PDOException $e) {
         // Handle database connection error
         echo "Error: " . $e->getMessage();
         return array(); // Return an empty array if an error occurs
     }
 }
-function deleteVariation($pdo){
+function deleteVariation($pdo)
+{
     try {
         $delete_id = $_POST['delete_id'];
         $stmt = $pdo->prepare("DELETE FROM variations WHERE id = :delete_id");
@@ -476,14 +513,15 @@ function deleteVariation($pdo){
             // Error occurred
             return false;
         }
-    }catch(PDOException $e){
+    } catch (PDOException $e) {
         // Handle database connection error
         echo "Error: " . $e->getMessage();
         return array(); // Return an empty array if an error occurs
     }
 }
 //add_category
-function addCategory($pdo){
+function addCategory($pdo)
+{
     try {
         $category_name = $_POST['category_name'];
         // Check if category with the same name already exists
@@ -497,22 +535,23 @@ function addCategory($pdo){
             return false;
         }
 
-        $stmt = $pdo ->prepare("INSERT INTO category (category_name) VALUES (:category_name)");
+        $stmt = $pdo->prepare("INSERT INTO category (category_name) VALUES (:category_name)");
         $stmt->bindParam(':category_name', $category_name);
-        if ($stmt->execute()){
+        if ($stmt->execute()) {
             // category added successfully
             return true;
         } else {
             // Error occurred
             return false;
         }
-    }catch(PDOException $e){
+    } catch (PDOException $e) {
         // Handle database connection error
         echo "Error: " . $e->getMessage();
         return array(); // Return an empty array if an error occurs
     }
 }
-function updateCategory($pdo){
+function updateCategory($pdo)
+{
     try {
         $category_name = $_POST['category_name'];
         $update_ID = $_POST['update_id'];
@@ -534,16 +573,17 @@ function updateCategory($pdo){
 
         if ($stmt->execute()) {
             return true;
-        }else{
+        } else {
             return false;
         }
-    }catch(PDOException $e){
+    } catch (PDOException $e) {
         // Handle database connection error
         echo "Error: " . $e->getMessage();
         return array(); // Return an empty array if an error occurs
     }
 }
-function deleteCategory($pdo){
+function deleteCategory($pdo)
+{
     try {
         $delete_id = $_POST['delete_id'];
         $stmt = $pdo->prepare("DELETE FROM category WHERE category_id = :delete_id");
@@ -555,10 +595,9 @@ function deleteCategory($pdo){
             // Error occurred
             return false;
         }
-    }catch(PDOException $e){
+    } catch (PDOException $e) {
         // Handle database connection error
         echo "Error: " . $e->getMessage();
         return array(); // Return an empty array if an error occurs
     }
 }
-?>

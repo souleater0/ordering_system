@@ -3,21 +3,28 @@ $categorys = getCategory($pdo);
 ?>
 <style>
     .list-group-scrollable {
-        
+
         padding-bottom: 10px;
         overflow-x: auto;
-        white-space: nowrap; /* Prevent list items from wrapping */
+        white-space: nowrap;
+        /* Prevent list items from wrapping */
     }
+
     .list-group-scrollable ul.list-group {
-        display: inline-flex; /* Ensure the list items are in a row */
-        padding-left: 0; /* Remove default padding */
-        margin-bottom: 0; /* Remove default margin */
+        display: inline-flex;
+        /* Ensure the list items are in a row */
+        padding-left: 0;
+        /* Remove default padding */
+        margin-bottom: 0;
+        /* Remove default margin */
     }
-    .list-group-item+.list-group-item{
+
+    .list-group-item+.list-group-item {
         border-top-left-radius: inherit;
         border-top-right-radius: inherit;
         border-top-width: 1px;
     }
+
     /* .list-group-scrollable ul.list-group .list-group-item {
         margin-right: 10px; /* Adjust spacing between list items 
     }*/
@@ -55,11 +62,11 @@ $categorys = getCategory($pdo);
 </div>
 <!-- Modal Item -->
 <div class="modal fade" id="itemModal" tabindex="-1">
-  <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
-    <div class="modal-content">
-      <!-- Dynamic content will be inserted here -->
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-content">
+            <!-- Dynamic content will be inserted here -->
+        </div>
     </div>
-  </div>
 </div>
 
 <!-- Modal Cart -->
@@ -85,32 +92,34 @@ $categorys = getCategory($pdo);
 
 <script>
     $(document).ready(function() {
-        $('#orderNow').click(function () {  
+        var cartItems = [];
+        $('#orderNow').click(function() {
             console.log(cartItems);
         });
+
         function updateViewListButton() {
             var itemCount = cartItems.length;
             $('#viewListButton').text(`View List | ${itemCount}`);
         }
-    $('#menuItems').on('click', '.card', function() {
-        var menuID = $(this).attr('menu-id');
-        console.log('Menu ID:', menuID); // Log menu ID to confirm it's correct
+        $('#menuItems').on('click', '.card', function() {
+            var menuID = $(this).attr('menu-id');
+            console.log('Menu ID:', menuID); // Log menu ID to confirm it's correct
 
-        $.ajax({
-            url: "process/user_action.php",
-            method: "POST",
-            data: {
-                action: "getFoodDetailsbyID",
-                menu_id: menuID
-            },
-            dataType: "json",
-            success: function(response) {
-                if (response.success) {
-                    var menuItem = response.menubyID[0];
+            $.ajax({
+                url: "process/user_action.php",
+                method: "POST",
+                data: {
+                    action: "getFoodDetailsbyID",
+                    menu_id: menuID
+                },
+                dataType: "json",
+                success: function(response) {
+                    if (response.success) {
+                        var menuItem = response.menubyID[0];
 
-                    // console.log(menuItem.menu_name);
-                    // Create the modal content dynamically
-                    var modalContent = `
+                        // console.log(menuItem.menu_name);
+                        // Create the modal content dynamically
+                        var modalContent = `
                         <div class="modal-header">
                             
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
@@ -139,76 +148,77 @@ $categorys = getCategory($pdo);
                             <button type="button" class="btn btn-danger btn-sm btn-add-to-cart" data-menu-id="${menuItem.id}">Add to Cart</button>
                         </div>`;
 
-                    // Insert the modal content into the modal
-                    $('#itemModal .modal-content').html(modalContent);
-                    $('input[name="size"]:first').prop('checked', true);
-                    // Show the modal
-                    $('#itemModal').modal('show');
-                                // Quantity increment and decrement logic
-                    var quantityInput = $('#quantity');
+                        // Insert the modal content into the modal
+                        $('#itemModal .modal-content').html(modalContent);
+                        $('input[name="size"]:first').prop('checked', true);
+                        // Show the modal
+                        $('#itemModal').modal('show');
+                        // Quantity increment and decrement logic
+                        var quantityInput = $('#quantity');
 
-                    $('#btn-plus').click(function() {
-                        var currentValue = parseInt(quantityInput.val());
-                        quantityInput.val(currentValue + 1);
-                    });
+                        $('#btn-plus').click(function() {
+                            var currentValue = parseInt(quantityInput.val());
+                            quantityInput.val(currentValue + 1);
+                        });
 
-                    $('#btn-minus').click(function() {
-                        var currentValue = parseInt(quantityInput.val());
-                        if (currentValue > 1) {
-                            quantityInput.val(currentValue - 1);
-                        }
-                    });
-                    $('.btn-add-to-cart').click(function() {
-                    var menuID = $(this).attr('data-menu-id');
-                    var sizeOptionName = $('input[name="size"]:checked').siblings('label').text().trim();
-                    var sizeOption = $('.size-options').find('input[name="size"]:checked').val();
-                    var quantity = parseInt($('#quantity').val());
-                    
-                    // Prepare data to send to server
-                    var cartItem = {
-                        menu_id: menuID,
-                        menu_name: menuItem.menu_name+" "+sizeOptionName,
-                        variation_id: sizeOption,
-                        quantity: quantity,
-                        price: menuItem.variations[sizeOption-1].price
-                    };
-                    addToCart(cartItem);
-                    // console.log('Adding to cart:', cartItem);
+                        $('#btn-minus').click(function() {
+                            var currentValue = parseInt(quantityInput.val());
+                            if (currentValue > 1) {
+                                quantityInput.val(currentValue - 1);
+                            }
+                        });
+                        $('.btn-add-to-cart').click(function() {
+                            var menuID = $(this).attr('data-menu-id');
+                            var sizeOptionName = $('input[name="size"]:checked').siblings('label').text().trim();
+                            var sizeOption = $('.size-options').find('input[name="size"]:checked').val();
+                            var quantity = parseInt($('#quantity').val());
 
-                    // Send cartItem data to server via AJAX or handle as needed
-                    // Example AJAX call to save cartItem to server
-                        // $.ajax({
-                        //     url: 'process/add_to_cart.php',
-                        //     method: 'POST',
-                        //     data: {
-                        //         action: 'add_to_cart',
-                        //         cart_item: cartItem
-                        //     },
-                        //     dataType: 'json',
-                        //     success: function(response) {
-                        //         if (response.success) {
-                        //             // Optionally, update UI to reflect item added to cart
-                        //             console.log('Item added to cart successfully.');
-                        //             // Close the modal after adding to cart
-                        //             $('#itemModal').modal('hide');
-                        //         } else {
-                        //             console.error('Failed to add item to cart:', response.message);
-                        //         }
-                        //     },
-                        //     error: function(jqXHR, textStatus, errorThrown) {
-                        //         console.error('AJAX Error:', textStatus, errorThrown);
-                        //     }
-                        // });
-                    });
-                } else {
-                    console.error('Failed to load menu item details:', response.message);
+                            // Prepare data to send to server
+                            var cartItem = {
+                                menu_id: menuID,
+                                menu_name: menuItem.menu_name + " " + sizeOptionName,
+                                variation_id: sizeOption,
+                                quantity: quantity,
+                                price: menuItem.variations[sizeOption - 1].price
+                            };
+                            //console.log(cartItem);
+                            addToCart(cartItem);
+                            // console.log('Adding to cart:', cartItem);
+
+                            // Send cartItem data to server via AJAX or handle as needed
+                            // Example AJAX call to save cartItem to server
+                            // $.ajax({
+                            //     url: 'process/add_to_cart.php',
+                            //     method: 'POST',
+                            //     data: {
+                            //         action: 'add_to_cart',
+                            //         cart_item: cartItem
+                            //     },
+                            //     dataType: 'json',
+                            //     success: function(response) {
+                            //         if (response.success) {
+                            //             // Optionally, update UI to reflect item added to cart
+                            //             console.log('Item added to cart successfully.');
+                            //             // Close the modal after adding to cart
+                            //             $('#itemModal').modal('hide');
+                            //         } else {
+                            //             console.error('Failed to add item to cart:', response.message);
+                            //         }
+                            //     },
+                            //     error: function(jqXHR, textStatus, errorThrown) {
+                            //         console.error('AJAX Error:', textStatus, errorThrown);
+                            //     }
+                            // });
+                        });
+                    } else {
+                        console.error('Failed to load menu item details:', response.message);
+                    }
+                },
+                error: function(jqXHR, textStatus, errorThrown) {
+                    console.error('AJAX Error:', textStatus, errorThrown);
                 }
-            },
-            error: function(jqXHR, textStatus, errorThrown) {
-                console.error('AJAX Error:', textStatus, errorThrown);
-            }
+            });
         });
-    });
 
         // Function to generate size options HTML
         function generateSizeOptionsHtml(variations) {
@@ -240,7 +250,7 @@ $categorys = getCategory($pdo);
 
             // Add each item in the cart to the modal
             var totalPrice = 0;
-            cartItems.forEach(function(item) {
+            cartItems.forEach(function(item, index) {
                 // Increment quantity if the item already exists in the cart
                 // if (item.id in itemQuantities) {
                 //     itemQuantities[item.id]++;
@@ -256,9 +266,9 @@ $categorys = getCategory($pdo);
                     <div class="col-auto">${item.price}</div>
                     <div class="col-auto">${item.quantity}</div>
                     <div class="col">
-                        <button type="button" class="btn btn-success btn-sm increment-item" data-id="${item.id}">+</button>
-                        <button type="button" class="btn btn-danger btn-sm decrement-item" data-id="${item.id}">-</button>
-                        <button type="button" class="btn btn-danger btn-sm remove-item" data-id="${item.id}"><i class='fa-solid fa-trash'></i></button>
+                        <button type="button" class="btn btn-success btn-sm increment-item" data-index="${index}">+</button>
+                        <button type="button" class="btn btn-danger btn-sm decrement-item" data-index="${index}">-</button>
+                        <button type="button" class="btn btn-danger btn-sm remove-item" data-index="${index}"><i class='fa-solid fa-trash'></i></button>
                     </div>
                 </div>`;
                 $('#cartItemsList').append(itemHtml);
@@ -332,10 +342,10 @@ $categorys = getCategory($pdo);
                 dataType: "json",
                 success: function(response) {
                     if (response.success == true) {
-                        
+
                         $('#menuItems').empty();
                         response.menuList.forEach(function(item) {
-                                var menuItemHtml = `
+                            var menuItemHtml = `
                                 <div class="col-lg-3">
                                     <div class="card" style=" background: radial-gradient(60% 60% at 50.25% 40%, #FF7979 0%, #F20000 100%);" menu-id="${item.id}">
                                         <div class="card-body text-center">
@@ -347,14 +357,14 @@ $categorys = getCategory($pdo);
                                     </div>
                                 </div>
                             `;
-                                $('#menuItems').append(menuItemHtml);
-                            });
+                            $('#menuItems').append(menuItemHtml);
+                        });
                         // LoadTable();
                         // $('#categoryModal').modal('hide');
                         // toastr.success(response.message);
-                    }else{
+                    } else {
                         $('#menuItems').empty();
-                        
+
                         $('#menuItems').html('<p>No menu items available.</p>')
                     }
                 }
@@ -371,40 +381,34 @@ $categorys = getCategory($pdo);
             loadMenuItems(categoryID);
         });
 
-        var cartItems = [];
-
         $('#viewListButton').click(function() {
             openCartModal();
         });
+        // Event handler for incrementing item quantity in cart modal
         $('#cartItemsList').on('click', '.increment-item', function() {
-            var itemId = $(this).data('id');
-            var itemIndex = cartItems.findIndex(item => item.id === itemId);
-
-            if (itemIndex !== -1) {
-                cartItems[itemIndex].quantity++;
-                // updateModalContent(); // Update the modal content after incrementing
-            }
-            openCartModal();
+            var index = $(this).data('index');
+            //console.log("Index: " + index);
+            cartItems[index].quantity++;
+            openCartModal(); // Update cart modal
         });
 
-        // // Event handler for decrementing item quantity
+        // Event handler for decrementing item quantity in cart modal
         $('#cartItemsList').on('click', '.decrement-item', function() {
-            var itemId = $(this).data('id');
-            var itemIndex = cartItems.findIndex(item => item.id === itemId);
-            if (itemIndex !== -1 && cartItems[itemIndex].quantity > 1) {
-                cartItems[itemIndex].quantity--;
-                // updateModalContent(); // Update the modal content after decrementing
-                openCartModal();
+            var index = $(this).data('index');
+            //console.log("Index: " + index);
+            if (cartItems[index].quantity > 1) {
+                cartItems[index].quantity--;
             }
+            openCartModal(); // Update cart modal
         });
 
+        // Event handler for removing item from cart modal
         $('#cartItemsList').on('click', '.remove-item', function() {
             var index = $(this).data('index');
-            // Remove the item from the cartItems array
-            cartItems.splice(index, 1);
-            // Update the modal to reflect the changes
-            openCartModal();
-            updateViewListButton();
+            cartItems.splice(index, 1); // Remove item from cartItems array
+            openCartModal(); // Update cart modal
+            updateViewListButton(); // Update "View List" button
         });
+
     });
 </script>

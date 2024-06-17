@@ -1,6 +1,6 @@
 <?php
-  $categorys = getCategory($pdo);
-  $variations = getVariations($pdo);
+$categorys = getCategory($pdo);
+$variations = getVariations($pdo);
 ?>
 <div class="body-wrapper-inner">
     <div class="container-fluid">
@@ -27,40 +27,43 @@
 <div class="modal fade" id="foodModal" tabindex="-1" aria-labelledby="foodModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
-        <form id="foodForm" enctype="multipart/form-data">
-    <div class="modal-header">
-        <h1 class="modal-title fs-5" id="foodModalLabel">Menu Details</h1>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-    </div>
-    <div class="modal-body border">
-        <div class="row gy-2">
-            <div class="col-lg-12">
-                <label for="food_name" class="form-label">Food Name</label>
-                <input type="text" class="form-control" id="food_name" name="food_name" placeholder="Ex. Chicken Inasal">
-            </div>
-            <div class="col-lg-12">
-                <label for="category_id" class="form-label">Category</label>
-                <select class="selectpicker form-control" id="category_id" name="category_id" data-live-search="true">
-                <?php foreach ($categorys as $category):?>
-                    <option value="<?php echo $category['category_id'];?>"><?php echo $category['category_name'];?></option>
-                <?php endforeach;?>
-                </select>
-            </div>
-            <div class="col-lg-12">
-                <label for="foodImg" class="form-label">Food Image</label>
-                <input class="form-control" type="file" id="foodImg" name="foodImg" accept=".png,.jpg">
-            </div>
-            <div id="variations" class="col-lg-12">
-            </div>
-            
-        </div>
-    </div>
-    <div class="modal-footer">
-        <button type="button" id="addVariation" class="btn btn-secondary">Add Variation</button>
-        <button type="button" class="btn btn-primary" id="updateMenu" update-id="">UPDATE</button>
-        <button type="button" class="btn btn-primary" id="addMenu">ADD MENU</button>
-    </div>
-</form>
+            <form id="foodForm" enctype="multipart/form-data">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="foodModalLabel">Menu Details</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body border">
+                    <div class="row gy-2">
+                        <div class="col-lg-12">
+                            <label for="food_name" class="form-label">Food Name</label>
+                            <input type="text" class="form-control" id="food_name" name="food_name" placeholder="Ex. Chicken Inasal">
+                        </div>
+                        <div class="col-lg-12">
+                            <label for="category_id" class="form-label">Category</label>
+                            <select class="selectpicker form-control" id="category_id" name="category_id" data-live-search="true">
+                                <?php foreach ($categorys as $category) : ?>
+                                    <option value="<?php echo $category['category_id']; ?>"><?php echo $category['category_name']; ?></option>
+                                <?php endforeach; ?>
+                            </select>
+                        </div>
+                        <div class="col-lg-12">
+                            <label for="foodImg" class="form-label">Food Image</label>
+                            <input class="form-control" type="file" id="foodImg" name="foodImg" accept=".png,.jpg">
+                        </div>
+                        <div id="variations" class="col-lg-12">
+                        </div>
+                        <div class="form-check form-switch">
+                            <input class="form-check-input" type="checkbox" role="switch" id="foodOption" name="foodOption" checked>
+                            <label class="form-check-label" for="foodOption">Enable Food</label>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" id="addVariation" class="btn btn-secondary">Add Variation</button>
+                    <button type="button" class="btn btn-primary" id="updateMenu" update-id="">UPDATE</button>
+                    <button type="button" class="btn btn-primary" id="addMenu">ADD MENU</button>
+                </div>
+            </form>
 
 
         </div>
@@ -78,12 +81,12 @@
                 <div class="variation">
                     <label for="variation_name_${variationCount}" class="form-label">Variation Type</label>
                     <select class="selectpicker form-control" id="variation_name_${variationCount}" name="variations[${variationCount}][name]" data-live-search="true">
-                    <?php foreach ($variations as $variation):?>
-                        <option value="<?php echo $variation['variation_name'];?>"><?php echo $variation['variation_name'];?></option>
-                    <?php endforeach;?>
+                    <?php foreach ($variations as $variation) : ?>
+                        <option value="<?php echo $variation['variation_name']; ?>"><?php echo $variation['variation_name']; ?></option>
+                    <?php endforeach; ?>
                     </select>
                     <label for="variation_price_${variationCount}" class="form-label">Price</label>
-                    <input type="number" class="form-control" id="variation_price_${variationCount}" name="variations[${variationCount}][price]" min="1" step="0.01" placeholder="Ex. 60">
+                    <input type="number" class="form-control" id="variation_price_${variationCount}" name="variations[${variationCount}][price]" min="1" step="0.01">
                     <button type="button" class="btn btn-danger btn-sm btn-remove-variation">Remove</button>
                 </div>
             `);
@@ -97,15 +100,17 @@
         $('#foodForm').on('click', '.btn-remove-variation', function() {
             $(this).closest('.variation').remove();
         });
-        $('#food_price').on('input', function(){
-            $(this).val($(this).val().replace(/\D/g,''));
+        $('#food_price').on('input', function() {
+            $(this).val($(this).val().replace(/\D/g, ''));
         });
         // let table = new DataTable('#myTable');
         var table = $('#menuTable').DataTable({
             responsive: true,
             select: true,
             autoWidth: false,
-            order: [[3, "asc"]],
+            order: [
+                [3, "asc"]
+            ],
             ajax: {
                 url: 'process/table.php?table_type=food-menu',
                 dataSrc: 'data'
@@ -132,6 +137,29 @@
                     data: 'category_name',
                     title: 'Category',
                     className: 'text-dark text-start'
+                },
+                {
+                    "data": "isEnabled",
+                    "render": function(data, type, row, meta) {
+                        var statusText;
+                        var statusColor;
+                        switch (data) {
+                            case 0:
+                                statusText = "Disabled";
+                                statusColor = "#EC7063"; // Orange
+                                break;
+                            case 1:
+                                statusText = "Enabled";
+                                statusColor = "#58D68D"; // Green
+                                break;
+                            default:
+                                statusText = "Enabled";
+                                statusColor = "#58D68D"; // Red
+                                break;
+                        }
+                        return '<span class="badge text-white" style="background-color: ' + statusColor + ';">' + statusText + '</span>';
+                    },
+                    "title": "Status",
                 },
                 {
                     data: 'created_at',
@@ -176,6 +204,7 @@
             $('#food_price').val("");
             $('#category_id').val(1);
             $('#category_id').selectpicker('refresh');
+            $('#variations').empty();
             $('#addMenu').show();
             $('#updateMenu').hide();
         });
@@ -191,9 +220,12 @@
             var updateId = $(this).attr('update-id');
             saveMenu('update', updateId);
         });
+
         function saveMenu(action, updateId = '') {
             var formData = new FormData($('#foodForm')[0]);
-
+            formData.forEach((value, key) => {
+                console.log(key + ': ' + value);
+            });
             if (action === 'add') {
                 formData.append('action', 'addFood');
             } else if (action === 'update') {
@@ -223,77 +255,7 @@
                 }
             });
         }
-        // $('#addMenu').click(function() {
-        //     var form = $('#foodForm')[0];
-        //     var formData = new FormData(form);
-            
-        //     //var formData = $('#foodForm').serialize();
-        //     //alert(formData);
-        //     // $.ajax({
-        //     //     url: "process/admin_action.php",
-        //     //     method: "POST",
-        //     //     data: formData + "&action=addFood",
-        //     //     dataType: "json",
-        //     //     success: function(response) {
-        //     //         if (response.success == true) {
-        //     //             LoadTable();
-        //     //             $('#foodModal').modal('hide');
-        //     //             toastr.success(response.message);
-        //     //         } else {
-        //     //             toastr.error(response.message);
-        //     //         }
-        //     //     }
-        //     // });
-        // });
-        // $('#addMenu').click(function() {
-        //     var form = $('#foodForm')[0];
-        //     var formData = new FormData(form);
 
-        //     // Append additional data to FormData object
-        //     formData.append('action', 'addFood');
-
-        //     // Perform AJAX request
-        //     $.ajax({
-        //         url: "process/admin_action.php",
-        //         method: "POST",
-        //         data: formData,
-        //         processData: false,
-        //         contentType: false,
-        //         dataType: "json",
-        //         success: function(response) {
-        //             if (response.success) {
-        //                 LoadTable();
-        //                 $('#foodModal').modal('hide');
-        //                 toastr.success(response.message);
-        //             } else {
-        //                 toastr.error(response.message);
-        //             }
-        //         },
-        //         error: function(xhr, status, error) {
-        //             toastr.error('Error occurred while processing the request.');
-        //             console.error(xhr.responseText);
-        //         }
-        //     });
-        // });
-        // $('#updateMenu').click(function() {
-        //     var formData = $('#foodForm').serialize();
-        //     var update_id = $(this).attr("update-id");
-        //     $.ajax({
-        //         url: "process/admin_action.php",
-        //         method: "POST",
-        //         data: formData + "&action=updateFood&update_id=" + update_id,
-        //         dataType: "json",
-        //         success: function(response) {
-        //             if (response.success == true) {
-        //                 LoadTable();
-        //                 $('#foodModal').modal('hide');
-        //                 toastr.success(response.message);
-        //             } else {
-        //                 toastr.error(response.message);
-        //             }
-        //         }
-        //     });
-        // });
         $('#menuTable').on('click', 'button.btn-edit', function() {
             var data = table.row($(this).parents('tr')).data();
             // // Populate modal with data
@@ -305,6 +267,7 @@
             $('#updateMenu').show();
             $('#foodModal').modal('show');
             // var update_id = $(this).attr("update-id");
+            loadMenuVariations(data.id);
             $("#updateMenu").attr("update-id", data.id);
         });
         $('#menuTable').on('click', 'button.btn-delete', function() {
@@ -313,7 +276,7 @@
                 url: "process/admin_action.php",
                 method: "POST",
                 data: {
-                    action : "deleteFood",
+                    action: "deleteFood",
                     delete_id: data.id
                 },
                 dataType: "json",
@@ -329,5 +292,49 @@
             });
             // alert(data.id);
         });
+
+        function addVariationField(name = '', price = '') {
+            var variationCount = $('.variation').length;
+            $('#variations').append(`
+            <div class="variation">
+                <label for="variation_name_${variationCount}" class="form-label">Variation Type</label>
+                <select class="selectpicker form-control" id="variation_name_${variationCount}" name="variations[${variationCount}][name]" data-live-search="true">
+                <?php foreach ($variations as $variation) : ?>
+                    <option value="<?php echo $variation['variation_name']; ?>" ${name === '<?php echo $variation['variation_name']; ?>' ? 'selected' : ''}><?php echo $variation['variation_name']; ?></option>
+                <?php endforeach; ?>
+                </select>
+                <label for="variation_price_${variationCount}" class="form-label">Price</label>
+                <input type="number" class="form-control" id="variation_price_${variationCount}" name="variations[${variationCount}][price]" min="1" step="0.01" value="${price}">
+                <button type="button" class="btn btn-danger btn-sm btn-remove-variation">Remove</button>
+            </div>
+        `);
+            $('#variation_name_' + variationCount).selectpicker('refresh'); // Refresh to apply selectpicker styles
+        }
+
+        function loadMenuVariations(menuId) {
+            $.ajax({
+                url: 'process/admin_action.php',
+                method: 'POST',
+                data: {
+                    action: 'getMenuVariations',
+                    menu_id: menuId
+                },
+                dataType: 'json',
+                success: function(response) {
+                    if (response.success) {
+                        var variations = response.variations;
+                        variations.forEach(function(variation) {
+                            addVariationField(variation.name, variation.price);
+                        });
+                    } else {
+                        toastr.error('Failed to load menu variations.');
+                    }
+                },
+                error: function(xhr, status, error) {
+                    toastr.error('Error occurred while loading menu variations.');
+                    console.error(xhr.responseText);
+                }
+            });
+        }
     });
 </script>

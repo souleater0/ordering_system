@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jun 14, 2024 at 03:28 PM
+-- Generation Time: Jun 18, 2024 at 03:53 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.1.25
 
@@ -181,21 +181,22 @@ CREATE TABLE `menu` (
 --
 
 INSERT INTO `menu` (`id`, `menu_name`, `menu_description`, `menu_img`, `category_id`, `isEnabled`, `isArchive`, `created_at`, `updated_at`) VALUES
-(1, 'Isaw Baboy', NULL, 'default.png', 1, 1, 0, '2024-06-13 05:51:58', '2024-06-14 07:17:40'),
-(2, 'Grilled Tilapia', NULL, 'default.png', 2, 1, 0, '2024-06-13 05:52:24', '2024-06-14 07:17:40'),
-(3, 'Barbeque', NULL, 'default.png', 1, 1, 0, '2024-06-13 05:52:54', '2024-06-14 07:17:40'),
-(4, 'Isaw Manok', NULL, 'default.png', 1, 1, 0, '2024-06-13 05:54:54', '2024-06-14 07:17:40'),
-(5, 'Hotdog', NULL, 'default.png', 1, 1, 0, '2024-06-13 05:57:42', '2024-06-14 07:17:40'),
-(6, 'Bulaklak', NULL, 'default.png', 1, 1, 0, '2024-06-13 05:57:51', '2024-06-14 07:17:40'),
-(7, 'Tenga', NULL, 'default.png', 1, 1, 0, '2024-06-13 05:57:59', '2024-06-14 07:17:40'),
-(8, 'Tumbong', NULL, 'default.png', 1, 1, 0, '2024-06-13 05:58:07', '2024-06-14 07:17:40'),
-(9, 'Tokong', NULL, 'default.png', 1, 1, 0, '2024-06-13 05:58:17', '2024-06-14 07:17:40'),
-(10, 'Rice', NULL, 'default.png', 1, 1, 0, '2024-06-13 05:58:59', '2024-06-14 07:17:40'),
-(11, 'Grilled Bangus', NULL, 'default.png', 2, 1, 0, '2024-06-13 06:03:24', '2024-06-14 07:17:40'),
-(13, 'Chicharong Bulaklak', NULL, 'default.png', 2, 1, 0, '2024-06-13 06:06:32', '2024-06-14 07:17:40'),
-(14, 'Crispy Pata', NULL, 'default.png', 2, 1, 0, '2024-06-13 06:08:15', '2024-06-14 07:17:40'),
-(15, 'Grilled Pusit', NULL, 'default.png', 1, 1, 0, '2024-06-14 06:48:06', '2024-06-14 07:17:40'),
-(16, 'Fried Chicken', '1 Pc Fried Chicken with Gravy', 'food1.png', 1, 1, 0, '2024-06-14 07:05:41', '2024-06-14 11:36:27');
+(1, 'Isaw Baboy', NULL, 'default.png', 1, 0, 0, '2024-06-13 05:51:58', '2024-06-17 16:00:57'),
+(2, 'Grilled Tilapia', NULL, 'default.png', 2, 0, 0, '2024-06-13 05:52:24', '2024-06-17 16:00:57'),
+(3, 'Barbeque', NULL, 'default.png', 1, 0, 0, '2024-06-13 05:52:54', '2024-06-17 16:00:57'),
+(4, 'Isaw Manok', NULL, 'default.png', 1, 0, 0, '2024-06-13 05:54:54', '2024-06-17 16:00:57'),
+(5, 'Hotdog', NULL, 'default.png', 1, 0, 0, '2024-06-13 05:57:42', '2024-06-17 16:00:57'),
+(6, 'Bulaklak', NULL, 'default.png', 1, 0, 0, '2024-06-13 05:57:51', '2024-06-17 16:00:57'),
+(7, 'Tenga', NULL, 'default.png', 1, 0, 0, '2024-06-13 05:57:59', '2024-06-17 16:00:57'),
+(8, 'Tumbong', NULL, 'default.png', 1, 0, 0, '2024-06-13 05:58:07', '2024-06-17 16:00:57'),
+(9, 'Tokong', NULL, 'default.png', 1, 0, 0, '2024-06-13 05:58:17', '2024-06-17 16:00:57'),
+(10, 'Rice', NULL, 'default.png', 1, 0, 0, '2024-06-13 05:58:59', '2024-06-17 16:00:57'),
+(11, 'Grilled Bangus', NULL, 'default.png', 2, 0, 0, '2024-06-13 06:03:24', '2024-06-17 16:00:57'),
+(13, 'Chicharong Bulaklak', NULL, 'default.png', 2, 0, 0, '2024-06-13 06:06:32', '2024-06-17 16:00:57'),
+(14, 'Crispy Pata', NULL, 'default.png', 2, 0, 0, '2024-06-13 06:08:15', '2024-06-17 16:00:57'),
+(15, 'Grilled Pusit', NULL, 'default.png', 1, 1, 0, '2024-06-14 06:48:06', '2024-06-17 16:01:39'),
+(16, 'Fried Chicken', '1 Pc Fried Chicken with Gravy', 'food1.png', 1, 1, 0, '2024-06-14 07:05:41', '2024-06-17 16:01:37'),
+(18, 'Tosino', NULL, 'tosino.png', 1, 1, 0, '2024-06-17 16:12:15', NULL);
 
 -- --------------------------------------------------------
 
@@ -220,7 +221,8 @@ INSERT INTO `menu_variations` (`id`, `menu_id`, `variation_id`, `price`) VALUES
 (3, 15, 3, 199.00),
 (4, 16, 1, 99.00),
 (5, 16, 2, 159.00),
-(6, 16, 3, 189.00);
+(6, 16, 3, 189.00),
+(8, 18, 1, 60.00);
 
 -- --------------------------------------------------------
 
@@ -475,13 +477,13 @@ ALTER TABLE `customer_process`
 -- AUTO_INCREMENT for table `menu`
 --
 ALTER TABLE `menu`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
 
 --
 -- AUTO_INCREMENT for table `menu_variations`
 --
 ALTER TABLE `menu_variations`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- AUTO_INCREMENT for table `ordered_menu`

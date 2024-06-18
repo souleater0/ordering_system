@@ -39,7 +39,7 @@ if (isset($_SESSION['logged_in']) && $_SESSION['logged_in'] === true) {
                 require 'admin/view/user-management/users.php';
                 break;
             default:
-            require 'admin/view/dashboard/dashboard.php';
+                require 'admin/view/dashboard/dashboard.php';
         }
     }
     if (isset($_SESSION['user_role']) && $_SESSION['user_role'] === 2) {
@@ -59,15 +59,18 @@ if (isset($_SESSION['logged_in']) && $_SESSION['logged_in'] === true) {
                 require 'admin/view/menu-management/food-menu.php';
                 break;
                 // USER MANAGEMENT
-                case "user-management":
-                    require 'admin/view/user-management/users.php';
-                    break;
+            case "user-management":
+                require 'admin/view/user-management/users.php';
+                break;
             default:
-            require 'admin/view/no-access/404.php';
+                require 'admin/view/no-access/404.php';
         }
     }
-}else {
+} else {
     switch ($route) {
+        case "scan-table":
+            require 'user/view/qr-scanner/qrcode.php';
+            break;
         case "privacy-policy":
             require 'user/view/privacy-policy/privacy_policy.php';
             break;
@@ -81,6 +84,6 @@ if (isset($_SESSION['logged_in']) && $_SESSION['logged_in'] === true) {
             require 'user/view/eskina-order/eskina_order.php';
             break;
         default:
-        require 'user/view/privacy-policy/privacy_policy.php';
+            require 'user/view/privacy-policy/privacy_policy.php';
     }
 }

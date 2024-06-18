@@ -182,6 +182,7 @@ $categorys = getCategory($pdo);
                                 price: menuItem.variations[sizeOption - 1].price
                             };
                             //console.log(cartItem);
+                            $('#itemModal').modal('hide');
                             addToCart(cartItem);
                             // console.log('Adding to cart:', cartItem);
 
@@ -349,7 +350,7 @@ $categorys = getCategory($pdo);
                                 <div class="col-lg-3">
                                     <div class="card" style=" background: radial-gradient(60% 60% at 50.25% 40%, #FF7979 0%, #F20000 100%);" menu-id="${item.id}">
                                         <div class="card-body text-center">
-                                            <img src="../assets/images/menu/${item.menu_img}" class="img-fluid" alt="Bootstrap Image" style="width: 120px;">
+                                            <img src="../assets/images/menu/${item.menu_img}" class="img-fluid" alt="Bootstrap Image" style="height: 120px; width: auto;">
                                             <h5 class="text-center fs-8 text-white mt-2 mb-2">${item.menu_name}</h5>
                                             <h5 class="text-center text-white mt-2 mb-2" style="font-size: 16px;">₱ ${item.menu_price}</h5>
                                             <!-- <button class="btn btn-sm rounded-4 btn-light text-uppercase addtoList" menu-id="${item.id}">Add to List</button> -->

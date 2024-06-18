@@ -44,7 +44,7 @@ function getFoodMenubyID($pdo)
             FROM menu a
             LEFT JOIN menu_variations b ON a.id = b.menu_id
             LEFT JOIN category c ON a.category_id = c.category_id
-            WHERE a.category_id = :category_id
+            WHERE a.category_id = :category_id AND a.isEnabled = '1'
             GROUP BY a.id, a.menu_name, a.category_id, c.category_name, a.created_at, a.updated_at";
             $stmt = $pdo->prepare($query);
             $stmt->bindParam(':category_id', $category_id, PDO::PARAM_INT);
@@ -57,6 +57,7 @@ function getFoodMenubyID($pdo)
             FROM menu a
             LEFT JOIN menu_variations b ON a.id = b.menu_id
             LEFT JOIN category c ON a.category_id = c.category_id
+            WHERE a.isEnabled = '1'
             GROUP BY a.id, a.menu_name, a.category_id, c.category_name, a.created_at, a.updated_at";
             $stmt = $pdo->prepare($query);
         }
@@ -70,7 +71,8 @@ function getFoodMenubyID($pdo)
         return array(); // Return an empty array if an error occurs
     }
 }
-function getFoodDetailsbyID($pdo) {
+function getFoodDetailsbyID($pdo)
+{
     try {
         $menu_id = isset($_POST['menu_id']) ? $_POST['menu_id'] : null;
 
@@ -132,7 +134,8 @@ function getFoodDetailsbyID($pdo) {
     }
 }
 
-function getFoodMenubyMenuID($pdo){
+function getFoodMenubyMenuID($pdo)
+{
     try {
         $menu_id = isset($_POST['menu_id']) ? $_POST['menu_id'] : null;
         $variation_id = isset($_POST['variation_id']) ? $_POST['variation_id'] : null;

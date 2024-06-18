@@ -68,6 +68,7 @@ function getVariations($pdo)
 function getVariationsbyID($pdo)
 {
     try {
+
         $query = "SELECT * FROM variations";
         $stmt = $pdo->prepare($query);
 

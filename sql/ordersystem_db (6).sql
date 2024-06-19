@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jun 18, 2024 at 03:53 AM
+-- Generation Time: Jun 19, 2024 at 03:20 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.1.25
 
@@ -46,7 +46,8 @@ INSERT INTO `category` (`category_id`, `category_name`, `created_at`, `updated_a
 (5, 'Palayok Bundle', '2024-06-13 07:36:29', NULL),
 (6, 'Putok Batok Bundle', '2024-06-13 07:36:29', NULL),
 (7, 'Beverages', '2024-06-13 07:36:29', NULL),
-(8, 'Alcohol Beverages', '2024-06-13 07:36:29', NULL);
+(8, 'Alcohol Beverages', '2024-06-13 07:36:29', NULL),
+(9, 'Inihaw', '2024-06-18 09:15:44', NULL);
 
 -- --------------------------------------------------------
 
@@ -181,22 +182,20 @@ CREATE TABLE `menu` (
 --
 
 INSERT INTO `menu` (`id`, `menu_name`, `menu_description`, `menu_img`, `category_id`, `isEnabled`, `isArchive`, `created_at`, `updated_at`) VALUES
-(1, 'Isaw Baboy', NULL, 'default.png', 1, 0, 0, '2024-06-13 05:51:58', '2024-06-17 16:00:57'),
-(2, 'Grilled Tilapia', NULL, 'default.png', 2, 0, 0, '2024-06-13 05:52:24', '2024-06-17 16:00:57'),
-(3, 'Barbeque', NULL, 'default.png', 1, 0, 0, '2024-06-13 05:52:54', '2024-06-17 16:00:57'),
-(4, 'Isaw Manok', NULL, 'default.png', 1, 0, 0, '2024-06-13 05:54:54', '2024-06-17 16:00:57'),
-(5, 'Hotdog', NULL, 'default.png', 1, 0, 0, '2024-06-13 05:57:42', '2024-06-17 16:00:57'),
-(6, 'Bulaklak', NULL, 'default.png', 1, 0, 0, '2024-06-13 05:57:51', '2024-06-17 16:00:57'),
-(7, 'Tenga', NULL, 'default.png', 1, 0, 0, '2024-06-13 05:57:59', '2024-06-17 16:00:57'),
-(8, 'Tumbong', NULL, 'default.png', 1, 0, 0, '2024-06-13 05:58:07', '2024-06-17 16:00:57'),
-(9, 'Tokong', NULL, 'default.png', 1, 0, 0, '2024-06-13 05:58:17', '2024-06-17 16:00:57'),
-(10, 'Rice', NULL, 'default.png', 1, 0, 0, '2024-06-13 05:58:59', '2024-06-17 16:00:57'),
-(11, 'Grilled Bangus', NULL, 'default.png', 2, 0, 0, '2024-06-13 06:03:24', '2024-06-17 16:00:57'),
-(13, 'Chicharong Bulaklak', NULL, 'default.png', 2, 0, 0, '2024-06-13 06:06:32', '2024-06-17 16:00:57'),
-(14, 'Crispy Pata', NULL, 'default.png', 2, 0, 0, '2024-06-13 06:08:15', '2024-06-17 16:00:57'),
-(15, 'Grilled Pusit', NULL, 'default.png', 1, 1, 0, '2024-06-14 06:48:06', '2024-06-17 16:01:39'),
-(16, 'Fried Chicken', '1 Pc Fried Chicken with Gravy', 'food1.png', 1, 1, 0, '2024-06-14 07:05:41', '2024-06-17 16:01:37'),
-(18, 'Tosino', NULL, 'tosino.png', 1, 1, 0, '2024-06-17 16:12:15', NULL);
+(1, 'Isaw Baboy', NULL, 'default.png', 9, 1, 0, '2024-06-13 05:51:58', '2024-06-18 09:17:33'),
+(2, 'Grilled Tilapia', NULL, 'default.png', 2, 1, 0, '2024-06-13 05:52:24', '2024-06-18 08:45:28'),
+(3, 'Barbeque', NULL, 'default.png', 1, 0, 0, '2024-06-13 05:52:54', '2024-06-18 09:13:30'),
+(4, 'Isaw Manok', NULL, 'default.png', 1, 1, 0, '2024-06-13 05:54:54', '2024-06-18 08:45:28'),
+(5, 'Hotdog', NULL, 'default.png', 1, 1, 0, '2024-06-13 05:57:42', '2024-06-18 08:45:28'),
+(6, 'Bulaklak', NULL, 'default.png', 1, 1, 0, '2024-06-13 05:57:51', '2024-06-18 08:45:28'),
+(7, 'Tenga', NULL, 'default.png', 1, 1, 0, '2024-06-13 05:57:59', '2024-06-18 08:45:28'),
+(8, 'Tumbong', NULL, 'default.png', 1, 1, 0, '2024-06-13 05:58:07', '2024-06-18 08:45:28'),
+(9, 'Tokong', NULL, 'default.png', 1, 1, 0, '2024-06-13 05:58:17', '2024-06-18 08:45:28'),
+(10, 'Rice', NULL, 'default.png', 1, 1, 0, '2024-06-13 05:58:59', '2024-06-18 08:45:28'),
+(11, 'Grilled Bangus', NULL, 'default.png', 2, 1, 0, '2024-06-13 06:03:24', '2024-06-18 08:45:28'),
+(13, 'Chicharong Bulaklak', NULL, 'default.png', 2, 1, 0, '2024-06-13 06:06:32', '2024-06-18 08:45:28'),
+(14, 'Crispy Pata', NULL, 'default.png', 2, 1, 0, '2024-06-13 06:08:15', '2024-06-18 08:45:28'),
+(16, 'Fried Chicken', '1 Pc Fried Chicken with Gravy', 'food1.png', 1, 1, 0, '2024-06-14 07:05:41', '2024-06-18 08:00:56');
 
 -- --------------------------------------------------------
 
@@ -216,13 +215,9 @@ CREATE TABLE `menu_variations` (
 --
 
 INSERT INTO `menu_variations` (`id`, `menu_id`, `variation_id`, `price`) VALUES
-(1, 15, 1, 99.00),
-(2, 15, 2, 149.00),
-(3, 15, 3, 199.00),
-(4, 16, 1, 99.00),
-(5, 16, 2, 159.00),
-(6, 16, 3, 189.00),
-(8, 18, 1, 60.00);
+(1, 16, 1, 55.00),
+(2, 16, 2, 99.00),
+(3, 1, 1, 99.00);
 
 -- --------------------------------------------------------
 
@@ -341,7 +336,7 @@ INSERT INTO `variations` (`id`, `variation_name`, `created_at`, `updated_at`) VA
 (1, 'Large', '2024-06-14 06:26:44', '2024-06-14 06:32:37'),
 (2, 'Extra Large', '2024-06-14 06:32:43', '2024-06-14 06:33:23'),
 (3, '2X Extra Large', '2024-06-14 06:32:50', '2024-06-14 06:34:26'),
-(4, 'Regular', '2024-06-14 07:38:21', NULL);
+(4, 'Regular', '2024-06-14 07:38:21', '2024-06-14 07:38:21');
 
 --
 -- Indexes for dumped tables
@@ -441,7 +436,7 @@ ALTER TABLE `variations`
 -- AUTO_INCREMENT for table `category`
 --
 ALTER TABLE `category`
-  MODIFY `category_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `category_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
 -- AUTO_INCREMENT for table `customer_canceled`
@@ -477,13 +472,13 @@ ALTER TABLE `customer_process`
 -- AUTO_INCREMENT for table `menu`
 --
 ALTER TABLE `menu`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
 
 --
 -- AUTO_INCREMENT for table `menu_variations`
 --
 ALTER TABLE `menu_variations`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `ordered_menu`

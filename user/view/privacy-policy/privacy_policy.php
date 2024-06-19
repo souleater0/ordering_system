@@ -26,19 +26,19 @@
 </div>
 <script>
     $(document).ready(function () {
-        function getUrlParameter(name) {
-            name = name.replace(/[[]/, '\\[').replace(/[\]]/, '\\]');
-            var regex = new RegExp('[\\?&]' + name + '=([^&#]*)');
-            var results = regex.exec(location.search);
-            return results === null ? '' : decodeURIComponent(results[1].replace(/\+/g, ' '));
-        }
-        var routeParam = getUrlParameter('table');
-        localStorage.setItem('eskinatable', routeParam);
+        // function getUrlParameter(name) {
+        //     name = name.replace(/[[]/, '\\[').replace(/[\]]/, '\\]');
+        //     var regex = new RegExp('[\\?&]' + name + '=([^&#]*)');
+        //     var results = regex.exec(location.search);
+        //     return results === null ? '' : decodeURIComponent(results[1].replace(/\+/g, ' '));
+        // }
+        // var routeParam = getUrlParameter('table');
+        // localStorage.setItem('eskinatable', routeParam);
         $('#agree-checkbox').change(function () {
             $('#proceedBtn').prop('disabled', !this.checked);
         });
         $('#proceedBtn').click(function() {
-            window.location.href = "index.php?route=personal-form";
+            window.location.href = "index.php?route=scan-table";
         });
     });
 </script>

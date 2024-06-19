@@ -41,35 +41,76 @@
 <!-- <script src="https://unpkg.com/html5-qrcode/minified/html5-qrcode.min.js"></script> -->
 <script src="../assets/libs/qrcode/html5qrcode.min.js"></script>
 <style>
-    #reader {
-        width: 100%;
-        max-width: 600px;
-        margin: auto;
-    }
-</style>
-<h1>QR Code Scanner</h1>
-<div id="reader"></div>
-<script>
-    function onScanSuccess(decodedText, decodedResult) {
-        console.log(`Code scanned = ${decodedText}`, decodedResult);
+        #webcam-container {
+            text-align: center;
+            margin: 20px;
+        }
+        #reader {
+            width: 300px;
+            height: 300px;
+            border: 1px solid black;
+            display: inline-block;
+        }
+        #open-camera {
+            margin-top: 20px;
+            padding: 10px 20px;
+            font-size: 16px;
+        }
+    </style>
+     <div id="webcam-container">
+        <h2>Scan Table QR</h2>
+        <div id="reader"></div>
+        <br>
+        <button id="open-camera">Open Camera</button>
+    </div>
 
-        const tableNumber = decodedText;
+    <!-- Include the HTML5 QR Code library -->
+    <script src="../assets/libs/qrcode/html5qrcode.min.js"></script>
+    <script>
+        const openCameraButton = document.getElementById('open-camera');
+        const reader = new Html5Qrcode("reader");
 
-        localStorage.setItem('tableNumber', tableNumber);
+        openCameraButton.addEventListener('click', () => {
+            console.log('Open Camera button clicked');
+            Html5Qrcode.getCameras().then(cameras => {
+                if (cameras && cameras.length) {
+                    console.log('Cameras found: ', cameras);
 
-        alert(`Table number ${tableNumber} set in local storage`);
+                    // Attempt to find the rear camera
+                    const rearCamera = cameras.find(camera => 
+                        camera.label.toLowerCase().includes('back') ||
+                        camera.label.toLowerCase().includes('rear')
+                    );
 
-        html5QrcodeScanner.clear(); // Stop scanning after successful scan
-    }
+                    const cameraId = rearCamera ? rearCamera.id : cameras[0].id;
 
-    function onScanError(errorMessage) {
-        console.warn(`QR error = ${errorMessage}`);
-    }
-
-    const html5QrcodeScanner = new Html5QrcodeScanner(
-        "reader", {
-            fps: 10,
-            qrbox: 250
-        }, /* verbose= */ false);
-    html5QrcodeScanner.render(onScanSuccess, onScanError);
-</script>
+                    reader.start(
+                        cameraId,
+                        {
+                            fps: 10, // Optional, frames per second for QR code scanning
+                            qrbox: { width: 300, height: 300 }, // Size of the scanning box
+                            aspectRatio: 1.0 // Ensures the box is square
+                        },
+                        qrCodeMessage => {
+                            // console.log(`QR Code detected: ${qrCodeMessage}`);
+                            // alert(`QR Code detected: ${qrCodeMessage}`);
+                            // Store the QR code result (table number) in local storage
+                            localStorage.setItem('tableNumber', qrCodeMessage);
+                            window.location.href = "index.php?route=personal-form";
+                        },
+                        errorMessage => {
+                            console.error(`QR Code scanning error: ${errorMessage}`);
+                        }
+                    ).catch(err => {
+                        console.error(`Error starting the QR code scanner: ${err}`);
+                    });
+                } else {
+                    console.error('No cameras found');
+                    alert('No cameras found');
+                }
+            }).catch(err => {
+                console.error(`Error getting camera list: ${err}`);
+                alert(`Error getting camera list: ${err}`);
+            });
+        });
+    </script>

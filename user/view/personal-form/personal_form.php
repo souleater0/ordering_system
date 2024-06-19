@@ -54,6 +54,14 @@
             // Handle the case when no data is found in local storage
             console.log("No form data found in local storage.");
         }
+        const tableNumber = localStorage.getItem('tableNumber');
+        if (tableNumber) {
+            alert(`Stored table number: ${tableNumber}`);
+            console.log(`Stored table number: ${tableNumber}`);
+            // Use the table number as needed
+        } else {
+            console.log('No table number found in local storage');
+        }
     });
     
 </script>

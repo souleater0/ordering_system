@@ -147,7 +147,7 @@ $categorys = getCategory($pdo);
                         <div class="modal-footer">
                             <button type="button" class="btn btn-danger btn-sm btn-add-to-cart" data-menu-id="${menuItem.id}">Add to Cart</button>
                         </div>`;
-
+console.log(menuItem.variations);
                         // Insert the modal content into the modal
                         $('#itemModal .modal-content').html(modalContent);
                         $('input[name="size"]:first').prop('checked', true);
@@ -179,9 +179,9 @@ $categorys = getCategory($pdo);
                                 menu_name: menuItem.menu_name + " " + sizeOptionName,
                                 variation_id: sizeOption,
                                 quantity: quantity,
-                                price: menuItem.variations[sizeOption - 1].price
+                                price: menuItem.variations[sizeOption-1].price
                             };
-                            //console.log(cartItem);
+                            //console.log(menuItem);
                             $('#itemModal').modal('hide');
                             addToCart(cartItem);
                             // console.log('Adding to cart:', cartItem);

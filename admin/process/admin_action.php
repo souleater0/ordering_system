@@ -135,6 +135,30 @@ if (!empty($_POST['action']) && $_POST['action'] == 'updateFood') {
             'success' => false,
             'message' => 'Please enter a food name!'
         );
+    } else {
+        if (updateFood($pdo)) {
+            $response = array(
+                'success' => true,
+                'message' => 'Food has been Updated.'
+            );
+        } else {
+            $response = array(
+                'success' => false,
+                'message' => 'Failed to update Food!.'
+            );
+        }
+    }
+    // Send response
+    header('Content-Type: application/json');
+    echo json_encode($response);
+    exit();
+}
+if (!empty($_POST['action']) && $_POST['action'] == 'updateFood') {
+    if (empty($_POST['food_name'])) {
+        $response = array(
+            'success' => false,
+            'message' => 'Please enter a food name!'
+        );
     } else if (empty($_POST['food_price'])) {
         $response = array(
             'success' => false,

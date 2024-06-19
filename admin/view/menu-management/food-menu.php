@@ -263,6 +263,7 @@ $variations = getVariations($pdo);
             $('#food_price').val(data.menu_price);
             $('#category_id').val(data.category_id);
             $('#category_id').selectpicker('refresh');
+            $('#variations').empty();
             $('#addMenu').hide();
             $('#updateMenu').show();
             $('#foodModal').modal('show');
@@ -300,7 +301,7 @@ $variations = getVariations($pdo);
                 <label for="variation_name_${variationCount}" class="form-label">Variation Type</label>
                 <select class="selectpicker form-control" id="variation_name_${variationCount}" name="variations[${variationCount}][name]" data-live-search="true">
                 <?php foreach ($variations as $variation) : ?>
-                    <option value="<?php echo $variation['variation_name']; ?>" ${name === '<?php echo $variation['variation_name']; ?>' ? 'selected' : ''}><?php echo $variation['variation_name']; ?></option>
+                    <option value="<?php echo $variation['variation_name']; ?>" ${name === '<?php echo $variation['variation_name']; ?>' ? 'selected' : name}><?php echo $variation['variation_name']; ?></option>
                 <?php endforeach; ?>
                 </select>
                 <label for="variation_price_${variationCount}" class="form-label">Price</label>
@@ -324,7 +325,7 @@ $variations = getVariations($pdo);
                     if (response.success) {
                         var variations = response.variations;
                         variations.forEach(function(variation) {
-                            addVariationField(variation.name, variation.price);
+                            addVariationField(variation.variation_name, variation.price);
                         });
                     } else {
                         toastr.error('Failed to load menu variations.');

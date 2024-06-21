@@ -831,3 +831,8 @@ function deleteCategory($pdo)
         return array(); // Return an empty array if an error occurs
     }
 }
+function processOrder($pdo)
+{}
+
+function cancelOrder($pdo)
+{}

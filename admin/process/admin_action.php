@@ -368,3 +368,51 @@ if (!empty($_POST['action']) && $_POST['action'] == 'getMenuVariations') {
     }
     exit();
 }
+if (!empty($_POST['action']) && $_POST['action'] == 'toProcessOrder') {
+    if (empty($_POST['order_id'])) {
+        $response = array(
+            'success' => false,
+            'message' => 'No order id found!'
+        );
+    } else {
+        if (processOrder($pdo)) {
+            $response = array(
+                'success' => true,
+                'message' => 'Order has been Process'
+            );
+        } else {
+            $response = array(
+                'success' => false,
+                'message' => 'Failed to process Order!.'
+            );
+        }
+    }
+    // Send response
+    header('Content-Type: application/json');
+    echo json_encode($response);
+    exit();
+}
+if (!empty($_POST['action']) && $_POST['action'] == 'toCancelOrder') {
+    if (empty($_POST['order_id'])) {
+        $response = array(
+            'success' => false,
+            'message' => 'No order id found!'
+        );
+    } else {
+        if (cancelOrder($pdo)) {
+            $response = array(
+                'success' => true,
+                'message' => 'Order has been canceled'
+            );
+        } else {
+            $response = array(
+                'success' => false,
+                'message' => 'Failed to cancel Order!.'
+            );
+        }
+    }
+    // Send response
+    header('Content-Type: application/json');
+    echo json_encode($response);
+    exit();
+}

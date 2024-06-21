@@ -60,6 +60,14 @@ if (isset($_GET['table_type'])) {
             $sql = 'SELECT * FROM customer_order
                     ORDER BY created_at DESC';
             break;
+        case 'customer-process':
+            $sql = 'SELECT * FROM customer_process
+                    ORDER BY created_at DESC';
+            break;
+        case 'customer-order':
+            $sql = 'SELECT * FROM customer_canceled
+                    ORDER BY created_at DESC';
+            break;
         default:
             // If an invalid or unsupported table type is provided, return an error
             echo json_encode(['error' => 'Unsupported table type']);

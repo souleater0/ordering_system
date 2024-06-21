@@ -185,14 +185,10 @@ function addFood($pdo)
     try {
         $food_name = $_POST['food_name'];
         $category_id = $_POST['category_id'];
-        $foodOption = $_POST['foodOption'] ? $_POST['foodOption'] : '';
+        $foodOption = isset($_POST['foodOption']) ? $_POST['foodOption'] : '';
 
-        //check if Food is Enabled
-        if ($foodOption === 'on') {
-            $foodOption = 1;
-        } else {
-            $foodOption = 0;
-        }
+        // Check if Food is Enabled
+        $isEnabled = ($foodOption === 'on') ? 1 : 0;
 
         // Check if food item already exists
         $stmt_check = $pdo->prepare("SELECT COUNT(*) FROM menu WHERE menu_name = :food_name");
@@ -204,95 +200,91 @@ function addFood($pdo)
         }
 
         // Handle file upload
-        $target_dir = "../../assets/images/menu/"; // Directory where the file will be saved
-        $target_file = $target_dir . basename($_FILES["foodImg"]["name"]);
-        $uploadOk = 1;
-        $imageFileType = strtolower(pathinfo($target_file, PATHINFO_EXTENSION));
-        $file_name = basename($_FILES["foodImg"]["name"]); // Just the file name
-
-        $check = getimagesize($_FILES["foodImg"]["tmp_name"]);
-        if ($check !== false) {
+        if (!empty($_FILES["foodImg"]["name"])) {
+            $target_dir = "../../assets/images/menu/"; // Directory where the file will be saved
+            $file_name = basename($_FILES["foodImg"]["name"]);
+            $target_file = $target_dir . $file_name;
             $uploadOk = 1;
-        } else {
-            echo "File is not an image.";
-            $uploadOk = 0;
-        }
+            $imageFileType = strtolower(pathinfo($target_file, PATHINFO_EXTENSION));
 
-        // Check if file already exists
-        if (file_exists($target_file)) {
-            echo "Sorry, file already exists.";
-            $uploadOk = 0;
-        }
+            // Check if it's a valid image
+            $check = getimagesize($_FILES["foodImg"]["tmp_name"]);
+            if ($check === false) {
+                echo "File is not an image.";
+                $uploadOk = 0;
+            }
 
-        // Check file size
-        if ($_FILES["foodImg"]["size"] > 2000000) { // Limit to 2000KB
-            echo "Sorry, your file is too large.";
-            $uploadOk = 0;
-        }
+            // Check file size
+            if ($_FILES["foodImg"]["size"] > 2000000) { // Limit to 2000KB
+                echo "Sorry, your file is too large.";
+                $uploadOk = 0;
+            }
 
-        // Allow certain file formats
-        if ($imageFileType != "jpg" && $imageFileType != "png") {
-            echo "Sorry, only JPG, JPEG, PNG files are allowed.";
-            $uploadOk = 0;
-        }
+            // Allow certain file formats
+            if ($imageFileType != "jpg" && $imageFileType != "png" && $imageFileType != "jpeg") {
+                echo "Sorry, only JPG, JPEG, PNG files are allowed.";
+                $uploadOk = 0;
+            }
 
-        // Check if $uploadOk is set to 0 by an error
-        if ($uploadOk == 0) {
-            echo "Sorry, your file was not uploaded.";
-            return false;
-        } else {
-            // if everything is ok, try to upload file
-            if (move_uploaded_file($_FILES["foodImg"]["tmp_name"], $target_file)) {
-                // File uploaded successfully
-
-                // Insert food details along with the image file name into the database
-                $stmt = $pdo->prepare("INSERT INTO menu (menu_name, category_id, menu_img, isEnabled) VALUES (:food_name, :category_id, :menu_img, :foodOption)");
-                $stmt->bindParam(':food_name', $food_name);
-                $stmt->bindParam(':category_id', $category_id, PDO::PARAM_INT);
-                $stmt->bindParam(':foodOption', $foodOption, PDO::PARAM_INT);
-                $stmt->bindParam(':menu_img', $file_name);
-
-                if ($stmt->execute()) {
-                    $menu_id = $pdo->lastInsertId();
-
-                    // Handle variations
-                    foreach ($_POST['variations'] as $variation) {
-                        $variation_name = $variation['name'];
-                        $variation_price = $variation['price'];
-
-                        // Get or create variation id
-                        $stmt_var = $pdo->prepare("SELECT id FROM variations WHERE variation_name = :variation_name");
-                        $stmt_var->bindParam(':variation_name', $variation_name);
-                        $stmt_var->execute();
-                        $variation_id = $stmt_var->fetchColumn();
-
-                        if (!$variation_id) {
-                            // Insert new variation
-                            $stmt_var_insert = $pdo->prepare("INSERT INTO variations (variation_name) VALUES (:variation_name)");
-                            $stmt_var_insert->bindParam(':variation_name', $variation_name);
-                            $stmt_var_insert->execute();
-                            $variation_id = $pdo->lastInsertId();
-                        }
-
-                        // Insert into menu_variations
-                        $stmt_mv = $pdo->prepare("INSERT INTO menu_variations (menu_id, variation_id, price) VALUES (:menu_id, :variation_id, :price)");
-                        $stmt_mv->bindParam(':menu_id', $menu_id, PDO::PARAM_INT);
-                        $stmt_mv->bindParam(':variation_id', $variation_id, PDO::PARAM_INT);
-                        $stmt_mv->bindParam(':price', $variation_price);
-
-                        $stmt_mv->execute();
-                    }
-
-                    return true; // Food and variations added successfully
-                } else {
-                    // Error occurred
-                    echo "Failed to insert food into database.";
+            // Check if $uploadOk is set to 0 by an error
+            if ($uploadOk == 0) {
+                echo "Sorry, your file was not uploaded.";
+                return false;
+            } else {
+                // if everything is ok, try to upload file
+                if (!move_uploaded_file($_FILES["foodImg"]["tmp_name"], $target_file)) {
+                    echo "Sorry, there was an error uploading your file.";
                     return false;
                 }
-            } else {
-                echo "Sorry, there was an error uploading your file.";
-                return false;
             }
+        } else {
+            // No file uploaded, use default image
+            $file_name = 'default.png';
+        }
+
+        // Insert food details along with the image file name into the database
+        $stmt = $pdo->prepare("INSERT INTO menu (menu_name, category_id, menu_img, isEnabled) VALUES (:food_name, :category_id, :menu_img, :isEnabled)");
+        $stmt->bindParam(':food_name', $food_name);
+        $stmt->bindParam(':category_id', $category_id, PDO::PARAM_INT);
+        $stmt->bindParam(':menu_img', $file_name);
+        $stmt->bindParam(':isEnabled', $isEnabled, PDO::PARAM_INT);
+
+        if ($stmt->execute()) {
+            $menu_id = $pdo->lastInsertId();
+
+            // Handle variations
+            foreach ($_POST['variations'] as $variation) {
+                $variation_name = $variation['name'];
+                $variation_price = $variation['price'];
+
+                // Get or create variation id
+                $stmt_var = $pdo->prepare("SELECT id FROM variations WHERE variation_name = :variation_name");
+                $stmt_var->bindParam(':variation_name', $variation_name);
+                $stmt_var->execute();
+                $variation_id = $stmt_var->fetchColumn();
+
+                if (!$variation_id) {
+                    // Insert new variation
+                    $stmt_var_insert = $pdo->prepare("INSERT INTO variations (variation_name) VALUES (:variation_name)");
+                    $stmt_var_insert->bindParam(':variation_name', $variation_name);
+                    $stmt_var_insert->execute();
+                    $variation_id = $pdo->lastInsertId();
+                }
+
+                // Insert into menu_variations
+                $stmt_mv = $pdo->prepare("INSERT INTO menu_variations (menu_id, variation_id, price) VALUES (:menu_id, :variation_id, :price)");
+                $stmt_mv->bindParam(':menu_id', $menu_id, PDO::PARAM_INT);
+                $stmt_mv->bindParam(':variation_id', $variation_id, PDO::PARAM_INT);
+                $stmt_mv->bindParam(':price', $variation_price);
+
+                $stmt_mv->execute();
+            }
+
+            return true; // Food and variations added successfully
+        } else {
+            // Error occurred
+            echo "Failed to insert food into database.";
+            return false;
         }
     } catch (PDOException $e) {
         // Handle database connection error
@@ -300,6 +292,8 @@ function addFood($pdo)
         return false;
     }
 }
+
+
 function updateFood($pdo)
 {
     try {

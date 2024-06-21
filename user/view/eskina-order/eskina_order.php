@@ -93,6 +93,10 @@ $categorys = getCategory($pdo);
 <script>
     $(document).ready(function() {
         var cartItems = [];
+        function findPriceById(variations, id) {
+            let variation = variations.find(variation => variation.id === id);
+            return variation ? variation.price : null; // Return null if the variation is not found
+        }
         $('#orderNow').click(function() {
             console.log(cartItems);
         });
@@ -172,16 +176,20 @@ console.log(menuItem.variations);
                             var sizeOptionName = $('input[name="size"]:checked').siblings('label').text().trim();
                             var sizeOption = $('.size-options').find('input[name="size"]:checked').val();
                             var quantity = parseInt($('#quantity').val());
-
+                            var variations = menuItem.variations;
+                            var variationIdToFind = parseInt(sizeOption);
+                            console.log('selected:', variationIdToFind);
+                            var variation = variations.find(variation => variation.id === variationIdToFind);
+                            console.log('Found variation:', variation);
                             // Prepare data to send to server
                             var cartItem = {
                                 menu_id: menuID,
                                 menu_name: menuItem.menu_name + " " + sizeOptionName,
                                 variation_id: sizeOption,
                                 quantity: quantity,
-                                price: menuItem.variations[sizeOption-1].price
+                                price: variation.price
                             };
-                            //console.log(menuItem);
+                            // console.log();
                             $('#itemModal').modal('hide');
                             addToCart(cartItem);
                             // console.log('Adding to cart:', cartItem);

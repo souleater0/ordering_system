@@ -1,45 +1,5 @@
-<!-- Add the elements for the QR code scanner
-<div id="reader" style="width: 500px;"></div>
-<script src="../assets/libs/qrcode/html5qrcode.min.js"></script>
-<script>
-    $(document).ready(function() {
-        // Function to handle the QR code scanning result
-        function onScanSuccess(decodedText, decodedResult) {
-            console.log(`Code scanned = ${decodedText}`, decodedResult);
-
-            // Assuming the QR code contains only the table number
-            const tableNumber = decodedText;
-
-            // Store the table number in local storage
-            localStorage.setItem('tableNumber', tableNumber);
-
-            // Optionally, redirect or perform other actions
-            alert(`Table number ${tableNumber} set in local storage`);
-
-            // Stop the scanning once a code is scanned
-            html5QrcodeScanner.clear();
-        }
-
-        function onScanError(errorMessage) {
-            // Handle scan error if needed
-            console.error(`Error scanning: ${errorMessage}`);
-        }
-
-        // Initialize the QR code scanner
-        let html5QrcodeScanner = new Html5QrcodeScanner(
-            "reader", {
-                fps: 10,
-                qrbox: 250
-            }
-        );
-
-        // Start scanning
-        html5QrcodeScanner.render(onScanSuccess, onScanError);
-    });
-</script> -->
-
-<!-- <script src="https://unpkg.com/html5-qrcode/minified/html5-qrcode.min.js"></script> -->
-<script src="../assets/libs/qrcode/html5qrcode.min.js"></script>
+<!-- <script src="../assets/libs/qrcode/html5qrcode.min.js"></script> -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html5-qrcode/2.3.8/html5-qrcode.min.js" integrity="sha512-r6rDA7W6ZeQhvl8S7yRVQUKVHdexq+GAlNkNNqVC7YyIV+NwqCTJe2hDWCiffTyRNOeGEzRRJ9ifvRm/HCzGYg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <style>
         #webcam-container {
             text-align: center;
@@ -63,9 +23,6 @@
         <br>
         <button id="open-camera">Open Camera</button>
     </div>
-
-    <!-- Include the HTML5 QR Code library -->
-    <script src="../assets/libs/qrcode/html5qrcode.min.js"></script>
     <script>
         const openCameraButton = document.getElementById('open-camera');
         const reader = new Html5Qrcode("reader");

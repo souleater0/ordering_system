@@ -4,11 +4,7 @@
             <div class="card-header bg-transparent border-bottom">
                 <div class="row">
                     <div class="col">
-                        <h5 class="mt-1 mb-0">Manage Category</h5>
-                    </div>
-                    <div class="col">
-                        <button class="btn btn-primary btn-sm float-end" id="addCategoryBTN" data-bs-toggle="modal" data-bs-target="#categoryModal"><i class="fa-solid fa-plus"></i>&nbsp;Add
-                            Category</button>
+                        <h5 class="mt-1 mb-0">Canceled Orders</h5>
                     </div>
                 </div>
             </div>
@@ -23,16 +19,16 @@
 <div class="modal fade" id="categoryModal" tabindex="-1" aria-labelledby="categoryModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
-            <form id="categoryForm">
+            <form id="brandForm">
                 <div class="modal-header">
-                    <h1 class="modal-title fs-5" id="categoryModalLabel">Category Details</h1>
+                    <h1 class="modal-title fs-5" id="categoryModalLabel">Customer Details</h1>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body border">
                     <div class="row gy-2">
                         <div class="col-lg-12">
-                            <label for="category_name" class="form-label">Category Name</label>
-                            <input type="text" class="form-control" id="category_name" name="category_name" placeholder="Ex. Grill">
+                            <label for="brand_name" class="form-label">Customer Name</label>
+                            <input type="text" class="form-control" id="brand_name" name="brand_name" placeholder="Ex. Juan Dela Cruz">
                         </div>
                     </div>
                 </div>
@@ -54,29 +50,38 @@
             select: true,
             autoWidth: false,
             ajax: {
-                url: 'process/table.php?table_type=category',
+                url: 'process/table.php?table_type=customer-order',
                 dataSrc: 'data'
             },
-            columns: [{
-                    data: 'category_id',
-                    visible: false
+            columns: [
+                {
+                    data: 'order_no',
+                    title: 'ORDER #',
+                    className: 'text-dark text-start'
                 },
                 {
-                    data: 'category_name',
-                    title: 'Category Name',
-                    className: 'text-dark'
+                    data: 'table_no',
+                    title: 'Table #',
+                    className: 'text-dark text-start'
                 },
                 {
-                    "data": null,
-                    title: 'Action',
-                    "defaultContent": "<button class='btn btn-primary btn-sm btn-edit'><i class='fa-regular fa-pen-to-square'></i></button>&nbsp;<button class='btn btn-danger btn-sm btn-delete'><i class='fa-solid fa-trash'></i></button>"
+                    data: 'customer_name',
+                    title: 'Customer Name',
+                    className: 'text-dark text-start'
+                },
+                { 
+                    "data": null, 
+                    "title": "Action", 
+                    "render": function(data, type, row) {
+                        return '<button class="btn btn-info btn-sm btn-show">View</button>&nbsp;<button class="btn btn-primary btn-sm btn-edit">Edit</button>&nbsp;<button class="btn btn-warning btn-sm text-white">Process</button>&nbsp;<button class="btn btn-danger btn-sm">Cancel</button>';
+                    } 
                 }
             ]
         });
 
         function LoadTable() {
             $.ajax({
-                url: 'process/table.php?table_type=category',
+                url: 'admin/process/table.php?table_type=customer-detail',
                 dataType: 'json',
                 success: function(data) {
                     table.clear().rows.add(data.data).draw(false); // Update data without redrawing
@@ -87,11 +92,11 @@
                     }, 1000); // Adjust delay as needed
                 },
                 error: function() {
-                    alert('Failed to retrieve category.');
+                    alert('Failed to retrieve brands.');
                 }
             });
         }
-        $('#categoryForm').on('submit', function(event) {
+        $('#brandForm').on('submit', function(event) {
             event.preventDefault();
         });
         $('#addCategoryBTN').click(function() {
@@ -100,10 +105,10 @@
             $('#updateCategory').hide();
         });
         $('#addCategory').click(function() {
-            var formData = $('#categoryForm').serialize();
+            var formData = $('#brandForm').serialize();
             //alert(formData);
             $.ajax({
-                url: "process/admin_action.php",
+                url: "admin/process/admin_action.php",
                 method: "POST",
                 data: formData + "&action=addCategory",
                 dataType: "json",
@@ -119,10 +124,10 @@
             });
         });
         $('#updateCategory').click(function() {
-            var formData = $('#categoryForm').serialize();
+            var formData = $('#brandForm').serialize();
             var update_id = $(this).attr("update-id");
             $.ajax({
-                url: "process/admin_action.php",
+                url: "admin/process/admin_action.php",
                 method: "POST",
                 data: formData + "&action=updateCategory&update_id=" + update_id,
                 dataType: "json",
@@ -140,34 +145,12 @@
         $('#categoryTable').on('click', 'button.btn-edit', function() {
             var data = table.row($(this).parents('tr')).data();
             // // Populate modal with data
-            $('#category_name').val(data.category_name);
+            $('#brand_name').val(data.brand_name);
             $('#addCategory').hide();
             $('#updateCategory').show();
             $('#categoryModal').modal('show');
             // var update_id = $(this).attr("update-id");
-            $("#updateCategory").attr("update-id", data.category_id);
-        });
-        $('#categoryTable').on('click', 'button.btn-delete', function() {
-            var data = table.row($(this).parents('tr')).data();
-            $.ajax({
-                url: "process/admin_action.php",
-                method: "POST",
-                data: {
-                    action : "deleteCategory",
-                    delete_id: data.category_id
-                },
-                dataType: "json",
-                success: function(response) {
-                    if (response.success == true) {
-                        LoadTable();
-                        $('#categoryModal').modal('hide');
-                        toastr.success(response.message);
-                    } else {
-                        toastr.error(response.message);
-                    }
-                }
-            });
-            // alert(data.id);
+            $("#updateCategory").attr("update-id", data.brand_id);
         });
     });
 </script>

@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jun 19, 2024 at 03:20 PM
+-- Generation Time: Jun 21, 2024 at 02:21 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.1.25
 
@@ -40,14 +40,19 @@ CREATE TABLE `category` (
 
 INSERT INTO `category` (`category_id`, `category_name`, `created_at`, `updated_at`) VALUES
 (1, 'Grill', '2024-06-13 07:36:29', '2024-06-13 07:57:27'),
-(2, 'Solo Order', '2024-06-13 07:36:29', NULL),
-(3, 'Bilao Set', '2024-06-13 07:36:29', NULL),
-(4, 'Pulutan Package', '2024-06-13 07:36:29', NULL),
-(5, 'Palayok Bundle', '2024-06-13 07:36:29', NULL),
-(6, 'Putok Batok Bundle', '2024-06-13 07:36:29', NULL),
-(7, 'Beverages', '2024-06-13 07:36:29', NULL),
-(8, 'Alcohol Beverages', '2024-06-13 07:36:29', NULL),
-(9, 'Inihaw', '2024-06-18 09:15:44', NULL);
+(9, 'PULUTAN  PALOOZA', '2024-06-21 08:40:31', NULL),
+(10, 'BARKADA BEER TOWER', '2024-06-21 09:53:07', NULL),
+(11, 'Beer Bucket', '2024-06-21 09:56:17', NULL),
+(12, 'BILAO SET', '2024-06-21 09:59:26', NULL),
+(13, 'Grill ala Carte', '2024-06-21 10:01:27', NULL),
+(14, 'RICE', '2024-06-21 10:21:53', NULL),
+(15, 'Juice Tower', '2024-06-21 10:23:10', NULL),
+(16, 'JUICE', '2024-06-21 10:32:32', NULL),
+(17, 'LIQUORS', '2024-06-21 10:35:39', NULL),
+(18, 'Palayok Bundle', '2024-06-21 11:38:43', NULL),
+(19, 'Putok-batok Bundle', '2024-06-21 11:49:47', NULL),
+(20, 'Tower Combo', '2024-06-21 11:58:18', NULL),
+(21, 'BEST SELLER', '2024-06-21 12:02:49', NULL);
 
 -- --------------------------------------------------------
 
@@ -182,20 +187,66 @@ CREATE TABLE `menu` (
 --
 
 INSERT INTO `menu` (`id`, `menu_name`, `menu_description`, `menu_img`, `category_id`, `isEnabled`, `isArchive`, `created_at`, `updated_at`) VALUES
-(1, 'Isaw Baboy', NULL, 'default.png', 9, 1, 0, '2024-06-13 05:51:58', '2024-06-18 09:17:33'),
-(2, 'Grilled Tilapia', NULL, 'default.png', 2, 1, 0, '2024-06-13 05:52:24', '2024-06-18 08:45:28'),
-(3, 'Barbeque', NULL, 'default.png', 1, 0, 0, '2024-06-13 05:52:54', '2024-06-18 09:13:30'),
-(4, 'Isaw Manok', NULL, 'default.png', 1, 1, 0, '2024-06-13 05:54:54', '2024-06-18 08:45:28'),
-(5, 'Hotdog', NULL, 'default.png', 1, 1, 0, '2024-06-13 05:57:42', '2024-06-18 08:45:28'),
-(6, 'Bulaklak', NULL, 'default.png', 1, 1, 0, '2024-06-13 05:57:51', '2024-06-18 08:45:28'),
-(7, 'Tenga', NULL, 'default.png', 1, 1, 0, '2024-06-13 05:57:59', '2024-06-18 08:45:28'),
-(8, 'Tumbong', NULL, 'default.png', 1, 1, 0, '2024-06-13 05:58:07', '2024-06-18 08:45:28'),
-(9, 'Tokong', NULL, 'default.png', 1, 1, 0, '2024-06-13 05:58:17', '2024-06-18 08:45:28'),
-(10, 'Rice', NULL, 'default.png', 1, 1, 0, '2024-06-13 05:58:59', '2024-06-18 08:45:28'),
-(11, 'Grilled Bangus', NULL, 'default.png', 2, 1, 0, '2024-06-13 06:03:24', '2024-06-18 08:45:28'),
-(13, 'Chicharong Bulaklak', NULL, 'default.png', 2, 1, 0, '2024-06-13 06:06:32', '2024-06-18 08:45:28'),
-(14, 'Crispy Pata', NULL, 'default.png', 2, 1, 0, '2024-06-13 06:08:15', '2024-06-18 08:45:28'),
-(16, 'Fried Chicken', '1 Pc Fried Chicken with Gravy', 'food1.png', 1, 1, 0, '2024-06-14 07:05:41', '2024-06-18 08:00:56');
+(16, 'Isaw Manok', '1 Pc Fried Chicken with Gravy', 'food1.png', 13, 1, 0, '2024-06-14 07:05:41', '2024-06-21 10:04:11'),
+(21, 'Sizzling Sisig', NULL, 'default.png', 9, 1, 0, '2024-06-21 08:41:45', NULL),
+(22, 'Sizzling Hotdog', NULL, 'default.png', 9, 1, 0, '2024-06-21 09:00:54', NULL),
+(24, 'Chicken Skin', NULL, 'default.png', 9, 1, 0, '2024-06-21 09:47:49', NULL),
+(25, 'Special Dinakdakan', NULL, 'default.png', 9, 1, 0, '2024-06-21 09:48:47', NULL),
+(27, 'Lechon kawali', NULL, 'default.png', 9, 1, 0, '2024-06-21 09:49:18', NULL),
+(29, 'Dynamite', NULL, 'default.png', 9, 1, 0, '2024-06-21 09:50:21', NULL),
+(30, 'Spicy Gambas', NULL, 'default.png', 9, 1, 0, '2024-06-21 09:50:38', NULL),
+(32, 'Barkada Beer Tower B', NULL, 'default.png', 10, 1, 0, '2024-06-21 09:54:23', NULL),
+(33, 'Barkada Beer Tower C', NULL, 'default.png', 10, 1, 0, '2024-06-21 09:54:43', NULL),
+(34, 'Barkada Beer Tower D', NULL, 'default.png', 10, 1, 0, '2024-06-21 09:55:04', NULL),
+(35, 'Bucket 1', NULL, 'default.png', 11, 1, 0, '2024-06-21 09:56:52', NULL),
+(36, 'Bucket 2', NULL, 'default.png', 11, 1, 0, '2024-06-21 09:57:11', NULL),
+(37, 'Bucket 3', NULL, 'default.png', 11, 1, 0, '2024-06-21 09:57:50', NULL),
+(38, 'Bucket 4', NULL, 'default.png', 11, 1, 0, '2024-06-21 09:58:19', NULL),
+(39, 'Bucket 5', NULL, 'default.png', 11, 1, 0, '2024-06-21 09:58:54', NULL),
+(40, 'Bilao A', NULL, 'default.png', 12, 1, 0, '2024-06-21 09:59:56', NULL),
+(41, 'Bilao B', NULL, 'default.png', 12, 1, 0, '2024-06-21 10:00:25', NULL),
+(42, 'Bilao C', NULL, 'default.png', 12, 1, 0, '2024-06-21 10:00:45', NULL),
+(43, 'Isaw Baboy', NULL, 'default.png', 13, 1, 0, '2024-06-21 10:04:55', NULL),
+(44, 'Barbeque', NULL, 'default.png', 13, 1, 0, '2024-06-21 10:05:16', NULL),
+(45, 'Hotdog', NULL, 'default.png', 13, 1, 0, '2024-06-21 10:05:35', NULL),
+(46, 'Bulaklak', NULL, 'default.png', 13, 1, 0, '2024-06-21 10:05:55', NULL),
+(47, 'Tenga', NULL, 'default.png', 13, 1, 0, '2024-06-21 10:06:11', NULL),
+(48, 'Tumbong ', NULL, 'default.png', 13, 1, 0, '2024-06-21 10:06:29', NULL),
+(49, 'Tokong', NULL, 'default.png', 13, 1, 0, '2024-06-21 10:06:43', NULL),
+(50, 'Rice', NULL, 'default.png', 13, 1, 0, '2024-06-21 10:06:56', NULL),
+(51, 'PLAIN RICE', NULL, 'default.png', 14, 1, 0, '2024-06-21 10:22:19', NULL),
+(52, 'JUICE Tower 1', NULL, 'default.png', 15, 1, 0, '2024-06-21 10:23:39', NULL),
+(53, 'JUICE Tower 2', NULL, 'default.png', 15, 1, 0, '2024-06-21 10:24:03', NULL),
+(54, 'JUICE Tower 3', NULL, 'default.png', 15, 1, 0, '2024-06-21 10:24:18', NULL),
+(55, 'Household Blend Iced Tea ', NULL, 'default.png', 16, 1, 0, '2024-06-21 10:32:55', NULL),
+(56, 'Pink Lemonade ', NULL, 'default.png', 16, 1, 0, '2024-06-21 10:33:22', NULL),
+(57, 'Blue Lemonade', NULL, 'default.png', 16, 1, 0, '2024-06-21 10:33:40', NULL),
+(58, 'Red Iced Tea ', NULL, 'default.png', 16, 1, 0, '2024-06-21 10:34:27', NULL),
+(59, 'Cucumber', NULL, 'default.png', 16, 1, 0, '2024-06-21 10:34:46', NULL),
+(60, 'Gulaman ', NULL, 'default.png', 16, 1, 0, '2024-06-21 10:35:08', NULL),
+(61, 'San Mig Light', NULL, 'default.png', 17, 1, 0, '2024-06-21 11:35:02', NULL),
+(62, 'San Mig Flavored', NULL, 'default.png', 17, 1, 0, '2024-06-21 11:35:16', NULL),
+(63, 'Original Pale Pilsen', NULL, 'default.png', 17, 1, 0, '2024-06-21 11:35:35', NULL),
+(64, 'Pale Pilsen (long neck)', NULL, 'default.png', 17, 1, 0, '2024-06-21 11:36:50', NULL),
+(65, 'Red Horse (500ml)', NULL, 'default.png', 17, 1, 0, '2024-06-21 11:37:20', NULL),
+(66, 'Tinolang Native Manok', NULL, 'default.png', 18, 1, 0, '2024-06-21 11:39:17', NULL),
+(67, 'Sinigang na Hipon', NULL, 'default.png', 18, 1, 0, '2024-06-21 11:39:36', NULL),
+(68, 'Kare-Kareng Bagnet', NULL, 'default.png', 18, 1, 0, '2024-06-21 11:39:59', NULL),
+(69, 'Bulalo', NULL, 'default.png', 18, 1, 0, '2024-06-21 11:40:14', NULL),
+(70, 'Set A', NULL, 'default.png', 19, 1, 0, '2024-06-21 11:50:08', NULL),
+(71, 'Set B', NULL, 'default.png', 19, 1, 0, '2024-06-21 11:50:35', NULL),
+(72, 'Set C', NULL, 'default.png', 19, 1, 0, '2024-06-21 11:50:54', NULL),
+(73, 'Grilled Tilapia', NULL, 'default.png', 13, 1, 0, '2024-06-21 11:52:43', NULL),
+(74, 'Chicharong Bulaklak', NULL, 'default.png', 13, 1, 0, '2024-06-21 11:53:00', NULL),
+(75, 'Grilled Bangus', NULL, 'default.png', 13, 1, 0, '2024-06-21 11:54:46', NULL),
+(76, 'Grilled Pusit', NULL, 'default.png', 13, 1, 0, '2024-06-21 11:55:52', NULL),
+(77, 'Crispy Pata', NULL, 'default.png', 13, 1, 0, '2024-06-21 11:57:01', NULL),
+(78, 'Tower Combo 1', NULL, 'default.png', 20, 1, 0, '2024-06-21 11:59:14', NULL),
+(79, 'Tower Combo 2', NULL, 'default.png', 20, 1, 0, '2024-06-21 11:59:29', NULL),
+(80, 'Tower Combo 3', NULL, 'default.png', 20, 1, 0, '2024-06-21 11:59:46', NULL),
+(81, 'Tower Combo 4', NULL, 'default.png', 20, 1, 0, '2024-06-21 12:00:20', NULL),
+(82, 'Chicken Inasal + Rice', NULL, 'default.png', 21, 1, 0, '2024-06-21 12:05:02', NULL),
+(83, 'Inihaw na liempo', NULL, 'default.png', 21, 1, 0, '2024-06-21 12:10:51', NULL);
 
 -- --------------------------------------------------------
 
@@ -215,9 +266,76 @@ CREATE TABLE `menu_variations` (
 --
 
 INSERT INTO `menu_variations` (`id`, `menu_id`, `variation_id`, `price`) VALUES
-(1, 16, 1, 55.00),
-(2, 16, 2, 99.00),
-(3, 1, 1, 99.00);
+(6, 16, 4, 25.00),
+(11, 21, 4, 199.00),
+(12, 22, 4, 199.00),
+(14, 24, 4, 199.00),
+(17, 27, 4, 199.00),
+(18, 25, 4, 199.00),
+(20, 29, 4, 199.00),
+(22, 32, 4, 569.00),
+(23, 33, 4, 539.00),
+(24, 34, 4, 599.00),
+(25, 30, 4, 199.00),
+(26, 35, 4, 459.00),
+(27, 36, 1, 519.00),
+(28, 37, 1, 489.00),
+(29, 38, 4, 549.00),
+(30, 39, 4, 499.00),
+(31, 40, 4, 359.00),
+(32, 41, 4, 889.00),
+(33, 42, 4, 1439.00),
+(34, 43, 4, 30.00),
+(35, 44, 4, 30.00),
+(36, 45, 4, 25.00),
+(37, 46, 4, 30.00),
+(38, 47, 4, 30.00),
+(39, 48, 4, 30.00),
+(40, 49, 4, 25.00),
+(41, 50, 4, 15.00),
+(42, 51, 4, 15.00),
+(43, 52, 4, 99.00),
+(44, 53, 4, 120.00),
+(45, 54, 4, 150.00),
+(46, 55, 5, 30.00),
+(47, 55, 6, 80.00),
+(48, 56, 5, 30.00),
+(49, 56, 6, 80.00),
+(50, 57, 5, 30.00),
+(51, 57, 6, 80.00),
+(52, 58, 5, 30.00),
+(53, 58, 6, 80.00),
+(54, 59, 5, 30.00),
+(55, 59, 6, 80.00),
+(56, 60, 5, 30.00),
+(57, 60, 6, 80.00),
+(58, 61, 4, 55.00),
+(59, 62, 4, 55.00),
+(60, 63, 4, 60.00),
+(61, 64, 4, 65.00),
+(62, 65, 4, 70.00),
+(63, 66, 4, 299.00),
+(64, 67, 4, 349.00),
+(65, 68, 4, 299.00),
+(66, 69, 4, 349.00),
+(67, 70, 4, 299.00),
+(68, 71, 4, 359.00),
+(69, 72, 4, 459.00),
+(70, 73, 4, 80.00),
+(71, 74, 4, 250.00),
+(72, 75, 4, 169.00),
+(73, 76, 1, 99.00),
+(74, 76, 2, 149.00),
+(75, 76, 3, 199.00),
+(76, 77, 4, 599.00),
+(77, 78, 4, 150.00),
+(78, 79, 4, 199.00),
+(79, 80, 4, 250.00),
+(80, 81, 4, 350.00),
+(81, 82, 4, 99.00),
+(82, 82, 7, 139.00),
+(83, 83, 4, 120.00),
+(84, 83, 7, 160.00);
 
 -- --------------------------------------------------------
 
@@ -336,7 +454,10 @@ INSERT INTO `variations` (`id`, `variation_name`, `created_at`, `updated_at`) VA
 (1, 'Large', '2024-06-14 06:26:44', '2024-06-14 06:32:37'),
 (2, 'Extra Large', '2024-06-14 06:32:43', '2024-06-14 06:33:23'),
 (3, '2X Extra Large', '2024-06-14 06:32:50', '2024-06-14 06:34:26'),
-(4, 'Regular', '2024-06-14 07:38:21', '2024-06-14 07:38:21');
+(4, 'Regular', '2024-06-14 07:38:21', '2024-06-14 07:38:21'),
+(5, '16 OZ', '2024-06-21 10:31:38', NULL),
+(6, 'PITCHER', '2024-06-21 10:31:45', NULL),
+(7, '+40 UNLI RICE', '2024-06-21 12:03:19', '2024-06-21 12:08:50');
 
 --
 -- Indexes for dumped tables
@@ -436,7 +557,7 @@ ALTER TABLE `variations`
 -- AUTO_INCREMENT for table `category`
 --
 ALTER TABLE `category`
-  MODIFY `category_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+  MODIFY `category_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
 
 --
 -- AUTO_INCREMENT for table `customer_canceled`
@@ -472,13 +593,13 @@ ALTER TABLE `customer_process`
 -- AUTO_INCREMENT for table `menu`
 --
 ALTER TABLE `menu`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=84;
 
 --
 -- AUTO_INCREMENT for table `menu_variations`
 --
 ALTER TABLE `menu_variations`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=85;
 
 --
 -- AUTO_INCREMENT for table `ordered_menu`
@@ -508,7 +629,7 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `variations`
 --
 ALTER TABLE `variations`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- Constraints for dumped tables

@@ -64,7 +64,15 @@ if (isset($_GET['table_type'])) {
             $sql = 'SELECT * FROM customer_process
                     ORDER BY created_at DESC';
             break;
-        case 'customer-order':
+        case 'customer-serve':
+            $sql = 'SELECT * FROM customer_serve
+                    ORDER BY created_at DESC';
+            break;
+        case 'customer-complete':
+            $sql = 'SELECT * FROM customer_complete
+                    ORDER BY created_at DESC';
+            break;
+        case 'customer-cancel':
             $sql = 'SELECT * FROM customer_canceled
                     ORDER BY created_at DESC';
             break;

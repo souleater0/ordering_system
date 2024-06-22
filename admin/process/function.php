@@ -831,8 +831,220 @@ function deleteCategory($pdo)
         return array(); // Return an empty array if an error occurs
     }
 }
-function processOrder($pdo)
-{}
+function Order_to_Process($pdo)
+{
+    try {
+        $order_no = $_POST['order_no'];
+        // Begin a transaction
+        $pdo->beginTransaction();
 
-function cancelOrder($pdo)
-{}
+        // SQL query to insert data into customer_process
+        $insertQuery = "INSERT INTO customer_process (order_no, table_no, customer_name, created_at)
+            SELECT order_no, table_no, customer_name, created_at
+            FROM customer_order
+            WHERE order_no = :order_no;
+        ";
+        // Prepare and execute the insert query
+        $insertStmt = $pdo->prepare($insertQuery);
+        $insertStmt->execute([':order_no' => $order_no]);
+
+        // SQL query to delete data from customer_order
+        $deleteQuery = "DELETE FROM customer_order
+            WHERE order_no = :order_no;
+        ";
+        // Prepare and execute the delete query
+        $deleteStmt = $pdo->prepare($deleteQuery);
+        $deleteStmt->execute([':order_no' => $order_no]);
+
+        // Commit the transaction
+        $pdo->commit();
+
+        return true; // Return true if the transaction is successful
+    } catch (PDOException $e) {
+        // Roll back the transaction if something failed
+        $pdo->rollBack();
+
+        return false; // Return false if the transaction fails
+    }
+}
+
+function Order_to_Cancel($pdo)
+{
+    try {
+        $order_no = $_POST['order_no'];
+        // Begin a transaction
+        $pdo->beginTransaction();
+
+        // SQL query to insert data into customer_process
+        $insertQuery = "INSERT INTO customer_canceled (order_no, table_no, customer_name, created_at)
+            SELECT order_no, table_no, customer_name, created_at
+            FROM customer_order
+            WHERE order_no = :order_no;
+        ";
+        // Prepare and execute the insert query
+        $insertStmt = $pdo->prepare($insertQuery);
+        $insertStmt->execute([':order_no' => $order_no]);
+
+        // SQL query to delete data from customer_order
+        $deleteQuery = "DELETE FROM customer_order
+            WHERE order_no = :order_no;
+        ";
+        // Prepare and execute the delete query
+        $deleteStmt = $pdo->prepare($deleteQuery);
+        $deleteStmt->execute([':order_no' => $order_no]);
+
+        // Commit the transaction
+        $pdo->commit();
+
+        return true; // Return true if the transaction is successful
+    } catch (PDOException $e) {
+        // Roll back the transaction if something failed
+        $pdo->rollBack();
+
+        return false; // Return false if the transaction fails
+    }
+}
+function Process_to_Serve($pdo)
+{
+    try {
+        $order_no = $_POST['order_no'];
+        // Begin a transaction
+        $pdo->beginTransaction();
+
+        // SQL query to insert data into customer_process
+        $insertQuery = "INSERT INTO customer_serve (order_no, table_no, customer_name, created_at)
+            SELECT order_no, table_no, customer_name, created_at
+            FROM customer_process
+            WHERE order_no = :order_no;
+        ";
+        // Prepare and execute the insert query
+        $insertStmt = $pdo->prepare($insertQuery);
+        $insertStmt->execute([':order_no' => $order_no]);
+
+        // SQL query to delete data from customer_order
+        $deleteQuery = "DELETE FROM customer_process
+            WHERE order_no = :order_no;
+        ";
+        // Prepare and execute the delete query
+        $deleteStmt = $pdo->prepare($deleteQuery);
+        $deleteStmt->execute([':order_no' => $order_no]);
+
+        // Commit the transaction
+        $pdo->commit();
+
+        return true; // Return true if the transaction is successful
+    } catch (PDOException $e) {
+        // Roll back the transaction if something failed
+        $pdo->rollBack();
+
+        return false; // Return false if the transaction fails
+    }
+}
+function Process_to_Cancel($pdo)
+{
+    try {
+        $order_no = $_POST['order_no'];
+        // Begin a transaction
+        $pdo->beginTransaction();
+
+        // SQL query to insert data into customer_process
+        $insertQuery = "INSERT INTO customer_canceled (order_no, table_no, customer_name, created_at)
+            SELECT order_no, table_no, customer_name, created_at
+            FROM customer_process
+            WHERE order_no = :order_no;
+        ";
+        // Prepare and execute the insert query
+        $insertStmt = $pdo->prepare($insertQuery);
+        $insertStmt->execute([':order_no' => $order_no]);
+
+        // SQL query to delete data from customer_order
+        $deleteQuery = "DELETE FROM customer_process
+            WHERE order_no = :order_no;
+        ";
+        // Prepare and execute the delete query
+        $deleteStmt = $pdo->prepare($deleteQuery);
+        $deleteStmt->execute([':order_no' => $order_no]);
+
+        // Commit the transaction
+        $pdo->commit();
+
+        return true; // Return true if the transaction is successful
+    } catch (PDOException $e) {
+        // Roll back the transaction if something failed
+        $pdo->rollBack();
+
+        return false; // Return false if the transaction fails
+    }
+}
+function Serve_to_Complete($pdo)
+{
+    try {
+        $order_no = $_POST['order_no'];
+        // Begin a transaction
+        $pdo->beginTransaction();
+
+        // SQL query to insert data into customer_serve
+        $insertQuery = "INSERT INTO customer_complete (order_no, table_no, customer_name, created_at)
+            SELECT order_no, table_no, customer_name, created_at
+            FROM customer_serve
+            WHERE order_no = :order_no;
+        ";
+        // Prepare and execute the insert query
+        $insertStmt = $pdo->prepare($insertQuery);
+        $insertStmt->execute([':order_no' => $order_no]);
+
+        // SQL query to delete data from customer_order
+        $deleteQuery = "DELETE FROM customer_serve
+            WHERE order_no = :order_no;
+        ";
+        // Prepare and execute the delete query
+        $deleteStmt = $pdo->prepare($deleteQuery);
+        $deleteStmt->execute([':order_no' => $order_no]);
+
+        // Commit the transaction
+        $pdo->commit();
+
+        return true; // Return true if the transaction is successful
+    } catch (PDOException $e) {
+        // Roll back the transaction if something failed
+        $pdo->rollBack();
+
+        return false; // Return false if the transaction fails
+    }
+}
+function Cancel_to_Order($pdo)
+{
+    try {
+        $order_no = $_POST['order_no'];
+        // Begin a transaction
+        $pdo->beginTransaction();
+
+        // SQL query to insert data into customer_process
+        $insertQuery = "INSERT INTO customer_process (order_no, table_no, customer_name, created_at)
+            SELECT order_no, table_no, customer_name, created_at
+            FROM customer_canceled
+            WHERE order_no = :order_no;
+        ";
+        // Prepare and execute the insert query
+        $insertStmt = $pdo->prepare($insertQuery);
+        $insertStmt->execute([':order_no' => $order_no]);
+
+        // SQL query to delete data from customer_process
+        $deleteQuery = "DELETE FROM customer_canceled
+            WHERE order_no = :order_no;
+        ";
+        // Prepare and execute the delete query
+        $deleteStmt = $pdo->prepare($deleteQuery);
+        $deleteStmt->execute([':order_no' => $order_no]);
+
+        // Commit the transaction
+        $pdo->commit();
+
+        return true; // Return true if the transaction is successful
+    } catch (PDOException $e) {
+        // Roll back the transaction if something failed
+        $pdo->rollBack();
+
+        return false; // Return false if the transaction fails
+    }
+}

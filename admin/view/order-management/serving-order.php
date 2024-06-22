@@ -4,12 +4,12 @@
             <div class="card-header bg-transparent border-bottom">
                 <div class="row">
                     <div class="col">
-                        <h5 class="mt-1 mb-0">Customer Orders</h5>
+                        <h5 class="mt-1 mb-0">Serving Orders</h5>
                     </div>
                 </div>
             </div>
             <div class="card-body">
-                <table id="orderTable" class="table table-hover table-cs-color">
+                <table id="servingTable" class="table table-hover table-cs-color">
                 </table>
             </div>
         </div>
@@ -19,12 +19,12 @@
 <script>
     $(document).ready(function() {
         // let table = new DataTable('#myTable');
-        var table = $('#orderTable').DataTable({
+        var table = $('#servingTable').DataTable({
             responsive: true,
             select: true,
             autoWidth: false,
             ajax: {
-                url: 'process/table.php?table_type=customer-process',
+                url: 'process/table.php?table_type=customer-serve',
                 dataSrc: 'data'
             },
             columns: [{
@@ -69,7 +69,7 @@
                     "data": null,
                     "title": "Action btn btn-success",
                     "render": function(data, type, row) {
-                        return '<button class="btn btn-info btn-sm btn-show">View</button>&nbsp;<button class="btn btn-primary btn-sm btn-edit">Edit</button>&nbsp;<button class="btn btn-success btn-sm btn-serve">Serve</button>&nbsp;<button class="btn btn-danger btn-sm btn-cancel">Cancel</button>';
+                        return '<button class="btn btn-info btn-sm btn-show">View</button>&nbsp;<button class="btn btn-success btn-sm btn-complete">Complete</button>';
                     }
                 }
 
@@ -78,7 +78,7 @@
 
         function LoadTable() {
             $.ajax({
-                url: 'process/table.php?table_type=customer-process',
+                url: 'process/table.php?table_type=customer-serve',
                 dataType: 'json',
                 success: function(data) {
                     table.clear().rows.add(data.data).draw(false); // Update data without redrawing
@@ -93,7 +93,7 @@
                 }
             });
         }
-        $('#orderTable').on('click', 'button.btn-serve', function() {
+        $('#servingTable').on('click', 'button.btn-complete', function() {
             var data = table.row($(this).parents('tr')).data();
             var order_no = data.order_no;
 
@@ -102,29 +102,7 @@
                 method: "POST",
                 data: {
                     order_no: order_no,
-                    action: "process_to_serve"
-                },
-                dataType: "json",
-                success: function(response) {
-                    if (response.success == true) {
-                        LoadTable();
-                        toastr.success(response.message);
-                    } else {
-                        toastr.error(response.message);
-                    }
-                }
-            });
-        });
-        $('#orderTable').on('click', 'button.btn-cancel', function() {
-            var data = table.row($(this).parents('tr')).data();
-            var order_no = data.order_no;
-
-            $.ajax({
-                url: "process/admin_action.php",
-                method: "POST",
-                data: {
-                    order_no: order_no,
-                    action: "process_to_cancel"
+                    action: "serve_to_complete"
                 },
                 dataType: "json",
                 success: function(response) {

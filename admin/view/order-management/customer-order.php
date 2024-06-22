@@ -9,43 +9,17 @@
                 </div>
             </div>
             <div class="card-body">
-                <table id="categoryTable" class="table table-hover table-cs-color">
+                <table id="orderTable" class="table table-hover table-cs-color">
                 </table>
             </div>
         </div>
     </div>
 </div>
-<!-- Modal -->
-<div class="modal fade" id="categoryModal" tabindex="-1" aria-labelledby="categoryModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <form id="brandForm">
-                <div class="modal-header">
-                    <h1 class="modal-title fs-5" id="categoryModalLabel">Customer Details</h1>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body border">
-                    <div class="row gy-2">
-                        <div class="col-lg-12">
-                            <label for="brand_name" class="form-label">Customer Name</label>
-                            <input type="text" class="form-control" id="brand_name" name="brand_name" placeholder="Ex. Juan Dela Cruz">
-                        </div>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <!-- <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button> -->
-                    <button type="button" class="btn btn-primary" id="updateCategory" update-id="">UPDATE</button>
-                    <button type="button" class="btn btn-primary" id="addCategory">ADD</button>
-                </div>
-            </form>
-        </div>
-    </div>
-</div>
-<!-- END -->
+
 <script>
     $(document).ready(function() {
         // let table = new DataTable('#myTable');
-        var table = $('#categoryTable').DataTable({
+        var table = $('#orderTable').DataTable({
             responsive: true,
             select: true,
             autoWidth: false,
@@ -53,8 +27,7 @@
                 url: 'process/table.php?table_type=customer-order',
                 dataSrc: 'data'
             },
-            columns: [
-                {
+            columns: [{
                     data: 'order_no',
                     title: 'ORDER #',
                     className: 'text-dark text-start'
@@ -69,19 +42,42 @@
                     title: 'Customer Name',
                     className: 'text-dark text-start'
                 },
-                { 
-                    "data": null, 
-                    "title": "Action", 
+                {
+                    data: 'created_at',
+                    title: 'Date Created',
+                    className: 'text-dark text-start',
+                    render: function(data, type, row) {
+                        // Parsing the timestamp
+                        const date = new Date(data);
+
+                        // Formatting options
+                        const options = {
+                            year: 'numeric',
+                            month: 'long',
+                            day: '2-digit',
+                            hour: '2-digit',
+                            minute: '2-digit',
+                            second: '2-digit',
+                            hour12: true
+                        };
+
+                        // Formatting the date
+                        return new Intl.DateTimeFormat('en-PH', options).format(date);
+                    }
+                },
+                {
+                    "data": null,
+                    "title": "Action",
                     "render": function(data, type, row) {
-                        return '<button class="btn btn-info btn-sm btn-show">View</button>&nbsp;<button class="btn btn-primary btn-sm btn-edit">Edit</button>&nbsp;<button class="btn btn-warning btn-sm text-white">Process</button>&nbsp;<button class="btn btn-danger btn-sm">Cancel</button>';
-                    } 
+                        return '<button class="btn btn-info btn-sm btn-show">View</button>&nbsp;<button class="btn btn-primary btn-sm btn-edit">Edit</button>&nbsp;<button class="btn btn-warning btn-sm text-white btn-process">Process</button>&nbsp;<button class="btn btn-danger btn-sm btn-cancel">Cancel</button>';
+                    }
                 }
             ]
         });
 
         function LoadTable() {
             $.ajax({
-                url: 'admin/process/table.php?table_type=customer-detail',
+                url: 'process/table.php?table_type=customer-order',
                 dataType: 'json',
                 success: function(data) {
                     table.clear().rows.add(data.data).draw(false); // Update data without redrawing
@@ -96,53 +92,7 @@
                 }
             });
         }
-        $('#brandForm').on('submit', function(event) {
-            event.preventDefault();
-        });
-        $('#addCategoryBTN').click(function() {
-            $('#brand_name').val('');
-            $('#addCategory').show();
-            $('#updateCategory').hide();
-        });
-        $('#addCategory').click(function() {
-            var formData = $('#brandForm').serialize();
-            //alert(formData);
-            $.ajax({
-                url: "admin/process/admin_action.php",
-                method: "POST",
-                data: formData + "&action=addCategory",
-                dataType: "json",
-                success: function(response) {
-                    if (response.success == true) {
-                        LoadTable();
-                        $('#categoryModal').modal('hide');
-                        toastr.success(response.message);
-                    } else {
-                        toastr.error(response.message);
-                    }
-                }
-            });
-        });
-        $('#updateCategory').click(function() {
-            var formData = $('#brandForm').serialize();
-            var update_id = $(this).attr("update-id");
-            $.ajax({
-                url: "admin/process/admin_action.php",
-                method: "POST",
-                data: formData + "&action=updateCategory&update_id=" + update_id,
-                dataType: "json",
-                success: function(response) {
-                    if (response.success == true) {
-                        LoadTable();
-                        $('#categoryModal').modal('hide');
-                        toastr.success(response.message);
-                    } else {
-                        toastr.error(response.message);
-                    }
-                }
-            });
-        });
-        $('#categoryTable').on('click', 'button.btn-edit', function() {
+        $('#orderTable').on('click', 'button.btn-edit', function() {
             var data = table.row($(this).parents('tr')).data();
             // // Populate modal with data
             $('#brand_name').val(data.brand_name);
@@ -152,5 +102,50 @@
             // var update_id = $(this).attr("update-id");
             $("#updateCategory").attr("update-id", data.brand_id);
         });
+        $('#orderTable').on('click', 'button.btn-process', function() {
+            var data = table.row($(this).parents('tr')).data();
+            var order_no = data.order_no;
+
+            $.ajax({
+                url: "process/admin_action.php",
+                method: "POST",
+                data: {
+                    order_no: order_no,
+                    action: "order_to_process"
+                },
+                dataType: "json",
+                success: function(response) {
+                    if (response.success == true) {
+                        LoadTable();
+                        toastr.success(response.message);
+                    } else {
+                        toastr.error(response.message);
+                    }
+                }
+            });
+        });
+        $('#orderTable').on('click', 'button.btn-cancel', function() {
+            var data = table.row($(this).parents('tr')).data();
+            var order_no = data.order_no;
+
+            $.ajax({
+                url: "process/admin_action.php",
+                method: "POST",
+                data: {
+                    order_no: order_no,
+                    action: "order_to_cancel"
+                },
+                dataType: "json",
+                success: function(response) {
+                    if (response.success == true) {
+                        LoadTable();
+                        toastr.success(response.message);
+                    } else {
+                        toastr.error(response.message);
+                    }
+                }
+            });
+        });
+
     });
 </script>

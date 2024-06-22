@@ -368,17 +368,18 @@ if (!empty($_POST['action']) && $_POST['action'] == 'getMenuVariations') {
     }
     exit();
 }
-if (!empty($_POST['action']) && $_POST['action'] == 'toProcessOrder') {
-    if (empty($_POST['order_id'])) {
+if (!empty($_POST['action']) && $_POST['action'] == 'order_to_process') {
+    if (empty($_POST['order_no'])) {
         $response = array(
             'success' => false,
-            'message' => 'No order id found!'
+            'message' => 'No order no. found!'
         );
     } else {
-        if (processOrder($pdo)) {
+        if (Order_to_Process($pdo)) {
+            $order_no = $_POST['order_no'];
             $response = array(
                 'success' => true,
-                'message' => 'Order has been Process'
+                'message' => 'Order No#' . $order_no . ' has been Processed '
             );
         } else {
             $response = array(
@@ -392,22 +393,123 @@ if (!empty($_POST['action']) && $_POST['action'] == 'toProcessOrder') {
     echo json_encode($response);
     exit();
 }
-if (!empty($_POST['action']) && $_POST['action'] == 'toCancelOrder') {
-    if (empty($_POST['order_id'])) {
+if (!empty($_POST['action']) && $_POST['action'] == 'order_to_cancel') {
+    if (empty($_POST['order_no'])) {
         $response = array(
             'success' => false,
-            'message' => 'No order id found!'
+            'message' => 'No order no. found!'
         );
     } else {
-        if (cancelOrder($pdo)) {
+        if (Order_to_Cancel($pdo)) {
+            $order_no = $_POST['order_no'];
             $response = array(
                 'success' => true,
-                'message' => 'Order has been canceled'
+                'message' => 'Order No#' . $order_no . ' has been Processed '
             );
         } else {
             $response = array(
                 'success' => false,
                 'message' => 'Failed to cancel Order!.'
+            );
+        }
+    }
+    // Send response
+    header('Content-Type: application/json');
+    echo json_encode($response);
+    exit();
+}
+if (!empty($_POST['action']) && $_POST['action'] == 'process_to_serve') {
+    if (empty($_POST['order_no'])) {
+        $response = array(
+            'success' => false,
+            'message' => 'No order no. found!'
+        );
+    } else {
+        if (Process_to_Serve($pdo)) {
+            $order_no = $_POST['order_no'];
+            $response = array(
+                'success' => true,
+                'message' => 'Order No#' . $order_no . ' has been Served '
+            );
+        } else {
+            $response = array(
+                'success' => false,
+                'message' => 'Failed to serve Order!.'
+            );
+        }
+    }
+    // Send response
+    header('Content-Type: application/json');
+    echo json_encode($response);
+    exit();
+}
+if (!empty($_POST['action']) && $_POST['action'] == 'process_to_cancel') {
+    if (empty($_POST['order_no'])) {
+        $response = array(
+            'success' => false,
+            'message' => 'No order no. found!'
+        );
+    } else {
+        if (Process_to_Cancel($pdo)) {
+            $order_no = $_POST['order_no'];
+            $response = array(
+                'success' => true,
+                'message' => 'Order No#' . $order_no . ' has been Processed '
+            );
+        } else {
+            $response = array(
+                'success' => false,
+                'message' => 'Failed to cancel Order!.'
+            );
+        }
+    }
+    // Send response
+    header('Content-Type: application/json');
+    echo json_encode($response);
+    exit();
+}
+if (!empty($_POST['action']) && $_POST['action'] == 'serve_to_complete') {
+    if (empty($_POST['order_no'])) {
+        $response = array(
+            'success' => false,
+            'message' => 'No order no. found!'
+        );
+    } else {
+        if (Serve_to_Complete($pdo)) {
+            $order_no = $_POST['order_no'];
+            $response = array(
+                'success' => true,
+                'message' => 'Order No#' . $order_no . ' has been completed '
+            );
+        } else {
+            $response = array(
+                'success' => false,
+                'message' => 'Failed to complete Order!.'
+            );
+        }
+    }
+    // Send response
+    header('Content-Type: application/json');
+    echo json_encode($response);
+    exit();
+}
+if (!empty($_POST['action']) && $_POST['action'] == 'cancel_to_order') {
+    if (empty($_POST['order_no'])) {
+        $response = array(
+            'success' => false,
+            'message' => 'No order no. found!'
+        );
+    } else {
+        if (Cancel_to_Order($pdo)) {
+            $order_no = $_POST['order_no'];
+            $response = array(
+                'success' => true,
+                'message' => 'Order No#' . $order_no . ' has been Processed '
+            );
+        } else {
+            $response = array(
+                'success' => false,
+                'message' => 'Failed to process Order!.'
             );
         }
     }

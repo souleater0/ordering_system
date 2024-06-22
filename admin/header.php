@@ -42,6 +42,8 @@ $route = $_GET['route'] ?? 'home';
     <link rel="stylesheet" href="../assets/libs/toastr/css/toastr.min.css">
     <script src="../assets/libs/toastr/js/toastr.min.js"></script>
     <!-- <script src="../assets/js/all.js"></script> -->
+
+
 </head>
 
 <body>
@@ -80,7 +82,7 @@ $route = $_GET['route'] ?? 'home';
                             <iconify-icon icon="solar:menu-dots-linear" class="nav-small-cap-icon fs-4"></iconify-icon>
                             <span class="hide-menu text-uppercase">order management</span>
                         </li>
-                        <div class="collapse <?php echo ($route == 'customer-order' || $route == 'process-order' || $route == 'canceled-order') ? 'show' : ''; ?>" id="collapseProduct">
+                        <div class="collapse <?php echo ($route == 'customer-order' || $route == 'process-order' || $route == 'serving-order' || $route == 'complete-order' || $route == 'canceled-order') ? 'show' : ''; ?>" id="collapseProduct">
                             <li class="sidebar-item">
                                 <a class="sidebar-link" href="index.php?route=customer-order" aria-expanded="false">
                                     <iconify-icon icon="mdi:cart"></iconify-icon>
@@ -89,13 +91,25 @@ $route = $_GET['route'] ?? 'home';
                             </li>
                             <li class="sidebar-item">
                                 <a class="sidebar-link" href="index.php?route=process-order" aria-expanded="false">
-                                    <iconify-icon icon="material-symbols:category"></iconify-icon>
+                                    <iconify-icon icon="uis:process"></iconify-icon>
                                     <span class="hide-menu">Process Order</span>
                                 </a>
                             </li>
                             <li class="sidebar-item">
+                                <a class="sidebar-link" href="index.php?route=serving-order" aria-expanded="false">
+                                    <iconify-icon icon="streamline:serving-dome"></iconify-icon>
+                                    <span class="hide-menu">Serving Order</span>
+                                </a>
+                            </li>
+                            <li class="sidebar-item">
+                                <a class="sidebar-link" href="index.php?route=complete-order" aria-expanded="false">
+                                    <iconify-icon icon="carbon:task-complete"></iconify-icon>
+                                    <span class="hide-menu">Complete Order</span>
+                                </a>
+                            </li>
+                            <li class="sidebar-item">
                                 <a class="sidebar-link" href="index.php?route=canceled-order" aria-expanded="false">
-                                    <iconify-icon icon="material-symbols:category"></iconify-icon>
+                                    <iconify-icon icon="ic:twotone-no-food"></iconify-icon>
                                     <span class="hide-menu">Canceled Order</span>
                                 </a>
                             </li>
@@ -110,19 +124,19 @@ $route = $_GET['route'] ?? 'home';
                         <div class="collapse <?php echo ($route == 'food-menu' || $route == 'manage-variation' || $route == 'category-management') ? 'show' : ''; ?>" id="collapseStock">
                             <li class="sidebar-item">
                                 <a class="sidebar-link" href="index.php?route=food-menu" aria-expanded="false">
-                                    <iconify-icon icon="ph:stack-plus"></iconify-icon>
+                                    <iconify-icon icon="bx:food-menu"></iconify-icon>
                                     <span class="hide-menu">Food Menu</span>
                                 </a>
                             </li>
                             <li class="sidebar-item">
                                 <a class="sidebar-link" href="index.php?route=manage-variation" aria-expanded="false">
-                                    <iconify-icon icon="ph:stack-plus"></iconify-icon>
+                                    <iconify-icon icon="streamline:ai-generate-variation-spark"></iconify-icon>
                                     <span class="hide-menu">Variation</span>
                                 </a>
                             </li>
                             <li class="sidebar-item">
                                 <a class="sidebar-link" href="index.php?route=category-management" aria-expanded="false">
-                                    <iconify-icon icon="ph:stack-minus"></iconify-icon>
+                                    <iconify-icon icon="carbon:category"></iconify-icon>
                                     <span class="hide-menu">Categories</span>
                                 </a>
                             </li>
@@ -137,13 +151,13 @@ $route = $_GET['route'] ?? 'home';
                         <div class="collapse <?php echo ($route == 'customer-detail' || $route == 'customer-feedback') ? 'show' : ''; ?>" id="collapseStock">
                             <li class="sidebar-item">
                                 <a class="sidebar-link" href="index.php?route=customer-detail" aria-expanded="false">
-                                    <iconify-icon icon="ph:stack-plus"></iconify-icon>
+                                    <iconify-icon icon="raphael:customer"></iconify-icon>
                                     <span class="hide-menu">Customer Detail</span>
                                 </a>
                             </li>
                             <li class="sidebar-item">
                                 <a class="sidebar-link" href="index.php?route=customer-feedback" aria-expanded="false">
-                                    <iconify-icon icon="ph:stack-minus"></iconify-icon>
+                                    <iconify-icon icon="codicon:feedback"></iconify-icon>
                                     <span class="hide-menu">Customer Feedback</span>
                                 </a>
                             </li>
@@ -158,7 +172,7 @@ $route = $_GET['route'] ?? 'home';
                         <div class="collapse <?php echo ($route == 'user-management') ? 'show' : ''; ?>" id="collapseUser">
                             <li class="sidebar-item">
                                 <a class="sidebar-link <?php echo ($route == 'user-management') ? 'active' : ''; ?>" href="index.php?route=user-management" aria-expanded="false">
-                                    <iconify-icon icon="mdi:cart"></iconify-icon>
+                                    <iconify-icon icon="fa-solid:users-cog"></iconify-icon>
                                     <span class="hide-menu">User</span>
                                 </a>
                             </li>

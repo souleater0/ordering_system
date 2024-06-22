@@ -14,8 +14,14 @@ if (isset($_SESSION['logged_in']) && $_SESSION['logged_in'] === true) {
             case "process-order":
                 require 'admin/view/order-management/process-order.php';
                 break;
+            case "serving-order":
+                require 'admin/view/order-management/serving-order.php';
+                break;
+            case "complete-order":
+                require 'admin/view/order-management/complete-order.php';
+                break;
             case "canceled-order":
-                require 'admin/view/order-management/canceled-order.php';
+                require 'admin/view/order-management/cancel-order.php';
                 break;
                 // MENU MANAGEMENT
             case "food-menu":
@@ -71,9 +77,9 @@ if (isset($_SESSION['logged_in']) && $_SESSION['logged_in'] === true) {
         case "scan-table":
             require 'user/view/qr-scanner/qrcode.php';
             break;
-        // case "privacy-policy":
-        //     require 'user/view/privacy-policy/privacy_policy.php';
-        //     break;
+            // case "privacy-policy":
+            //     require 'user/view/privacy-policy/privacy_policy.php';
+            //     break;
         case "personal-form":
             require 'user/view/personal-form/personal_form.php';
             break;

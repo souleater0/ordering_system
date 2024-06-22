@@ -1,6 +1,7 @@
 <?php
 $categorys = getCategory($pdo);
 ?>
+<link href="https://cdn.jsdelivr.net/npm/Bootstrap@5.0.2/dist/css/Bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
 <style>
     .list-group-scrollable {
 
@@ -29,7 +30,81 @@ $categorys = getCategory($pdo);
         margin-right: 10px; /* Adjust spacing between list items 
     }*/
 </style>
+
 <div class="container-fluid">
+
+    <main>
+        <div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="carousel">
+            <div class="carousel-indicators">
+              <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+              <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="1" aria-label="Slide 2"></button>
+              <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="2" aria-label="Slide 3"></button>
+              <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="3" aria-label="Slide 4"></button>
+              <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="4" aria-label="Slide 5"></button>
+            </div>
+ 
+            <!-- Image Sliders -->
+            <div class="carousel-inner">
+            <!-- Image one-->
+              <div class="carousel-item active">
+                <img src="../assets/images/one.jpg" class="d-block w-100" alt="...">
+              </div>
+ 
+              <!-- image two -->
+              <div class="carousel-item">
+                <img src="../assets/images/two.jpg" class="d-block w-100" alt="...">
+              </div>
+ 
+              <!-- Image Three -->
+              <div class="carousel-item">
+                <img src="../assets/images/three.jpg" class="d-block w-100" alt="...">
+              </div>
+ 
+              <!-- Image Four -->
+              <div class="carousel-item">
+                <img src="../assets/images/one.jpg" class="d-block w-100" alt="...">
+              </div>
+ 
+              <!-- Image Five -->
+              <div class="carousel-item">
+                <img src="../assets/images/two.jpg" class="d-block w-100" alt="...">
+              </div>
+            </div>
+ 
+            <!-- Carousel Controls -->
+           <section>
+            <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Previous</span>
+              </button>
+              
+              <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="next">
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Next</span>
+              </button>
+           </section>
+          </div>
+    </main>
+ 
+    <!-- Option 2: Separate Popper and Bootstrap JS -->
+   
+<!--  -->
+<!-- <div id="carouselExampleSlidesOnly" class="carousel slide" data-bs-ride="carousel">
+  <div class="carousel-inner">
+    <div class="carousel-item active">
+      <img src="../assets/images/b2.jpg" class="d-block w-100" alt="...">
+    </div>
+</div>
+  <a class="carousel-control-prev" href="#carouselExampleControls" role="button" data-slide="prev">
+    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+    <span class="sr-only">Previous</span>
+  </a>
+  <a class="carousel-control-next" href="#carouselExampleControls" role="button" data-slide="next">
+    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+    <span class="sr-only">Next</span>
+  </a>
+</div> -->
+<!--  -->
     <div class="text-center mt-5 fs-3">
         <h1>Welcome to Eskina</h1>
     </div>
@@ -89,7 +164,10 @@ $categorys = getCategory($pdo);
         </div>
     </div>
 </div>
-
+ <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js" integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p" crossorigin="anonymous">
+ 
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/Bootstrap@5.0.2/dist/js/Bootstrap.min.js" integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF" crossorigin="anonymous"></script>
 <script>
     $(document).ready(function() {
         var cartItems = [];

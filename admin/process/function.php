@@ -184,6 +184,7 @@ function addFood($pdo)
 {
     try {
         $food_name = $_POST['food_name'];
+        $food_description = $_POST['food_description'];
         $category_id = $_POST['category_id'];
         $foodOption = isset($_POST['foodOption']) ? $_POST['foodOption'] : '';
 
@@ -243,8 +244,9 @@ function addFood($pdo)
         }
 
         // Insert food details along with the image file name into the database
-        $stmt = $pdo->prepare("INSERT INTO menu (menu_name, category_id, menu_img, isEnabled) VALUES (:food_name, :category_id, :menu_img, :isEnabled)");
+        $stmt = $pdo->prepare("INSERT INTO menu (menu_name, menu_description, category_id, menu_img, isEnabled) VALUES (:food_name, :food_description, :category_id, :menu_img, :isEnabled)");
         $stmt->bindParam(':food_name', $food_name);
+        $stmt->bindParam(':food_description', $food_description);
         $stmt->bindParam(':category_id', $category_id, PDO::PARAM_INT);
         $stmt->bindParam(':menu_img', $file_name);
         $stmt->bindParam(':isEnabled', $isEnabled, PDO::PARAM_INT);
@@ -299,6 +301,7 @@ function updateFood($pdo)
     try {
         $updateId = $_POST['update-id'];
         $food_name = $_POST['food_name'];
+        $food_description = $_POST['food_description'];
         $category_id = $_POST['category_id'];
         $foodOption = isset($_POST['foodOption']) ? $_POST['foodOption'] : '';
 
@@ -355,16 +358,17 @@ function updateFood($pdo)
             }
 
             // Update menu record with new image file name
-            $stmt_update_img = $pdo->prepare("UPDATE menu SET menu_name = :food_name, category_id = :category_id, menu_img = :menu_img, isEnabled = :foodOption WHERE id = :updateId");
+            $stmt_update_img = $pdo->prepare("UPDATE menu SET menu_name = :food_name, menu_description = :food_description, category_id = :category_id, menu_img = :menu_img, isEnabled = :foodOption WHERE id = :updateId");
             $stmt_update_img->bindParam(':menu_img', $file_name);
         } else {
             // Update menu record without changing the image
-            $stmt_update = $pdo->prepare("UPDATE menu SET menu_name = :food_name, category_id = :category_id, isEnabled = :foodOption WHERE id = :updateId");
+            $stmt_update = $pdo->prepare("UPDATE menu SET menu_name = :food_name, menu_description = :food_description, category_id = :category_id, isEnabled = :foodOption WHERE id = :updateId");
         }
 
         // Bind parameters and execute the update query
         if (isset($stmt_update)) {
             $stmt_update->bindParam(':food_name', $food_name);
+            $stmt_update->bindParam(':food_description', $food_description);
             $stmt_update->bindParam(':category_id', $category_id, PDO::PARAM_INT);
             $stmt_update->bindParam(':foodOption', $foodOption, PDO::PARAM_INT);
             $stmt_update->bindParam(':updateId', $updateId, PDO::PARAM_INT);
@@ -1046,5 +1050,29 @@ function Cancel_to_Order($pdo)
         $pdo->rollBack();
 
         return false; // Return false if the transaction fails
+    }
+}
+function OrderListbyID($pdo, $orderNo) {
+    try {
+        // Query to fetch order details
+        $stmt = $pdo->prepare("
+            SELECT
+                a.order_no,
+                b.menu_name,
+                c.variation_name,
+                a.qty,
+                a.price
+            FROM ordered_menu a
+            INNER JOIN menu b ON b.id = a.menu_id
+            INNER JOIN variations c ON c.id = a.variation_id
+            WHERE a.order_no = :order_no
+        ");
+        $stmt->bindParam(':order_no', $orderNo, PDO::PARAM_INT);
+        $stmt->execute();
+        $orderDetails = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+        return $orderDetails;
+    } catch (PDOException $e) {
+        return false; // Return false if an error occurs
     }
 }

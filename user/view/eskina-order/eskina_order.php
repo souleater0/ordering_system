@@ -1,7 +1,7 @@
 <?php
 $categorys = getCategory($pdo);
 ?>
-<link href="https://cdn.jsdelivr.net/npm/Bootstrap@5.0.2/dist/css/Bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+
 <style>
     .list-group-scrollable {
 
@@ -29,11 +29,99 @@ $categorys = getCategory($pdo);
     /* .list-group-scrollable ul.list-group .list-group-item {
         margin-right: 10px; /* Adjust spacing between list items 
     }*/
+    .gfg {
+    height: 50px;
+    width: 50px;
+    }
+
+.mynav {
+    color: #fff;
+}
+
+.mynav li a {
+    color: #fff;
+    text-decoration: none;
+    width: 100%;
+    display: block;
+    border-radius: 5px;
+    padding: 8px 5px;
+}
+
+.mynav li a.active {
+    background: rgba(255, 255, 255, 0.2);
+}
+
+.mynav li a:hover {
+    background-color:white;
+    color: red;
+}
+
+.mynav li a i {
+    width: 25px;
+    text-align: center;
+}
+
+.notification-badge {
+    background-color: rgba(255, 255, 255, 0.7);
+    float: right;
+    color: #222;
+    font-size: 14px;
+    padding: 0px 8px;
+    border-radius: 2px;
+}
+li.list-group-item.nav-item.mb-1.lead:hover {
+    color: white;
+    font-size: 25px;
+}
+.bg-danger1{
+    background-color: #dc3545;
+}
 </style>
+<!--  -->
+<div class="container-fluid p-0 d-flex h-100">
+        <div id="bdSidebar" 
+             class="d-flex flex-column 
+                    flex-shrink-0 
+                    p-3 bg-danger1
+                    text-white offcanvas-md offcanvas-start">
+            <a href="#" 
+               class="navbar-brand">
+            </a><hr>
+            <ul class="mynav nav nav-pills flex-column mb-auto" id="list-menu">
+                <li class="list-group-item nav-item mb-1" aria-current="true" role="button" data-id="">All</li><hr>
+                                <?php foreach ($categorys as $category) : ?>
+                                    <li class="list-group-item nav-item mb-1 lead"aria-current="true" role="button" data-id="<?php echo $category['category_id'] ?>"><?php echo $category['category_name'] ?></li><hr>
+                                <?php endforeach; ?>
+  
+            </ul>
+           
+        </div>
 
-<div class="container-fluid">
-
-    <main>
+        <div class="bg-light flex-fill">
+            <div class="p-2 d-md-none d-flex text-white bg-danger">
+                <a href="#" class="text-white" 
+                   data-bs-toggle="offcanvas"
+                   data-bs-target="#bdSidebar">
+                    <i class="fa-solid fa-bars"></i>
+                </a>
+                <span class="ms-3">Eskina</span>
+            </div>
+            <div class="p-4">
+                <!-- <nav style="--bs-breadcrumb-divider:'>';font-size:14px">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item">
+                            <i class="fa-solid fa-house"></i>
+                        </li>
+                        <li class="breadcrumb-item">Learning Content</li>
+                        <li class="breadcrumb-item">Next Page</li>
+                    </ol>
+                </nav>
+ -->
+                <!-- <hr> -->
+                <div class="row">
+                    <div class="col">
+                        <!--  -->
+                        <main>
         <div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="carousel">
             <div class="carousel-indicators">
               <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
@@ -106,13 +194,13 @@ $categorys = getCategory($pdo);
 </div> -->
 <!--  -->
     <div class="text-center mt-5 fs-3">
-        <h1>Welcome to Eskina</h1>
+        <!-- <h1>Welcome to Eskina</h1> -->
     </div>
     <div class="container">
         <div class="card">
             <div class="card-body">
                 <div class="row p-2">
-                    <div class="col-12" style="max-width: 100%;">
+                    <!-- <div class="col-12" style="max-width: 100%;">
                         <div class="list-group-scrollable" data-simplebar="">
                             <ul class="list-group d-flex flex-row" id="list-menu">
                                 <li class="list-group-item" aria-current="true" role="button" data-id="">All</li>
@@ -121,7 +209,7 @@ $categorys = getCategory($pdo);
                                 <?php endforeach; ?>
                             </ul>
                         </div>
-                    </div>
+                    </div> -->
                     <div class="col-12 bg-light overflow-auto" style="max-height: 480px;" data-simplebar="">
                         <div class="row gy-4 p-0" id="menuItems">
                             <!-- Cards content here -->
@@ -164,10 +252,35 @@ $categorys = getCategory($pdo);
         </div>
     </div>
 </div>
- <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js" integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p" crossorigin="anonymous">
- 
-    </script>
-    <script src="https://cdn.jsdelivr.net/npm/Bootstrap@5.0.2/dist/js/Bootstrap.min.js" integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF" crossorigin="anonymous"></script>
+<!-- MODAL THANK YOU -->
+<div class="modal" id="thankModal" tabindex="-1">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Thank You for Your Order!</h5>
+      </div>
+      <div class="modal-body">
+         <p id="customerName"></p>
+        <p style="white-space: pre-wrap;">Thank you for your purchase! Your order has been received and is being processed.
+
+Please wait a moment while we confirm your order details. A representative will be with you shortly to finalize everything.
+
+We appreciate your patience and look forward to serving you!</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+                        <!--  -->
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
 <script>
     $(document).ready(function() {
         var cartItems = [];
@@ -176,7 +289,44 @@ $categorys = getCategory($pdo);
             return variation ? variation.price : null; // Return null if the variation is not found
         }
         $('#orderNow').click(function() {
-            console.log(cartItems);
+            let formData = localStorage.getItem('formData');
+            let tableNumber = localStorage.getItem('tableNumber');
+
+            // Parse the form data
+            let params = new URLSearchParams(formData);
+            let fullname = params.get('fullname');
+            let contactno = params.get('contactno');
+            let email = params.get('email');
+
+            document.getElementById("customerName").innerText = "Dear " + fullname + ",";
+
+            $.ajax({
+                url: "process/user_action.php",
+                method: "POST",
+                data: {
+                    tableNo : tableNumber,
+                    fullname : fullname,
+                    cartList : cartItems,
+                    action : "orderNow"
+                },
+                dataType: "json",
+                success: function(response) {
+                    if(response.success==true){
+                        clearCart();
+                        $('#cartModal').modal('hide');
+                        $('#thankModal').modal('show');
+                        toastr.success(response.message);
+                    }else{
+                        toastr.error(response.message);
+                    }
+                }
+            });
+            // // console.log(fullname+' '+contactno+' '+email+' '+tableNumber);
+            // clearCart();
+            // $('#cartModal').modal('hide');
+            // $('#thankModal').modal('show');
+            
+            // console.log(cartItems);
         });
 
         function updateViewListButton() {
@@ -185,7 +335,7 @@ $categorys = getCategory($pdo);
         }
         $('#menuItems').on('click', '.card', function() {
             var menuID = $(this).attr('menu-id');
-            console.log('Menu ID:', menuID); // Log menu ID to confirm it's correct
+            // console.log('Menu ID:', menuID); // Log menu ID to confirm it's correct
 
             $.ajax({
                 url: "process/user_action.php",
@@ -229,7 +379,7 @@ $categorys = getCategory($pdo);
                         <div class="modal-footer">
                             <button type="button" class="btn btn-danger btn-sm btn-add-to-cart" data-menu-id="${menuItem.id}">Add to Cart</button>
                         </div>`;
-console.log(menuItem.variations);
+// console.log(menuItem.variations);
                         // Insert the modal content into the modal
                         $('#itemModal .modal-content').html(modalContent);
                         $('input[name="size"]:first').prop('checked', true);
@@ -256,9 +406,9 @@ console.log(menuItem.variations);
                             var quantity = parseInt($('#quantity').val());
                             var variations = menuItem.variations;
                             var variationIdToFind = parseInt(sizeOption);
-                            console.log('selected:', variationIdToFind);
+                            // console.log('selected:', variationIdToFind);
                             var variation = variations.find(variation => variation.id === variationIdToFind);
-                            console.log('Found variation:', variation);
+                            // console.log('Found variation:', variation);
                             // Prepare data to send to server
                             var cartItem = {
                                 menu_id: menuID,
@@ -385,10 +535,14 @@ console.log(menuItem.variations);
             }
 
             // Optionally, update UI or send data to server
-            console.log('Cart updated:', cartItems);
+            // console.log('Cart updated:', cartItems);
             updateViewListButton();
         }
-
+        function clearCart() {
+            cartItems = [];
+            updateViewListButton(); // Optionally update the UI after clearing the cart
+            // console.log('Cart cleared:', cartItems); // Confirm that the cart is cleared
+        }
 
 
         // Event handler for "Add to List" buttons
@@ -499,3 +653,4 @@ console.log(menuItem.variations);
 
     });
 </script>
+</div>

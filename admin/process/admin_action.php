@@ -518,3 +518,28 @@ if (!empty($_POST['action']) && $_POST['action'] == 'cancel_to_order') {
     echo json_encode($response);
     exit();
 }
+if (!empty($_POST['action']) && $_POST['action'] == 'retrievedOrderListbyID') {
+    if (empty($_POST['order_no'])) {
+        $response = array(
+            'success' => false,
+            'message' => 'Failed to Retrieve Order No.'
+        );
+    } else {
+        $orderDetails = OrderListbyID($pdo, $_POST['order_no']);
+        if ($orderDetails !== false) {
+            $response = array(
+                'success' => true,
+                'message' => 'Order Retrieved.',
+                'data' => $orderDetails
+            );
+        } else {
+            $response = array(
+                'success' => false,
+                'message' => 'Failed to Retrieve Order!.'
+            );
+        }
+    }
+    header('Content-Type: application/json');
+    echo json_encode($response);
+    exit();
+}

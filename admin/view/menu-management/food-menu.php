@@ -39,6 +39,10 @@ $variations = getVariations($pdo);
                             <input type="text" class="form-control" id="food_name" name="food_name" placeholder="Ex. Chicken Inasal">
                         </div>
                         <div class="col-lg-12">
+                        <label for="food_description" class="form-label">Food Description</label>
+                        <textarea class="form-control" id="food_description" name="food_description" rows="3"></textarea>
+                        </div>
+                        <div class="col-lg-12">
                             <label for="category_id" class="form-label">Category</label>
                             <select class="selectpicker form-control" id="category_id" name="category_id" data-live-search="true">
                                 <?php foreach ($categorys as $category) : ?>

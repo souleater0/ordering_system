@@ -164,3 +164,60 @@ function getFoodMenubyMenuID($pdo)
         return array(); // Return an empty array if an error occurs
     }
 }
+function orderNow($pdo) {
+    try {
+        // Begin transaction
+        $pdo->beginTransaction();
+
+        $tableNo = $_POST['tableNo'];
+        $fullname = $_POST['fullname'];
+        $orderItems = $_POST['cartList']; // Assuming this is already an array
+
+        // Check if orderItems is already an array
+        if (!is_array($orderItems)) {
+            // Handle the error or decode it if needed
+            echo "Error: orderItems should be an array.";
+            $pdo->rollBack();
+            return false;
+        }
+
+        // Insert customer order and retrieve the generated order ID
+        $stmt = $pdo->prepare("INSERT INTO customer_order (table_no, customer_name) VALUES (:table_no, :customer_name)");
+        $stmt->bindParam(':table_no', $tableNo, PDO::PARAM_INT);
+        $stmt->bindParam(':customer_name', $fullname);
+        if (!$stmt->execute()) {
+            // If the insert fails, rollback the transaction and return false
+            $pdo->rollBack();
+            return false;
+        }
+        $orderNo = $pdo->lastInsertId(); // Retrieve the last inserted order ID
+
+        // Prepare the statement for inserting into ordered_menu
+        $stmt = $pdo->prepare("INSERT INTO ordered_menu (order_no, menu_id, variation_id, qty, price) VALUES (:order_no, :menu_id, :variation_id, :qty, :price)");
+
+        // Iterate through the order items and insert each one
+        foreach ($orderItems as $item) {
+            $stmt->bindParam(':order_no', $orderNo, PDO::PARAM_INT);
+            $stmt->bindParam(':menu_id', $item['menu_id'], PDO::PARAM_INT);
+            $stmt->bindParam(':variation_id', $item['variation_id'], PDO::PARAM_INT);
+            $stmt->bindParam(':qty', $item['quantity'], PDO::PARAM_INT);
+            $stmt->bindParam(':price', $item['price'], PDO::PARAM_STR);
+            if (!$stmt->execute()) {
+                // If the insert fails, rollback the transaction and return false
+                $pdo->rollBack();
+                return false;
+            }
+        }
+
+        // Commit the transaction
+        $pdo->commit();
+        return true;
+
+    } catch (PDOException $e) {
+        // Handle database connection error
+        echo "Error: " . $e->getMessage();
+        // Rollback the transaction if an error occurs
+        $pdo->rollBack();
+        return false; // Return false if an error occurs
+    }
+}

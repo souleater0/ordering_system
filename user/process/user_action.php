@@ -89,3 +89,34 @@ if (!empty($_POST['action']) && $_POST['action'] == 'getMenubyMenuID') {
     echo json_encode($response);
     exit();
 }
+if (!empty($_POST['action']) && $_POST['action'] == 'orderNow') {
+    if (empty($_POST['tableNo'])) {
+        $response = array(
+            'success' => false,
+            'message' => 'Failed to Retrieve Table No.'
+        );
+    }
+    else if (empty($_POST['fullname'])) {
+        $response = array(
+            'success' => false,
+            'message' => 'Failed to Retrieve Customer Name'
+        );
+    }
+    else {
+        if (orderNow($pdo)) {
+            $response = array(
+                'success' => true,
+                'message' => 'Order Successful.'
+            );
+        }else{
+            $response = array(
+                'success' => false,
+                'message' => 'Failed to Order!.'
+            );
+        }
+    }
+    header('Content-Type: application/json');
+    echo json_encode($response);
+    exit();
+}
+

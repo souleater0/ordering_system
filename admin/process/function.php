@@ -20,6 +20,63 @@ function loginProcess($pdo)
         return false;
     }
 }
+function getFoodOrderbyID($pdo)
+{
+    try {
+        $order_no = isset($_POST['order_no']) ? $_POST['order_no'] : null;
+
+        if ($order_no) {
+            $query = "SELECT
+            c.id,
+            c.menu_id,
+            a.menu_name,
+            c.variation_id,
+            b.variation_name,
+            c.qty,
+            c.price
+            FROM menu a
+            INNER JOIN variations b
+            INNER JOIN ordered_menu c ON c.menu_id = a.id AND c.variation_id = b.id
+            WHERE c.order_no = :order_no";
+            $stmt = $pdo->prepare($query);
+            $stmt->bindParam(':order_no', $order_no, PDO::PARAM_INT);
+            $stmt->execute();
+            $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+            if ($results) {
+                return $results;
+            } else {
+                return json_encode(['success' => false, 'message' => 'No menu items found for ORDER NO: ' . $order_no]);
+            }
+        } else {
+            return json_encode(['success' => false, 'message' => 'Menu ID is missing']);
+        }
+    } catch (PDOException $e) {
+        // Handle database connection or query error
+        return json_encode(['success' => false, 'message' => 'Database error: ' . $e->getMessage()]);
+    }
+}
+function getFoodList($pdo){
+    try {
+        $query = "SELECT
+        a.id AS menu_id,
+        a.menu_name,
+        b.variation_name,
+        c.price
+        FROM menu a
+        INNER JOIN variations b
+        INNER JOIN menu_variations c ON c.menu_id = a.id AND c.variation_id = b.id";
+        $stmt = $pdo->prepare($query);
+
+        $stmt->execute();
+        $roles = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        return $roles;
+    } catch (PDOException $e) {
+        // Handle database connection error
+        echo "Error: " . $e->getMessage();
+        return array(); // Return an empty array if an error occurs
+    }
+}
 function getRole($pdo)
 {
     try {

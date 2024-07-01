@@ -115,6 +115,7 @@
                 }
             });
         });
+
         $('#orderTable').on('click', 'button.btn-cancel', function() {
             var data = table.row($(this).parents('tr')).data();
             var order_no = data.order_no;

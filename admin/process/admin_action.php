@@ -543,3 +543,28 @@ if (!empty($_POST['action']) && $_POST['action'] == 'retrievedOrderListbyID') {
     echo json_encode($response);
     exit();
 }
+if (!empty($_POST['action']) && $_POST['action'] == 'getFoodOrderbyID') {
+    if (empty($_POST['order_no'])) {
+        $response = array(
+            'success' => false,
+            'message' => 'Failed to Retrieve Menu ID'
+        );
+    } 
+    else {
+        if (getFoodOrderbyID($pdo)) {
+            $data = getFoodOrderbyID($pdo);
+            $response = array(
+                'success' => true,
+                'orderList' => $data
+            );
+        }else{
+            $response = array(
+                'success' => false,
+                'message' => 'No Item Found'
+            );
+        }
+    }
+    header('Content-Type: application/json');
+    echo json_encode($response);
+    exit();
+}

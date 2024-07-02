@@ -221,3 +221,30 @@ function orderNow($pdo) {
         return false; // Return false if an error occurs
     }
 }
+function saveCustomerDetails($pdo) {
+    try {
+        // Begin transaction
+        $pdo->beginTransaction();
+        $fname = $_POST['fullname'];
+        $contactNo = isset($_POST['contactno']) ? $_POST['contactno'] : null;
+        $email = isset($_POST['email']) ? $_POST['email'] : null;
+
+        // Insert customer details
+        $stmt = $pdo->prepare("INSERT INTO customer_detail (customer_name, customer_contact, customer_email) VALUES (:customer_name, :customer_contact, :customer_email)");
+        $stmt->bindParam(':customer_name', $fname);
+        $stmt->bindParam(':customer_contact', $contactNo);
+        $stmt->bindParam(':customer_email', $email);
+        $stmt->execute(); // Execute the query
+
+        // Commit the transaction
+        $pdo->commit();
+        return true;
+        
+    } catch (PDOException $e) {
+        // Handle database connection or query error
+        echo "Error: " . $e->getMessage();
+        // Rollback the transaction if an error occurs
+        $pdo->rollBack();
+        return false; // Return false if an error occurs
+    }
+}

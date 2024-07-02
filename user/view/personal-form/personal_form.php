@@ -35,10 +35,24 @@
             var fullNameInput = $('#uFullname').val().trim();
             if (fullNameInput !== '') {
                 var formData = $('#personalForm').serialize();
-                localStorage.setItem('formData', formData);
-                window.location.href = "index.php?route=user-overview";
+                //save user
+                $.ajax({
+                url: "process/user_action.php",
+                method: "POST",
+                data: formData+"&action=recordCustomer",
+                dataType: "json",
+                success: function(response) {
+                    if(response.success){
+                        localStorage.setItem('formData', formData);
+                        // window.location.href = "index.php?route=user-overview";
+                        toastr.success(response.message);
+                    }else{
+                        toastr.error(response.message);
+                    }
+                }
+            });
             } else {
-                alert("Please Enter your Fullname");
+                // alert("Please Enter your Fullname");
             }   
         });
         $('#uContact').on('input', function(){

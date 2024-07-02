@@ -1,7 +1,6 @@
 <?php 
 $roles = getRole($pdo);
 ?>
-
 <div class="body-wrapper-inner">
   <div class="container-fluid">
     <div class="card shadow-sm">

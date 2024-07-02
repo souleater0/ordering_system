@@ -20,6 +20,10 @@
     <!-- SCROLL -->
     <link rel="stylesheet" href="../assets/libs/simplebar/dist/simplebar.css">
     <script src="../assets/libs/simplebar/dist/simplebar.js"></script>
+
+    <!-- TOASTR -->
+    <link rel="stylesheet" href="../assets/libs/toastr/css/toastr.min.css">
+    <script src="../assets/libs/toastr/js/toastr.min.js"></script>
 </head>
 
 <body>

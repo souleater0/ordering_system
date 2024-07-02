@@ -14,6 +14,7 @@ if (isset($_GET['table_type'])) {
             //     break;
         case 'food-menu':
             $sql = 'SELECT a.id, a.menu_name,
+            a.menu_description,
             GROUP_CONCAT(b.price ORDER BY b.price SEPARATOR ", ") AS all_prices,
             a.category_id,
             c.category_name,

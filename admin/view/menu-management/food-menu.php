@@ -129,6 +129,10 @@ $variations = getVariations($pdo);
                     className: 'text-dark'
                 },
                 {
+                    data: 'menu_description',
+                    visible: false
+                },
+                {
                     data: 'all_prices',
                     title: 'Price',
                     className: 'text-dark text-center'
@@ -264,6 +268,7 @@ $variations = getVariations($pdo);
             var data = table.row($(this).parents('tr')).data();
             // // Populate modal with data
             $('#food_name').val(data.menu_name);
+            $('#food_description').val(data.menu_description);
             $('#food_price').val(data.menu_price);
             $('#category_id').val(data.category_id);
             $('#category_id').selectpicker('refresh');

@@ -119,4 +119,26 @@ if (!empty($_POST['action']) && $_POST['action'] == 'orderNow') {
     echo json_encode($response);
     exit();
 }
-
+if (!empty($_POST['action']) && $_POST['action'] == 'recordCustomer') {
+    if (empty($_POST['fullname'])) {
+        $response = array(
+            'success' => false,
+            'message' => 'Please Enter you Fullname.'
+        );
+    }else{
+        if(saveCustomerDetails($pdo)){
+            $response = array(
+                'success' => true,
+                'message' => 'Customer has been recorded.'
+            );
+        }else{
+            $response = array(
+                'success' => false,
+                'message' => 'Failed to record Customer!.'
+            );
+        }
+    }
+    header('Content-Type: application/json');
+    echo json_encode($response);
+    exit();
+}

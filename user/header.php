@@ -24,6 +24,8 @@
     <!-- TOASTR -->
     <link rel="stylesheet" href="../assets/libs/toastr/css/toastr.min.css">
     <script src="../assets/libs/toastr/js/toastr.min.js"></script>
+    <!-- ICONIFY -->
+    <script src="https://cdn.jsdelivr.net/npm/iconify-icon@1.0.8/dist/iconify-icon.min.js"></script>
 </head>
 
 <body>

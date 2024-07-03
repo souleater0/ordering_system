@@ -1,5 +1,6 @@
 <!-- <script src="../assets/libs/qrcode/html5qrcode.min.js"></script> -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/html5-qrcode/2.3.8/html5-qrcode.min.js" integrity="sha512-r6rDA7W6ZeQhvl8S7yRVQUKVHdexq+GAlNkNNqVC7YyIV+NwqCTJe2hDWCiffTyRNOeGEzRRJ9ifvRm/HCzGYg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/html5-qrcode/2.3.8/html5-qrcode.min.js" integrity="sha512-r6rDA7W6ZeQhvl8S7yRVQUKVHdexq+GAlNkNNqVC7YyIV+NwqCTJe2hDWCiffTyRNOeGEzRRJ9ifvRm/HCzGYg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script> -->
+<script src="https://unpkg.com/html5-qrcode" type="text/javascript"></script>
 <style>
         #webcam-container {
             text-align: center;
@@ -46,7 +47,8 @@
                         {
                             fps: 10, // Optional, frames per second for QR code scanning
                             qrbox: { width: 300, height: 300 }, // Size of the scanning box
-                            aspectRatio: 1.0 // Ensures the box is square
+                            aspectRatio: 1.0, // Ensures the box is square
+                            focusMode: "continuous"
                         },
                         qrCodeMessage => {
                             // console.log(`QR Code detected: ${qrCodeMessage}`);

@@ -142,3 +142,36 @@ if (!empty($_POST['action']) && $_POST['action'] == 'recordCustomer') {
     echo json_encode($response);
     exit();
 }
+if (!empty($_POST['action']) && $_POST['action'] == 'submitFeedback') {
+    if (empty($_POST['fullname'])) {
+        $response = array(
+            'success' => false,
+            'message' => 'Failed to retrieve Name'
+        );
+    }else if (empty($_POST['rating'])) {
+        $response = array(
+            'success' => false,
+            'message' => 'Please select a rate.'
+        );
+    }else if (empty($_POST['remarks'])) {
+        $response = array(
+            'success' => false,
+            'message' => 'Please enter your feedback.'
+        );
+    }else{
+        if(saveCustomerFeedback($pdo)){
+            $response = array(
+                'success' => true,
+                'message' => 'Thank you for your feedback.'
+            );
+        }else{
+            $response = array(
+                'success' => false,
+                'message' => 'Failed to record Customer Feedback!.'
+            );
+        }
+    }
+    header('Content-Type: application/json');
+    echo json_encode($response);
+    exit();
+}

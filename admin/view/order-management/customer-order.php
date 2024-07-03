@@ -229,7 +229,7 @@ $(document).ready(function() {
                             '<td class="text-dark">' + item.qty + '</td>' +
                             '<td class="text-dark">' + item.price + '</td>' +
                             '</tr>';
-                        totalPrice += parseFloat(item.price);
+                        totalPrice += parseFloat(item.price * item.qty);
                     });
                     $('#modalOrderTable tbody').html(orderItemsHtml);
                     $('#modalTotalPrice').text(totalPrice.toFixed(2));

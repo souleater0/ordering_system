@@ -16,7 +16,7 @@
                         </div>
                     </div>
                     <div class="col-12">
-                        <div class="card py-5 shadow-sm">
+                        <div class="card py-5 shadow-sm" id="takeSurvey">
                             <h5 class="text-center mt-3 text-uppercase">Take Survey</h5>
                         </div>
                     </div>
@@ -29,6 +29,9 @@
     $(document).ready(function () {
         $('#takeOrder').click(function() {
             window.location.href = "index.php?route=eskina-order";
+        });
+        $('#takeSurvey').click(function() {
+            window.location.href = "index.php?route=feedback";
         });
     });
 </script>

@@ -78,6 +78,7 @@ li.list-group-item.nav-item.mb-1.lead:hover {
 }
 </style>
 <!--  -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js" integrity="sha512-BNaRQnYJYiPSqHHDb58B0yaPfCu+Wgds8Gp/gU33kqBtgNS4tSPHuGibyoeqMV/TJlSKda6FXzoEyYGjTe+vXA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <div class="container-fluid p-0 d-flex h-100">
         <div id="bdSidebar" 
              class="d-flex flex-column 
@@ -300,27 +301,28 @@ We appreciate your patience and look forward to serving you!</p>
 
             document.getElementById("customerName").innerText = "Dear " + fullname + ",";
 
-            $.ajax({
-                url: "process/user_action.php",
-                method: "POST",
-                data: {
-                    tableNo : tableNumber,
-                    fullname : fullname,
-                    cartList : cartItems,
-                    action : "orderNow"
-                },
-                dataType: "json",
-                success: function(response) {
-                    if(response.success==true){
-                        clearCart();
-                        $('#cartModal').modal('hide');
-                        $('#thankModal').modal('show');
-                        toastr.success(response.message);
-                    }else{
-                        toastr.error(response.message);
-                    }
-                }
-            });
+            console.log(cartItems);
+            // $.ajax({
+            //     url: "process/user_action.php",
+            //     method: "POST",
+            //     data: {
+            //         tableNo : tableNumber,
+            //         fullname : fullname,
+            //         cartList : cartItems,
+            //         action : "orderNow"
+            //     },
+            //     dataType: "json",
+            //     success: function(response) {
+            //         if(response.success==true){
+            //             clearCart();
+            //             $('#cartModal').modal('hide');
+            //             $('#thankModal').modal('show');
+            //             toastr.success(response.message);
+            //         }else{
+            //             toastr.error(response.message);
+            //         }
+            //     }
+            // });
             // // console.log(fullname+' '+contactno+' '+email+' '+tableNumber);
             // clearCart();
             // $('#cartModal').modal('hide');

@@ -74,9 +74,9 @@ if (isset($_SESSION['logged_in']) && $_SESSION['logged_in'] === true) {
     }
 } else {
     switch ($route) {
-        case "scan-table":
-            require 'user/view/qr-scanner/qrcode.php';
-            break;
+        // case "scan-table":
+        //     require 'user/view/qr-scanner/qrcode.php';
+        //     break;
             // case "privacy-policy":
             //     require 'user/view/privacy-policy/privacy_policy.php';
             //     break;
@@ -88,6 +88,9 @@ if (isset($_SESSION['logged_in']) && $_SESSION['logged_in'] === true) {
             break;
         case "eskina-order":
             require 'user/view/eskina-order/eskina_order.php';
+            break;
+        case "feedback":
+            require 'user/view/user-feedback/feedback.php';
             break;
         default:
             require 'user/view/personal-form/personal_form.php';

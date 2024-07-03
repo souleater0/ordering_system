@@ -44,8 +44,10 @@
                 success: function(response) {
                     if(response.success){
                         localStorage.setItem('formData', formData);
-                        // window.location.href = "index.php?route=user-overview";
                         toastr.success(response.message);
+                        setTimeout(function() {
+                          window.location.href = "index.php?route=user-overview";
+                        }, 2000);
                     }else{
                         toastr.error(response.message);
                     }

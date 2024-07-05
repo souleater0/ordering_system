@@ -16,7 +16,7 @@
             <div class="col">
                 <div class="bg-secondary text-white text-center fw-bold fs-1">Preparing...</div>
                 <div class="col-12">
-                  <span>12</span>
+                  <span class="text-dark fw-bold fs-1 text-center">12</span>
                 </div>
             </div>
             <div class="col">

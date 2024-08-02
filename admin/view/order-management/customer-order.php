@@ -82,7 +82,7 @@ $foodlists = getFoodList($pdo);
                 </div>
                 <div class="modal-footer">
                     <button type="button" id="addFood" class="btn btn-secondary">Add Food</button>
-                    <button type="button" class="btn btn-primary">Save changes</button>
+                    <button type="button" id="updateOrder" class="btn btn-primary" >Update Order</button>
                 </div>
             </form>
         </div>
@@ -156,7 +156,7 @@ $(document).ready(function() {
     });
 
     function addFoodList(menuid = '', qty = 1) {
-        var foodCount = $('.foodItem').length; // Get current count of foods
+        var foodCount = $('.foodItem').length + 1; // Get current count of foods
         $('#foodList').append(`
         <div class="foodItem row mt-2">
             <div class="col-8">
@@ -254,7 +254,9 @@ $(document).ready(function() {
         printWindow.document.close();
         printWindow.print(); // Print the new window
     });
-
+    $('#updateOrder').click(function() {
+        console.log(orderList);
+    }); 
     $('#orderTable').on('click', 'button.btn-process', function() {
         var data = table.row($(this).parents('tr')).data();
         var order_no = data.order_no;

@@ -105,6 +105,29 @@ if (!empty($_POST['action']) && $_POST['action'] == 'updateUserPassword') {
     echo json_encode($response);
     exit();
 }
+if (!empty($_POST['action']) && $_POST['action'] == 'deleteUser') {
+    if (empty($_POST['user_id'])) {
+        $response = array(
+            'success' => false,
+            'message' => 'No User Id Found!'
+        );
+    } else {
+        if (deleteUser($pdo)) {
+            $response = array(
+                'success' => true,
+                'message' => 'User password has been deleted.'
+            );
+        } else {
+            $response = array(
+                'success' => false,
+                'message' => 'Failed to delete user!'
+            );
+        }
+    }
+    header('Content-Type: application/json');
+    echo json_encode($response);
+    exit();
+}
 if (!empty($_POST['action']) && $_POST['action'] == 'addFood') {
     if (empty($_POST['food_name'])) {
         $response = array(

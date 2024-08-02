@@ -327,7 +327,31 @@ We appreciate your patience and look forward to serving you!</p>
             // clearCart();
             // $('#cartModal').modal('hide');
             // $('#thankModal').modal('show');
-            
+            $.ajax({
+                url: "process/user_action.php",
+                method: "POST",
+                data: {
+                    tableNo: tableNumber,
+                    fullname: fullname,
+                    cartList: cartItems,
+                    action: "orderNow"
+                },
+                dataType: "json",
+                success: function(response) {
+                    if (response.success) {
+                        clearCart(); // Function to clear the cart
+                        $('#cartModal').modal('hide');
+                        $('#thankModal').modal('show');
+                        toastr.success(response.message);
+
+                        // Trigger receipt download by redirecting to the PHP script
+                        let orderNo = response.order_no;
+                        window.location.href = `generate_receipt.php?order_no=${orderNo}`;
+                    } else {
+                        toastr.error(response.message);
+                    }
+                }
+            });
             // console.log(cartItems);
         });
 

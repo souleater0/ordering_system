@@ -173,10 +173,9 @@ function orderNow($pdo) {
         $fullname = $_POST['fullname'];
         $orderItems = $_POST['cartList']; // Assuming this is already an array
 
-        // Check if orderItems is already an array
+        // Check if orderItems is an array
         if (!is_array($orderItems)) {
             // Handle the error or decode it if needed
-            echo "Error: orderItems should be an array.";
             $pdo->rollBack();
             return false;
         }
@@ -211,16 +210,15 @@ function orderNow($pdo) {
 
         // Commit the transaction
         $pdo->commit();
-        return true;
+        return $orderNo; // Return the order number if successful
 
     } catch (PDOException $e) {
         // Handle database connection error
-        echo "Error: " . $e->getMessage();
-        // Rollback the transaction if an error occurs
         $pdo->rollBack();
         return false; // Return false if an error occurs
     }
 }
+
 function saveCustomerDetails($pdo) {
     try {
         // Begin transaction

@@ -198,13 +198,13 @@ function updateUser($pdo)
             return false;
         }
 
-        $stmt = $pdo->prepare("UPDATE users SET username = :username, display_name = :display_name, role_id = :role_id, isEnabled = : WHERE id = :user_id");
+        $stmt = $pdo->prepare("UPDATE users SET username = :username, display_name = :display_name, role_id = :role_id, isEnabled = :isEnabled WHERE id = :user_id");
         //bind parameters
         $stmt->bindParam(':display_name', $user_display);
         $stmt->bindParam(':username', $username);
         $stmt->bindParam(':role_id', $user_role, PDO::PARAM_INT);
         $stmt->bindParam(':isEnabled', $loginEnabled, PDO::PARAM_INT);
-
+        $stmt->bindParam(':user_id', $update_ID, PDO::PARAM_INT);
         if ($stmt->execute()) {
             return true;
         } else {
@@ -237,6 +237,35 @@ function updateUserPassword($pdo)
         return array(); // Return an empty array if an error occurs
     }
 }
+function deleteUser($pdo)
+{
+    try {
+        // Get the user ID from POST request
+        $user_id = $_POST['user_id'];
+
+        // Begin a transaction
+        $pdo->beginTransaction();
+
+        // SQL query to delete data from users table
+        $deleteQuery = "DELETE FROM users WHERE id = :user_id";
+        
+        // Prepare and execute the delete query
+        $deleteStmt = $pdo->prepare($deleteQuery);
+        $deleteStmt->execute([':user_id' => $user_id]);
+
+        // Commit the transaction
+        $pdo->commit();
+
+        return true; // Return true if the transaction is successful
+    } catch (PDOException $e) {
+        // Roll back the transaction if an error occurs
+        $pdo->rollBack();
+        // Handle database connection error
+        echo "Error: " . $e->getMessage();
+        return array(); // Return an empty array if an error occurs
+    }
+}
+
 function addFood($pdo)
 {
     try {
@@ -360,13 +389,12 @@ function updateFood($pdo)
         $food_name = $_POST['food_name'];
         $food_description = $_POST['food_description'];
         $category_id = $_POST['category_id'];
-        $foodOption = isset($_POST['foodOption']) ? $_POST['foodOption'] : '';
-
-        // Convert foodOption to integer for database
-        $foodOption = ($foodOption === 'on') ? 1 : 0;
+        $foodOption = isset($_POST['foodOption']) ? 1 : 0;
+        $updated_variations = $_POST['variations'];
 
         // Handle file upload if a new image is selected
-        if ($_FILES["foodImg"]["name"]) {
+        $file_name = null;
+        if (isset($_FILES["foodImg"]) && $_FILES["foodImg"]["name"]) {
             $target_dir = "../../assets/images/menu/";
             $target_file = $target_dir . basename($_FILES["foodImg"]["name"]);
             $uploadOk = 1;
@@ -413,96 +441,75 @@ function updateFood($pdo)
                     }
                 }
             }
-
-            // Update menu record with new image file name
-            $stmt_update_img = $pdo->prepare("UPDATE menu SET menu_name = :food_name, menu_description = :food_description, category_id = :category_id, menu_img = :menu_img, isEnabled = :foodOption WHERE id = :updateId");
-            $stmt_update_img->bindParam(':menu_img', $file_name);
-        } else {
-            // Update menu record without changing the image
-            $stmt_update = $pdo->prepare("UPDATE menu SET menu_name = :food_name, menu_description = :food_description, category_id = :category_id, isEnabled = :foodOption WHERE id = :updateId");
         }
 
-        // Bind parameters and execute the update query
-        if (isset($stmt_update)) {
-            $stmt_update->bindParam(':food_name', $food_name);
-            $stmt_update->bindParam(':food_description', $food_description);
-            $stmt_update->bindParam(':category_id', $category_id, PDO::PARAM_INT);
-            $stmt_update->bindParam(':foodOption', $foodOption, PDO::PARAM_INT);
-            $stmt_update->bindParam(':updateId', $updateId, PDO::PARAM_INT);
+        // Update menu record
+        if ($file_name) {
+            $stmt = $pdo->prepare("UPDATE menu SET menu_name = :food_name, menu_description = :food_description, category_id = :category_id, menu_img = :menu_img, isEnabled = :foodOption WHERE id = :updateId");
+            $stmt->bindParam(':menu_img', $file_name);
+        } else {
+            $stmt = $pdo->prepare("UPDATE menu SET menu_name = :food_name, menu_description = :food_description, category_id = :category_id, isEnabled = :foodOption WHERE id = :updateId");
+        }
 
-            if ($stmt_update->execute()) {
-                // Handle variations update or delete
-                // Get existing variations associated with the menu item
-                $stmt_existing_variations = $pdo->prepare("SELECT mv.variation_id FROM menu_variations mv WHERE mv.menu_id = :updateId");
-                $stmt_existing_variations->bindParam(':updateId', $updateId, PDO::PARAM_INT);
-                $stmt_existing_variations->execute();
-                $existing_variations = $stmt_existing_variations->fetchAll(PDO::FETCH_COLUMN, 0);
+        // Bind common parameters
+        $stmt->bindParam(':food_name', $food_name);
+        $stmt->bindParam(':food_description', $food_description);
+        $stmt->bindParam(':category_id', $category_id, PDO::PARAM_INT);
+        $stmt->bindParam(':foodOption', $foodOption, PDO::PARAM_INT);
+        $stmt->bindParam(':updateId', $updateId, PDO::PARAM_INT);
 
-                $updated_variations = $_POST['variations'];
+        if ($stmt->execute()) {
+            // Handle variations update or delete
+            // Get existing variations associated with the menu item
+            $stmt_existing_variations = $pdo->prepare("SELECT mv.variation_id FROM menu_variations mv WHERE mv.menu_id = :updateId");
+            $stmt_existing_variations->bindParam(':updateId', $updateId, PDO::PARAM_INT);
+            $stmt_existing_variations->execute();
+            $existing_variations = $stmt_existing_variations->fetchAll(PDO::FETCH_COLUMN, 0);
 
-                // Prepare array to track existing variation IDs to be deleted if not in updated variations
-                $existing_variation_ids = $existing_variations;
+            // Track variations to delete
+            $existing_variation_ids = $existing_variations;
 
-                // Insert or update variations
-                foreach ($updated_variations as $variation) {
-                    $variation_name = $variation['name'];
-                    $variation_price = $variation['price'];
+            foreach ($updated_variations as $variation) {
+                $variation_name = $variation['name'];
+                $variation_price = $variation['price'];
 
-                    // Check if the variation already exists
-                    $stmt_var = $pdo->prepare("SELECT id FROM variations WHERE variation_name = :variation_name");
-                    $stmt_var->bindParam(':variation_name', $variation_name);
-                    $stmt_var->execute();
-                    $variation_id = $stmt_var->fetchColumn();
+                // Check if the variation already exists
+                $stmt_var = $pdo->prepare("SELECT id FROM variations WHERE variation_name = :variation_name");
+                $stmt_var->bindParam(':variation_name', $variation_name);
+                $stmt_var->execute();
+                $variation_id = $stmt_var->fetchColumn();
 
-                    if ($variation_id) {
-                        // If the variation exists, check if it's already associated with the menu
-                        if (in_array($variation_id, $existing_variations)) {
-                            // Update the existing association
-                            $stmt_update_variation = $pdo->prepare("UPDATE menu_variations SET price = :price WHERE menu_id = :updateId AND variation_id = :variation_id");
-                            $stmt_update_variation->bindParam(':price', $variation_price);
-                            $stmt_update_variation->bindParam(':updateId', $updateId, PDO::PARAM_INT);
-                            $stmt_update_variation->bindParam(':variation_id', $variation_id, PDO::PARAM_INT);
-                            $stmt_update_variation->execute();
+                if ($variation_id) {
+                    if (in_array($variation_id, $existing_variations)) {
+                        // Update existing association
+                        $stmt_update_variation = $pdo->prepare("UPDATE menu_variations SET price = :price WHERE menu_id = :updateId AND variation_id = :variation_id");
+                        $stmt_update_variation->bindParam(':price', $variation_price);
+                        $stmt_update_variation->bindParam(':updateId', $updateId, PDO::PARAM_INT);
+                        $stmt_update_variation->bindParam(':variation_id', $variation_id, PDO::PARAM_INT);
+                        $stmt_update_variation->execute();
 
-                            // Remove from existing variation IDs list (for tracking deletions)
-                            unset($existing_variation_ids[array_search($variation_id, $existing_variation_ids)]);
-                        } else {
-                            // If the variation exists but is not associated with the menu, insert the association
-                            $stmt_insert_menu_variation = $pdo->prepare("INSERT INTO menu_variations (menu_id, variation_id, price) VALUES (:updateId, :variation_id, :price)");
-                            $stmt_insert_menu_variation->bindParam(':updateId', $updateId, PDO::PARAM_INT);
-                            $stmt_insert_menu_variation->bindParam(':variation_id', $variation_id, PDO::PARAM_INT);
-                            $stmt_insert_menu_variation->bindParam(':price', $variation_price);
-                            $stmt_insert_menu_variation->execute();
-                        }
+                        // Remove from deletion list
+                        unset($existing_variation_ids[array_search($variation_id, $existing_variation_ids)]);
+                    } else {
+                        // Insert new association
+                        $stmt_insert_menu_variation = $pdo->prepare("INSERT INTO menu_variations (menu_id, variation_id, price) VALUES (:updateId, :variation_id, :price)");
+                        $stmt_insert_menu_variation->bindParam(':updateId', $updateId, PDO::PARAM_INT);
+                        $stmt_insert_menu_variation->bindParam(':variation_id', $variation_id, PDO::PARAM_INT);
+                        $stmt_insert_menu_variation->bindParam(':price', $variation_price);
+                        $stmt_insert_menu_variation->execute();
                     }
                 }
-
-                // Delete variations that are no longer present in updated_variations
-                foreach ($existing_variation_ids as $delete_variation_id) {
-                    $stmt_delete_variation = $pdo->prepare("DELETE FROM menu_variations WHERE menu_id = :updateId AND variation_id = :variation_id");
-                    $stmt_delete_variation->bindParam(':updateId', $updateId, PDO::PARAM_INT);
-                    $stmt_delete_variation->bindParam(':variation_id', $delete_variation_id, PDO::PARAM_INT);
-                    $stmt_delete_variation->execute();
-                }
-
-                return true; // Food and variations updated successfully
-            } else {
-                // Handle update failure
-                return false;
             }
-        } elseif (isset($stmt_update_img)) {
-            $stmt_update_img->bindParam(':food_name', $food_name);
-            $stmt_update_img->bindParam(':category_id', $category_id, PDO::PARAM_INT);
-            $stmt_update_img->bindParam(':foodOption', $foodOption, PDO::PARAM_INT);
-            $stmt_update_img->bindParam(':updateId', $updateId, PDO::PARAM_INT);
 
-            if ($stmt_update_img->execute()) {
-                // Handle variations update similar to the section above
-                return true; // Food and variations updated successfully
-            } else {
-                // Handle update failure
-                return false;
+            // Delete removed variations
+            foreach ($existing_variation_ids as $delete_variation_id) {
+                $stmt_delete_variation = $pdo->prepare("DELETE FROM menu_variations WHERE menu_id = :updateId AND variation_id = :variation_id");
+                $stmt_delete_variation->bindParam(':updateId', $updateId, PDO::PARAM_INT);
+                $stmt_delete_variation->bindParam(':variation_id', $delete_variation_id, PDO::PARAM_INT);
+                $stmt_delete_variation->execute();
             }
+
+            return true;
         } else {
             return false;
         }
@@ -512,6 +519,7 @@ function updateFood($pdo)
         return false;
     }
 }
+
 
 
 
@@ -1080,8 +1088,8 @@ function Cancel_to_Order($pdo)
         // Begin a transaction
         $pdo->beginTransaction();
 
-        // SQL query to insert data into customer_process
-        $insertQuery = "INSERT INTO customer_process (order_no, table_no, customer_name, created_at)
+        // SQL query to insert data into customer_order
+        $insertQuery = "INSERT INTO customer_order (order_no, table_no, customer_name, created_at)
             SELECT order_no, table_no, customer_name, created_at
             FROM customer_canceled
             WHERE order_no = :order_no;

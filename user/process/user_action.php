@@ -103,15 +103,16 @@ if (!empty($_POST['action']) && $_POST['action'] == 'orderNow') {
         );
     }
     else {
-        if (orderNow($pdo)) {
+        if ($orderNo = orderNow($pdo)) {
             $response = array(
                 'success' => true,
-                'message' => 'Order Successful.'
+                'message' => 'Order Successful.',
+                'order_no' => $orderNo
             );
-        }else{
+        } else {
             $response = array(
                 'success' => false,
-                'message' => 'Failed to Order!.'
+                'message' => 'Failed to Order!'
             );
         }
     }
@@ -119,6 +120,7 @@ if (!empty($_POST['action']) && $_POST['action'] == 'orderNow') {
     echo json_encode($response);
     exit();
 }
+
 if (!empty($_POST['action']) && $_POST['action'] == 'recordCustomer') {
     if (empty($_POST['fullname'])) {
         $response = array(

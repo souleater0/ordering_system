@@ -136,7 +136,7 @@ $(document).ready(function() {
         {data: 'role_name', title: 'Role', className: 'text-dark'},
         {data: 'isEnabled', visible: false, className: 'text-dark'},
         {data: 'status', title: 'Status', className: 'text-dark'},
-        {"data": null, title: 'Action', "defaultContent": "<button class='btn btn-primary btn-sm btn-edit'><i class='fa-regular fa-pen-to-square'></i></button>&nbsp;<button class='btn btn-secondary btn-sm btn-pass'><i class='fa-solid fa-key'></i></button>&nbsp;<button class='btn btn-danger btn-sm'><i class='fa-solid fa-trash'></i></button>"}
+        {"data": null, title: 'Action', "defaultContent": "<button class='btn btn-primary btn-sm btn-edit'><i class='fa-regular fa-pen-to-square'></i></button>&nbsp;<button class='btn btn-secondary btn-sm btn-pass'><i class='fa-solid fa-key'></i></button>&nbsp;<button class='btn btn-danger btn-sm btn-delete'><i class='fa-solid fa-trash'></i></button>"}
       ]
   });
   $('#addUserBTN').click(function(){
@@ -173,14 +173,14 @@ $(document).ready(function() {
     var update_id = $(this).attr("update-id");
     // alert(update_id);
     $.ajax({
-            url: "admin/process/admin_action.php",
+            url: "process/admin_action.php",
             method: "POST",
             data: formData+"&action=updateUser&update_id="+update_id,
             dataType: "json",
             success: function(response) {
                 if(response.success==true){
                     LoadTable();
-                    $('#brandModal').modal('hide');
+                    $('#userModal').modal('hide');
                     toastr.success(response.message);
                 }else{
                     toastr.error(response.message);
@@ -213,6 +213,27 @@ $(document).ready(function() {
 
     $('#userModal').modal('show');
     $("#updateUser").attr("update-id", data.id);
+  });
+  //delete user
+  $('#userTable').on('click', 'button.btn-delete', function () {
+    var data = table.row($(this).parents('tr')).data();
+    $.ajax({
+          url: "process/admin_action.php",
+          method: "POST",
+          data: {
+            user_id : data.id,
+            action : "deleteUser"
+          },
+          dataType: "json",
+          success: function(response) {
+              if(response.success==true){
+                  LoadTable();
+                  toastr.success(response.message);
+              }else{
+                  toastr.error(response.message);
+              }
+          }
+      });
   });
   //show pass
   $("#show_Pass").click(function (event) {

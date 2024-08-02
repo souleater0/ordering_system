@@ -15,10 +15,48 @@
         </div>
     </div>
 </div>
+<!-- VIEW ORDER -->
+<div class="modal fade" id="orderModal" tabindex="-1" aria-labelledby="orderModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Order Details</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body" id="orderContent">
+                <h5>Table No: <span id="modalTableNo"></span></h5>
+                <h5>Customer Name: <span id="modalCustomerName"></span></h5>
+                <table id="modalOrderTable" class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th class="text-dark">Menu Name</th>
+                            <th class="text-dark">Variation</th>
+                            <th class="text-dark">Quantity</th>
+                            <th class="text-dark">Price</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Order items will be populated here -->
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <th colspan="3" class="text-end text-dark">Total:</th>
+                            <th id="modalTotalPrice" class="text-dark"></th>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" id="printButton">Print</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- END MODAL -->
 
 <script>
     $(document).ready(function() {
-        // let table = new DataTable('#myTable');
         var table = $('#orderTable').DataTable({
             responsive: true,
             select: true,
@@ -67,7 +105,8 @@
                 },
                 {
                     "data": null,
-                    "title": "Action btn btn-success",
+                    "title": "Action",
+                    "className": "text-dark text-start",
                     "render": function(data, type, row) {
                         return '<button class="btn btn-info btn-sm btn-show">View</button>&nbsp;<button class="btn btn-primary btn-sm btn-edit">Edit</button>&nbsp;<button class="btn btn-success btn-sm btn-serve">Serve</button>&nbsp;<button class="btn btn-danger btn-sm btn-cancel">Cancel</button>';
                     }
@@ -93,6 +132,47 @@
                 }
             });
         }
+        
+        $('#orderTable').on('click', 'button.btn-show', function() {
+        var data = table.row($(this).parents('tr')).data();
+        var order_no = data.order_no;
+
+        $.ajax({
+            url: 'process/admin_action.php',
+            method: 'POST',
+            data: {
+                order_no: order_no,
+                action: 'retrievedOrderListbyID'
+            },
+            dataType: 'json',
+            success: function(response) {
+                if (response.success) {
+                    $('#modalTableNo').text(data.table_no);
+                    $('#modalCustomerName').text(data.customer_name);
+
+                    var orderItemsHtml = '';
+                    var totalPrice = 0;
+                    response.data.forEach(function(item) {
+                        orderItemsHtml += '<tr>' +
+                            '<td class="text-dark">' + item.menu_name + '</td>' +
+                            '<td class="text-dark">' + item.variation_name + '</td>' +
+                            '<td class="text-dark">' + item.qty + '</td>' +
+                            '<td class="text-dark">' + item.price + '</td>' +
+                            '</tr>';
+                        totalPrice += parseFloat(item.price * item.qty);
+                    });
+                    $('#modalOrderTable tbody').html(orderItemsHtml);
+                    $('#modalTotalPrice').text(totalPrice.toFixed(2));
+                    $('#orderModal').modal('show');
+                } else {
+                    alert('Failed to retrieve order details.');
+                }
+            },
+            error: function() {
+                alert('Failed to retrieve order details.');
+            }
+        });
+    });
         $('#orderTable').on('click', 'button.btn-serve', function() {
             var data = table.row($(this).parents('tr')).data();
             var order_no = data.order_no;
@@ -137,6 +217,16 @@
                     }
                 }
             });
+        });
+        $('#printButton').click(function() {
+            var modalContent = $('#orderContent').clone(); // Clone modal content
+            var printWindow = window.open('', '', 'height=400,width=800');
+            printWindow.document.write('<html><head><title>Print</title>');
+            printWindow.document.write('</head><body>');
+            printWindow.document.write(modalContent.html()); // Write modal content to new window
+            printWindow.document.write('</body></html>');
+            printWindow.document.close();
+            printWindow.print(); // Print the new window
         });
 
     });
